@@ -45,6 +45,8 @@ $routes->POST('/iniciarSession', 'Ussers::iniciarSession');
 $routes->get('/registrar', 'Home::register');
 $routes->POST('/registerUsser', 'Home::registerUsser');
 
+$routes->get('/suscripcion', 'Home::suscripcion');
+
 $routes->POST('/registerUsserAdmin', 'Ussers::registerUsserAdmin');
 $routes->get('/agregarUsuario', 'Ussers::agregarUsuario');
 $routes->get('/daleteUsuario', 'Ussers::daleteUsuario');
@@ -69,6 +71,10 @@ $routes->get('/postFiltros', 'home::postFiltros');
 $routes->get('/proveedor/(:any)', 'CategoriasController::proveedor/$1');
 $routes->get('/filtro', 'CategoriasController::filtro');
 
+$routes->get('/pasareladepago', 'Ussers::crearTransaccion');
+
+/* webpay*/
+$routes->match(['get','post'],'/Ussers/respuesta', 'Ussers::respuesta');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

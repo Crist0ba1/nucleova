@@ -23,7 +23,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost/pega/appnucleova/';
+    public $baseURL = 'http://localhost/git/appnucleova/';
 
     /**
      * --------------------------------------------------------------------------

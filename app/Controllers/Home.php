@@ -31,9 +31,11 @@ class Home extends BaseController
         $modelR = new RegionesModel();
 		$modelCo = new ComunasModel();
         $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
         $data['region'] = $modelR->findAll();
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
         echo view('limites/Header',$data);
         echo view('ussers/register');
         echo view('limites/Fother');
@@ -422,5 +424,17 @@ class Home extends BaseController
         return json_encode($val);
     }
 
-
+    public function suscripcion(){
+        $modelR = new RegionesModel();
+		$modelCo = new ComunasModel();
+        $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
+        $data['region'] = $modelR->findAll();
+		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+        $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
+        echo view('limites/Header',$data);
+        echo view('ussers/Suscripciones');
+        echo view('limites/Fother');
+    }
 }

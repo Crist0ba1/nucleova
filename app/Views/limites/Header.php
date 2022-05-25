@@ -19,7 +19,19 @@
     
     <script src="https://kit.fontawesome.com/c818a46c29.js" crossorigin="anonymous"></script>
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+
+
 
     <style type="text/css" media="screen">
       #logo{
@@ -73,7 +85,7 @@
       <a class="navbar-brand" href="<?php echo base_url('/');?>"><img id="logo" src="<?php echo base_url('')?>/public/assets/Logos/LogoHSF.png" class="img-fluid"></a>
     </div>
 
-    <?php if(session()->get('isLoggedIn') && session()->get('tipo') == 0): ?> 
+      <?php if(session()->get('isLoggedIn') && session()->get('tipo') == 0): ?> 
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
             <li>
@@ -128,7 +140,6 @@
           </ul>
         </div>
       <?php else:?>  
-      <!--  
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
             <li class="nav-item">
@@ -137,9 +148,11 @@
             <li class="nav-item">
               <a class="nav-link" href="<?php echo base_url('/registrar'); ?>"><b>Registrarce</b></a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
+            </li>
           </ul>
         </div> 
-      -->
       <?php endif;?> 
   
 

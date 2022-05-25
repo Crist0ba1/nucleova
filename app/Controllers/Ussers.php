@@ -1,6 +1,15 @@
 <?php
 namespace App\Controllers;
 
+require_once './vendor/autoload.php';
+use Transbank\Webpay\WebpayPlus\Transaction;
+/*
+\Transbank\Webpay\WebpayPlus::setIntegrationType("");
+\Transbank\Webpay\WebpayPlus::setCommerceCode("");
+\Transbank\Webpay\WebpayPlus::setApiKey("");
+*/
+
+
 use App\Models\RegionesModel;
 use App\Models\ComunasModel;
 use App\Models\CategoriasModel;
@@ -105,6 +114,8 @@ class Ussers extends BaseController
         $data['region'] = $modelR->findAll();
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
+        $model = new UssersModel();
+		$user = $model->where('email', session()->get('isLoggedIn'))->first();
         echo view('limites/Header',$data);
         echo view('dashbord/Proveedor');
         echo view('limites/Fother');
@@ -118,8 +129,7 @@ class Ussers extends BaseController
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
         echo view('limites/Header',$data);
-        echo view('filtros/filtros');
-        echo view('categorias/categorias');
+        echo view('dashbord/Empresa');
         echo view('limites/Fother');
     }
     public function dashbordInvitado()
@@ -431,4 +441,82 @@ class Ussers extends BaseController
         return $data_table->getDatatable();
     } 
 
+
+
+    /* webpay */
+
+    public function crearTransaccion(){
+        /* $aux1, $aux2, $aux3 */
+		$buy_order = 1; // Este valor se obtendra de la BD, ya que sera el numero del carro
+		$session_id = 4;
+		$amount = 5000;
+		$return_url = "http://localhost/git/appnucleova/Ussers/respuesta";// a esta ruta llega del metodo de pago
+		$transaction = new Transaction();
+		$response = $transaction->create($buy_order, $session_id, $amount, $return_url);
+		
+		$aux=[
+			'url' => $response->url,
+			'token' => $response->token
+		];
+        session()->set('url',$response->url);
+        session()->set('url',$response->url);
+		
+        return redirect()->to('/suscripcion');
+	}
+	/*Aqui llega */
+	public function respuesta(){
+		if(isset($_POST['token_ws'])){
+			$token = $_POST['token_ws'];
+			$response = Transaction::commit($token);
+		}
+		if( isset($_POST["TBK_TOKEN"]) ){
+			//echo "<script>alert('TBK_token');</script>";
+			$token = $_POST['TBK_TOKEN'];
+			
+			$mensajeControlador =[
+			'titulo' => "Compra anulada",
+			'mensaje' => "A anuladio la compra y a vuelto al comercio",
+			];
+			session()->set('mensajeControlador',$mensajeControlador);	
+			return redirect()->to('/realizar_compraACT');
+			
+		}
+		if(isset($response)){
+			$status = $response->getStatus();
+		 	session()->remove('token');
+			$pedido = session()->get('pedido');
+			$flag = $this->statePedido($status, $pedido);/* Cambiar estado en BD*/ //siempre true
+			$flag = $this->vars($status);/* Limpiar variables*/
+			$flag =$this->modListaProductos($status,$pedido);// cambia las variables en la lista de los productos
+			if($status =='AUTHORIZED'){
+				
+				
+			}
+			if($status == 'FAILED'){
+				
+
+
+			} 
+				/* falta diferenciar el status
+				 y almacenarlo en la BD pero 
+				 el kaco quiere que la solucion de problemas sea online */
+		}
+		else{
+			/* A ocurrido un error, por favor intentelo de nuevo */
+			 if(!$aux){
+				$mensajeControlador =[
+					'titulo' => "Compra realizada con exito",
+					'mensaje' => "La compra fue realizada con exito, pero no se pudo enviar el correo de confirmacion <br> Verifique su correo en configuracion de cuenta",
+					];
+			 }
+			//$status ='FAILED';
+			//$flag = $this->statePedido($status, $pedido);/* Cambiar estado en BD*/ //siempre true
+			session()->set('mensajeControlador',$mensajeControlador);	
+			return redirect()->to('/realizar_compraACT');
+		}
+
+
+
+
+	}
 }
