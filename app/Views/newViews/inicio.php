@@ -46,36 +46,14 @@
                 <strong>Caracteristicas</strong>
             </div>
             <div class="row">
-                <table class="table" id="tablaCaracteristicas">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>                       
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td scope="row">Interfaz de administración</td> 
-                            <td><span class="ticket"></span></td>                     
-                        </tr>
-                        <tr>
-                            <td scope="row">Historial de servicios </td> 
-                            <td><span class="ticket"></span></td>                      
-                        </tr>
-                        <tr>
-                            <td scope="row"> control de servicios </td>   
-                            <td><span class="ticket"></span></td>                     
-                        </tr>
-                        <tr>
-                            <td scope="row">Interfaz de administración </td>   
-                            <td><span class="ticket"></span></td>                     
-                        </tr>
-                        <tr>
-                            <td scope="row">Interfaz de administración</td>  
-                            <td><span class="ticket"></span></td>                      
-                        </tr>
-                    </tbody>
-                </table>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Interfaz de administración</li>
+                    <li class="list-group-item">Historial de servicios</li>
+                    <li class="list-group-item">control de servicios</li>
+                    <li class="list-group-item">Interfaz de administración</li>
+                    <li class="list-group-item">Historial de servicios</li>
+                    <li class="list-group-item">control de servicios</li>
+                </ul>  
            </div>
            <div class="row">
                <p>$5.000</p>
