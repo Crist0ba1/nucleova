@@ -1,0 +1,17 @@
+
+.logo-image{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: -6px;
+}
+
+.container{
+    width: 60%;
+}
+/*no está funcionando, solucionado en php mientras*/
+.btn-primary-req{
+    background-color: #8A4397 !important;
+    border-color: #8A4397 !important;
+}
