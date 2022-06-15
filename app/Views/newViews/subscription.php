@@ -2,7 +2,7 @@
     include("baseGuest.php");
 ?>    
         
-<div class="container">
+<div class="container cont60">
     <div class="row">
         <div class="col-sm-3">
             <div class="row top30 bottom20">
@@ -21,13 +21,13 @@
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
-                        <img src="" alt="First slide">
+                        <img src="" alt="1">
                     </div>
                     <div class="carousel-item">
-                        <img src="" alt="Second slide">
+                        <img src="" alt="2">
                     </div>
                     <div class="carousel-item">
-                        <img src="" alt="Third slide">
+                        <img src="" alt="3">
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
@@ -59,13 +59,7 @@
            </div>
            <div class="row">
                <button type="button" class="btn btn-primary">Subscribirme</button>
-           </div>
-            
-                
-                
-                
-            
-            
+           </div>  
         </div>
     </div>
 </div>

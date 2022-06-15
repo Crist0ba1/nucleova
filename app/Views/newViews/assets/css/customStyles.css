@@ -36,6 +36,20 @@
 .bottom15 { margin-bottom:15px; }
 .bottom20 { margin-bottom:20px; }
 .bottom30 { margin-bottom:30px; }
+
+.left5 { margin-left:5px; }
+.left10 { margin-left:10px; }
+.left15 { margin-left:15px; }
+.left20 { margin-left:20px; }
+.left30 { margin-left:30px; }
+
+.right5 { margin-right:5px; }
+.right10 { margin-right:10px; }
+.right15 { margin-right:15px; }
+.right20 { margin-right:20px; }
+.right30 { margin-right:30px; }
+
+
 /*Botones*/
 .btn-purple{
     background-color: #8A4397 !important;
@@ -49,5 +63,32 @@
     background-color: #F38900 !important;
     border-color: #F38900 !important;
 }
-
-
+.btn-blue{
+    background-color: #2B77EF !important;
+    border-color: #2B77EF !important;
+}
+/*colores tab perfil*/
+.nav-tabs>li>button {
+    color: #575757 !important;
+}
+/*Color estrellas*/
+.checked{
+    color: #F38900;
+}
+/*fontawesome icons*/
+.fa-social {
+    padding: 10px;
+    font-size: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    
+    background: #2B77EF;
+    color: white;
+}
+.fa:hover {
+    opacity: 0.7;
+}
+  
