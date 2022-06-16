@@ -1,0 +1,94 @@
+
+.logo-image{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: -6px;
+}
+/*background colors*/
+.bg-blue{ 
+    background-color: #294A9A;
+    border-color: #294A9A;
+}
+.bg-gray{ 
+    background-color: #C7CEE5;
+    border-color: #ffffff;
+}
+/*Border colors*/
+.border-white{
+    border-color: #ffffff;
+}.border-blue{
+    border-color: #294A9A;    
+}
+
+/*Container width*/
+.cont60{ width: 60%;}
+/*Margenes*/
+.top5 { margin-top:5px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top20 { margin-top:20px; }
+.top30 { margin-top:30px; }
+
+.bottom5 { margin-bottom:5px; }
+.bottom10 { margin-bottom:10px; }
+.bottom15 { margin-bottom:15px; }
+.bottom20 { margin-bottom:20px; }
+.bottom30 { margin-bottom:30px; }
+
+.left5 { margin-left:5px; }
+.left10 { margin-left:10px; }
+.left15 { margin-left:15px; }
+.left20 { margin-left:20px; }
+.left30 { margin-left:30px; }
+
+.right5 { margin-right:5px; }
+.right10 { margin-right:10px; }
+.right15 { margin-right:15px; }
+.right20 { margin-right:20px; }
+.right30 { margin-right:30px; }
+
+
+/*Botones*/
+.btn-purple{
+    background-color: #8A4397 !important;
+    border-color: #8A4397 !important;
+}
+.btn-purple:disabled{
+    background-color: #D4BCDC !important;
+    border-color: #D4BCDC !important;
+}
+.btn-yellow{
+    background-color: #F38900 !important;
+    border-color: #F38900 !important;
+}
+.btn-blue{
+    background-color: #2B77EF !important;
+    border-color: #2B77EF !important;
+}
+/*colores tab perfil*/
+.nav-tabs>li>button {
+    color: #575757 !important;
+}
+/*Color estrellas*/
+.checked{
+    color: #F38900;
+}
+/*fontawesome icons*/
+.fa-social {
+    padding: 10px;
+    font-size: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    
+    background: #2B77EF;
+    color: white;
+}
+.fa:hover {
+    opacity: 0.7;
+}
+  
