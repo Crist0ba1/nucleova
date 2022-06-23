@@ -25,17 +25,17 @@
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 					<?php
-						include("profileTab.php");
+						include("userProfileTab.php");
 					?> 
 				</div>
 				<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab">
 					<?php
-						include("recordsTab.php");
+						include("userRecordsTab.php");
 					?> 
 				</div>
 				<div class="tab-pane fade" id="information" role="tabpanel" aria-labelledby="information-tab">
 					<?php
-						include("informationTab.php");
+						include("userInformationTab.php");
 					?> 
 				</div>
 			</div>

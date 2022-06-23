@@ -53,12 +53,9 @@
                     <li class="list-group-item">Historial de servicios</li>
                     <li class="list-group-item">control de servicios</li>
                 </ul>  
-           </div>
+           </div>           
            <div class="row">
-               <p>$5.000</p>
-           </div>
-           <div class="row">
-               <button type="button" class="btn btn-primary">Subscribirme</button>
+               <button type="button" class="btn btn-primary">Ver Planes</button>
            </div>  
         </div>
     </div>

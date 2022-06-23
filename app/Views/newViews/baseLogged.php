@@ -27,10 +27,10 @@
                         <a class="nav-link" href="#">Historial</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mis Proveedores</a>
+                        <a class="nav-link" href="#">Mis Proveedores <span class="badge rounded-pill bg-danger">2</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Requerimientos</a>
+                        <a class="nav-link" href="#">Requerimientos <span class="badge rounded-pill bg-danger">10</span></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mi cuenta</a>
