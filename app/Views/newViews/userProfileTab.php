@@ -8,10 +8,10 @@
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <a href="#" class="fa fa-social fa-facebook"></a>
-                    <a href="#" class="fa fa-social fa-twitter"></a>
-                    <a href="#" class="fa fa-social fa-instagram"></a>
-                    <a href="#" class="fa fa-social fa-linkedin"></a>
+                    <a href="#" class="fa-brands fa-social fa-facebook"></a>
+                    <a href="#" class="fa-brands fa-social fa-twitter"></a>
+                    <a href="#" class="fa-brands fa-social fa-instagram"></a>
+                    <a href="#" class="fa-brands fa-social fa-linkedin"></a>
                 </div>
             </div>
         </div>
