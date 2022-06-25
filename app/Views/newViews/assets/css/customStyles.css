@@ -63,6 +63,10 @@
     background-color: #F38900 !important;
     border-color: #F38900 !important;
 }
+.btn-yellow:disabled{
+    background-color: #187C4A !important;
+    border-color: #187C4A !important;
+}
 .btn-blue{
     background-color: #2B77EF !important;
     border-color: #2B77EF !important;
@@ -88,7 +92,5 @@
     background: #2B77EF;
     color: white;
 }
-.fa:hover {
-    opacity: 0.7;
-}
-  
+
+
