@@ -30,7 +30,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-
+    <script src="https://www.google.com/recaptcha/api.js?render=6Le0NLgaAAAAAIv6TEINBxk8KTZA2R3ZJxDoNqns"></script>
 
 
     <style type="text/css" media="screen">

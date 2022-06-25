@@ -41,35 +41,61 @@ class Ussers extends BaseController
     {
 		helper(['form']);
 
-		if($this-> request -> getMethod() == 'post') {
+        if($this-> request -> getMethod() == 'post') {
 
-            $bool = $this->validarUSuario($this->request->getVar('emailrL'),$this->request->getVar('passwordrL'));
+            if(isset($_POST)){
+                $secretKey 	= '6Le0NLgaAAAAAMlFINKKtjzLLGVz9iI5E9BoDMnl';
+                $token 		= $_POST["g-token"];
+                
+                $url = "https://www.google.com/recaptcha/api/siteverify";
+                $data = array('secret' => $secretKey, 'response' => $token);
+            
+                // use key 'http' even if you send the request to https://...
+                $options = array('http' => array(
+                    'method'  => 'POST',
+                    'header' => 'Content-Type: application/x-www-form-urlencoded',
+                    'content' => http_build_query($data)
+                ));
+                $context  = stream_context_create($options);
+                $result = file_get_contents($url, false, $context);
+                $response = json_decode($result);
+                if($response->success){
+                  
+                    $bool = $this->validarUSuario($this->request->getVar('emailrL'),$this->request->getVar('passwordrL'));
 
-			if(!$bool){
-                session()->set('errorLogin',"Error, credenciales de acceso erroneas");
-			} else{
-				$model = new UssersModel();
-				$user = $model->where('email', $this->request->getVar('emailrL'))->first();
-
-				$this-> setUserSession($user); // aqui tenemos ya al usuario que corresponde
-
-				if($user['tipo']==0){//admin
-					return redirect()->to('/dashbordAdmin');
-				}
-				if($user['tipo']==1){//Proveedor
-					return redirect()->to('/dashbordCliente');
-				}
-				if($user['tipo']==2){//cliente
-					return redirect()->to('/dashbordProveedor');
-				}
-                session()->set('errorLogin',"Error, al iniciar sesion, intentelo otra vez");
-                return redirect()->to('/login');
-			}
-
+                    if(!$bool){
+                        session()->set('errorLogin',"Error, credenciales de acceso erroneas");
+                    } else{
+                        $model = new UssersModel();
+                        $user = $model->where('email', $this->request->getVar('emailrL'))->first();
+        
+                        $this-> setUserSession($user); // aqui tenemos ya al usuario que corresponde
+        
+                        if($user['tipo']==0){//admin
+                            return redirect()->to('/dashbordAdmin');
+                        }
+                        if($user['tipo']==1){//Proveedor
+                            return redirect()->to('/dashbordCliente');
+                        }
+                        if($user['tipo']==2){//cliente
+                            return redirect()->to('/dashbordProveedor');
+                        }
+                        session()->set('errorLogin',"Error, al iniciar sesion, intentelo otra vez");
+                        return redirect()->to('/login');
+                    }
+        
+                }
+                else{
+                    return redirect()->to('/')->with('mensaje','Error, intente mas tarde');
+                }
+                
+                
+            }
+ 
 		}
-        
-            return redirect()->to('/login');
-        
+            return redirect()->to('/login')->with('mensaje','Error, intente mas tarde');
+
+
             
     }
     private function validarUSuario($correo,$clave){

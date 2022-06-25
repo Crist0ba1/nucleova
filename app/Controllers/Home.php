@@ -5,6 +5,7 @@ use App\Models\RegionesModel;
 use App\Models\ComunasModel;
 use App\Models\CategoriasModel;
 use App\Models\UssersModel;
+use App\Models\PersonaModel;
 use App\Models\SubCategoriasModel;
 use monken\TablesIgniter;
 class Home extends BaseController
@@ -175,7 +176,7 @@ class Home extends BaseController
             session()->set("errorRegister", "yes");
             $modelCategoria = new CategoriasModel();
             $data['region'] = $modelR->findAll();
-            $data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+		    $data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
             $data['categoria'] = $modelCategoria->findAll();
             echo view('limites/Header',$data);
             echo view('ussers/register');
@@ -423,7 +424,6 @@ class Home extends BaseController
         }
         return json_encode($val);
     }
-
     public function suscripcion(){
         $modelR = new RegionesModel();
 		$modelCo = new ComunasModel();
@@ -436,5 +436,151 @@ class Home extends BaseController
         echo view('limites/Header',$data);
         echo view('ussers/Suscripciones');
         echo view('limites/Fother');
+    }
+
+
+
+    /* Persona */
+    public function registrarPersona(){
+        helper(['form']);
+
+        $model = new PersonaModel();
+        $session = session();
+        $correo = $this->request->getVar('emailRegister');
+        $aux = $this->verifiarCorreo( $correo);
+
+		if($this-> request -> getMethod() == 'post' && !$aux){
+            $data['nombre'] = $this->request->getVar('nombre');
+            $data['apellidos'] = $this->dateToDate($this->request->getVar('apellidos'));
+            $data['clave'] = $this->request->getVar('passwordr1');
+            $data['tipo'] = $this->request->getVar('tipoDeCuenta');
+            $data['email'] = $this->request->getVar('emailRegister');
+            
+            $model->insert($data);
+            $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+        
+                if($user != null){
+                    $this-> setPersonaSession($user); // aqui tenemos ya al usuario que corresponde
+                    $this->correoRegistroPersona($this->request->getVar('nombre'),$this->request->getVar('emailRegister'),$this->request->getVar('passwordr1'));
+                    $modelR = new RegionesModel();
+                    $modelCo = new ComunasModel();
+                    $modelCategoria = new CategoriasModel();
+                    $data['region'] = $modelR->findAll();
+                    $data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+                    $data['categoria'] = $modelCategoria->findAll();
+                    if($this->request->getVar('tipoDeCuenta')== 1){ //Buscador
+                        echo view('limites/Header',$data);
+                        echo view('ussers/registerBuscador');
+                        echo view('dashbord/Empresa');
+                        echo view('limites/Fother');
+                    }
+                    if($this->request->getVar('tipoDeCuenta')== 2){//P Persona Natural
+                        echo view('limites/Header',$data);
+                        echo view('ussers/registerPersonaNatural');
+                        echo view('dashbord/Proveedor');
+                        echo view('limites/Fother');
+                    }
+                    if($this->request->getVar('tipoDeCuenta')== 3){//P Empresa
+                        echo view('limites/Header',$data);
+                        echo view('ussers/registerEmpresa');
+                        echo view('limites/Fother');
+                    }
+                    else{
+                        $this->registerError();
+                    }
+                    
+                }
+                else{
+                    $this->registerError();
+                }
+        
+        }
+        if(session()->has("isLoggedIn")){
+            $modelR = new RegionesModel();
+            $modelCo = new ComunasModel();
+            $modelCategoria = new CategoriasModel();
+            $data['region'] = $modelR->findAll();
+		    $data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+            $data['categoria'] = $modelCategoria->findAll();
+        }
+        if(session()->has("isLoggedIn") && session()->get("tipo") == 1 ){ //Buscador
+            echo view('limites/Header',$data);
+            echo view('ussers/registerBuscador');
+            echo view('dashbord/Empresa');
+            echo view('limites/Fother');
+        }
+        if(session()->has("isLoggedIn") && session()->get("tipo") == 2){//P Persona Natural
+            echo view('limites/Header',$data);
+            echo view('ussers/registerPersonaNatural');
+            echo view('dashbord/Proveedor');
+            echo view('limites/Fother');
+        }
+        if(session()->has("isLoggedIn") && session()->get("tipo") == 3){//P Empresa
+            echo view('limites/Header',$data);
+            echo view('ussers/registerEmpresa');
+            echo view('limites/Fother');
+        }
+        else{
+            $this->registerError();
+        }
+    }
+    private function correoRegistroPersona($nombre, $correo, $clave){
+
+        $email = \Config\Services::email();
+
+        $email->setFrom('Contacto@nucleova.com', 'No responder este correo');
+        //$email->setTo($userData['email']);
+        $email->setTo('Contacto@nucleova.com');
+        $email->setSubject('Se a registrado en la aplicaicon web de Nucleova');
+        $email->setMessage('
+            <p>Estimad@, '.$nombre.' se a registrado con exito.<p>
+            <p>Credenciales de acceso:</p>
+            <p><b>Usuario:</b> '.$correo.'</p>
+            <p><b>Contraseña:</b> '.$clave.'</p>
+            <hn>
+            <p>Gracias por registrarse con nosotros.</p>
+
+            <h3>Atentamente: EQUIPO NUCLEOVA</h3>'
+        );
+
+        $val = 0;
+        if($email->send()){
+            $val= 1;
+        }
+        else{
+            $val = 2;
+        }
+        return $val;
+    }
+    private function setPersonaSession($user){
+		$data =[
+			'id' => $user['idPersona'],
+			'nombre' => $user['nombre'],
+            'apellidos' => $user['apellidos'],
+            'tipo' => $user['tipo'],			
+            'email' => $user['email'],
+			'isLoggedIn' => true,
+		];
+		session()->set($data);
+		
+		return true;
+	}
+    public function verVistas(){
+        session()->set("verModal", "1");
+        $modelR = new RegionesModel();
+		$modelCo = new ComunasModel();
+        $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
+        $data['region'] = $modelR->findAll();
+		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+        $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
+        //echo view('newViews/baseGuest',$data);
+        echo view('newViews/subscription');
+        
+        //echo view('newViews/myprofile');
+        
+        echo view('limites/Fother');
+
     }
 }

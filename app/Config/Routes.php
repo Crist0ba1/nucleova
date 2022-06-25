@@ -34,6 +34,10 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index');
 $routes->post('/enviarCorreo', 'Home::enviarCorreo');
 
+
+/*  rutas para ver lo del serguio */
+$routes->get('/verVistas', 'home::verVistas');
+
 $routes->get('/invitado', 'InvitadoController::invitado');
 
 $routes->get('/lostPassword', 'Home::lostPassword');
@@ -43,7 +47,13 @@ $routes->get('/login', 'Ussers::login');
 $routes->POST('/iniciarSession', 'Ussers::iniciarSession');
 
 $routes->get('/registrar', 'Home::register');
-$routes->POST('/registerUsser', 'Home::registerUsser');
+$routes->POST('/registerUsser', 'Home::registerUsser');/* Lo debo eliminar*/ 
+
+$routes->POST('/registrarPersona', 'Home::registrarPersona');
+$routes->get('/registrarPersona', 'Home::registrarPersona');
+
+// Registro de imagen para la empresa
+$routes->post('registrarPersona/fileUpload', 'Persona::fileUpload');
 
 $routes->get('/suscripcion', 'Home::suscripcion');
 
@@ -70,6 +80,7 @@ $routes->get('/subCategoria/(:any)/', 'CategoriasController::subCategoria/$1');
 $routes->get('/postFiltros', 'home::postFiltros');
 $routes->get('/proveedor/(:any)', 'CategoriasController::proveedor/$1');
 $routes->get('/filtro', 'CategoriasController::filtro');
+
 
 $routes->get('/pasareladepago', 'Ussers::crearTransaccion');
 

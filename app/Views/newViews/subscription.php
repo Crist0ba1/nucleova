@@ -17,18 +17,18 @@
                 <ol class="carousel-indicators">
                     <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
                     <li data-bs-target="#carouselId" data-bs-slide-to="1" aria-label="Second slide"></li>
-                    <li data-bs-target="#carouselId" data-bs-slide-to="2" aria-label="Third slide"></li>
+                    <!--li data-bs-target="#carouselId" data-bs-slide-to="2" aria-label="Third slide"></li-->
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
-                        <img src="" alt="1">
+                        <img class="img-fluid" id="logo" src="<?php echo base_url('')?>/public/assets/Logos/LogoHSF.png" alt="1">
                     </div>
                     <div class="carousel-item">
-                        <img src="" alt="2">
+                        <img class="img-fluid" id="logo" src="<?php echo base_url('')?>/public/sergio/Captura.jpg" alt="2">
                     </div>
-                    <div class="carousel-item">
+                    <!--div class="carousel-item">
                         <img src="" alt="3">
-                    </div>
+                    </div-->
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -29,6 +29,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Bienvenidos!</h1>
                             </div>
                             <form id="loginForm" action="<?php echo base_url('/iniciarSession')?>"  class="user" method="post">
+                                <input type="hidden" id="g-token" name="g-token">
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-user"
                                         id="emailrL" name="emailrL" aria-describedby="emailHelp"
@@ -85,6 +86,14 @@
 </div>
 
 <script>
+        
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6Le0NLgaAAAAAIv6TEINBxk8KTZA2R3ZJxDoNqns', {action: 'homepage'}).then(function(token) {
+            console.log(token);
+            document.getElementById("g-token").value = token;
+        });
+    });
+    
     $(document).ready(function () {
 	//CheckBox mostrar contraseña
         $('#ShowPasswordL').click(function () {
