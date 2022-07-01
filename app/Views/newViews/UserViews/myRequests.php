@@ -1,14 +1,13 @@
 <?php
-    include("baseLogged.php");
+    include("baseLoggedUser.php");
 ?>    
     
-<div class="container cont60">
-    
+<div class="container cont60">    
     <div class="row">
         <div class="col">
             <?php
                 for($i = 0; $i <3; $i++){
-                    include("requirementCardUser.php");
+                    include("requestCard.php");
                 }
             ?>
         </div>
