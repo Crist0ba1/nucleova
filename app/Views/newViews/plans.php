@@ -18,7 +18,7 @@
                     <h4 class="display-4 fw-bold card-title">$5.000</h4>
                 </div>
                 <div class="card-footer p-4">
-                    <a class="btn btn-purple text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    <a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                             <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $4.800 mensual.</li>
                             
                         </ul>
-                    </div><a class="btn btn-purple text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    </div><a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                         <ul class="list-unstyled">
                             <li><span class="fa-regular fa-circle-dot"></span> Nucleova pro por $4.500 mensual.</li>                            
                         </ul>
-                    </div><a class="btn btn-purple text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    </div><a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
                 </div>
             </div>
         </div>
