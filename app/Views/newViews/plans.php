@@ -18,7 +18,7 @@
                     <h4 class="display-4 fw-bold card-title">$5.000</h4>
                 </div>
                 <div class="card-footer p-4">
-                    <a class="btn btn-primary d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    <a class="btn btn-purple text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
                 </div>
             </div>
         </div>
@@ -34,23 +34,22 @@
                             <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $4.800 mensual.</li>
                             
                         </ul>
-                    </div><a class="btn btn-primary d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    </div><a class="btn btn-purple text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card border-primary border-2">
-                <div class="card-body text-center p-4"><span class="badge rounded-pill bg-primary position-absolute top-0 start-50 translate-middle text-uppercase">Mejor precio</span>
+            <div class="card border-blue border-2">
+                <div class="card-body text-center p-4"><span class="badge rounded-pill bg-blue position-absolute top-0 start-50 translate-middle text-uppercase">Mejor precio</span>
                     <h6 class="text-uppercase text-muted card-subtitle">Anual</h6>
                     <h4 class="display-4 fw-bold card-title">$54.000</h4>
                 </div>
                 <div class="card-footer p-4">
                     <div>
                         <ul class="list-unstyled">
-                            <li><span class="fa-regular fa-circle-dot"></span> Nucleova pro por $4.500 mensual.</li>
-                            
+                            <li><span class="fa-regular fa-circle-dot"></span> Nucleova pro por $4.500 mensual.</li>                            
                         </ul>
-                    </div><a class="btn btn-primary d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    </div><a class="btn btn-purple text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
                 </div>
             </div>
         </div>
