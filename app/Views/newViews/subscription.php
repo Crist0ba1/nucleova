@@ -55,7 +55,7 @@
                 </ul>  
            </div>           
            <div class="row">
-               <button type="button" class="btn btn-primary">Ver Planes</button>
+               <button class="btn btn-primary">Ver Planes</button>
            </div>  
         </div>
     </div>

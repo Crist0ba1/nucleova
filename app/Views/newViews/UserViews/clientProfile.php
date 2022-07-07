@@ -1,5 +1,5 @@
 <?php
-    include("baseLogged.php");
+    include("baseLoggedUser.php");
 ?>   
 <div class="container cont60">
     <div class="row">
