@@ -471,26 +471,29 @@ class Ussers extends BaseController
 
     /* webpay */
 
-    public function crearTransaccion(){
+    public function crearTransaccion($valor){
         /* $aux1, $aux2, $aux3 */
-		$buy_order = 1; // Este valor se obtendra de la BD, ya que sera el numero del carro
+        $order = random_int(0, 999);
+		$buy_order = $order; // Este valor se obtendra de la BD, ya que sera el numero del carro
 		$session_id = 4;
-		$amount = 5000;
-		$return_url = "http://localhost/git/appnucleova/Ussers/respuesta";// a esta ruta llega del metodo de pago
+		$amount = $valor;
+		$return_url = "http://localhost/git/appnucleova/respuesta/";// a esta ruta llega del metodo de pago
 		$transaction = new Transaction();
 		$response = $transaction->create($buy_order, $session_id, $amount, $return_url);
 		
-		$aux=[
+        
+		$auxTDK=[
 			'url' => $response->url,
 			'token' => $response->token
 		];
+        session()->set('auxTDK',$auxTDK);
         session()->set('url',$response->url);
-        session()->set('url',$response->url);
-		
-        return redirect()->to('/suscripcion');
+		session()->set('token',$response->token);
+
+        return redirect()->to('/verplanes');
 	}
 	/*Aqui llega */
-	public function respuesta(){
+	public function respuesta1(){
 		if(isset($_POST['token_ws'])){
 			$token = $_POST['token_ws'];
 			$response = Transaction::commit($token);
@@ -501,7 +504,7 @@ class Ussers extends BaseController
 			
 			$mensajeControlador =[
 			'titulo' => "Compra anulada",
-			'mensaje' => "A anuladio la compra y a vuelto al comercio",
+			'mensaje' => "A anulado la compra y a vuelto al comercio",
 			];
 			session()->set('mensajeControlador',$mensajeControlador);	
 			return redirect()->to('/realizar_compraACT');
@@ -523,9 +526,7 @@ class Ussers extends BaseController
 
 
 			} 
-				/* falta diferenciar el status
-				 y almacenarlo en la BD pero 
-				 el kaco quiere que la solucion de problemas sea online */
+
 		}
 		else{
 			/* A ocurrido un error, por favor intentelo de nuevo */
@@ -545,4 +546,144 @@ class Ussers extends BaseController
 
 
 	}
+    public function respuesta(){
+        //die($this->request->getVar('token_ws'));
+        //die($_POST['token_ws']);
+        //$token_ws = $this->request->getVar('token_ws');
+        //$TBK_TOKEN = $this->request->getVar('TBK_TOKEN');
+        session()->remove('token');
+        session()->remove('url');
+        session()->remove('auxTDK');
+        $mensajeControlador =[
+            'titulo' => "Por la mismisima csm",
+            'mensaje' => "Por que chicha la wea no funciona",
+            ];
+        session()->set('mensajeControlador',$mensajeControlador);	
+        if(!session()->has('mensajeControlador')){
+            
+        }
+        $aux = false; //Es para el else
+		if($this->request->getVar('token_ws')){
+			$token = $this->request->getVar('token_ws');
+        
+            $response = (new Transaction)->commit($token);
+			//$response = Transaction::commit($token);
+            /*
+            $value = substr ( $value, 9, 72);
+            $token = strtok($value, " \n\t");   
+            $response = (new Transaction)->status($token);
+            */
+            
+		}
+
+		if($this->request->getVar('TBK_TOKEN')){
+			//echo "<script>alert('TBK_token');</script>";
+			$token = $_POST['TBK_TOKEN'];
+			
+			$mensajeControlador =[
+			'titulo' => "Compra anulada",
+			'mensaje' => "A anulado la compra y a vuelto al comercio",
+			];
+			session()->set('mensajeControlador',$mensajeControlador);	
+			return redirect()->to('/verplanes');
+			
+		}
+
+		if(isset($response)){
+			$status = $response->getStatus();
+		 	 session()->remove('token');
+             session()->remove('url');
+             session()->remove('auxTDK');
+
+            if($response->isApproved()){
+				$aux = $this->sendEmailTDK();
+                
+                if(!$aux){
+                    $mensajeControlador =[
+                        'titulo' => "Compra realizada con exito",
+                        'mensaje' => "La compra fue realizada con exito, pero no se pudo enviar el correo de confirmacion <br> Verifique su correo en configuracion de cuenta",
+                        ];
+                }
+                else{
+                    $mensajeControlador =[
+                        'titulo' => "Compra realizada con exito",
+                        'mensaje' => "La compra fue realizada con exito, pero no se pudo enviar el correo de confirmacion <br> Verifique su correo en configuracion de cuenta",
+                        ];
+                }    
+                
+                session()->set('mensajeControlador',$mensajeControlador);	
+                if(!session()->has('mensajeControlador')){
+                    die($mensajeControlador['titulo']);
+                }
+
+                return redirect()->to('/verplanes');
+
+			}
+			else{
+                $mensajeControlador =[
+                    'titulo' => "LA compra a fallado",
+                    'mensaje' => "La compra NO pudo ser realizada con exito",
+                    ];
+                session()->set('mensajeControlador',$mensajeControlador);	
+                return redirect()->to('/verplanes');
+			} 
+				/* falta diferenciar el status
+				 y almacenarlo en la BD pero */
+		}
+		else{
+            
+			/* A ocurrido un error, por favor intentelo de nuevo */
+			 if(!$aux){
+				$mensajeControlador =[
+					'titulo' => "Todo fallo",
+					'mensaje' => "Todo mal",
+					];
+			 }
+			//$status ='FAILED';
+			//$flag = $this->statePedido($status, $pedido);/* Cambiar estado en BD*/ //siempre true
+			session()->set('mensajeControlador',$mensajeControlador);	
+			return redirect()->to('/verplanes');
+		}
+
+
+
+
+	}
+	
+    private function sendEmailTDK(){
+		$email = \Config\Services::email();
+
+		$email->setFrom('Contacto@nucleova.com', 'Equipo de ventas Nucleova');
+		$email->setTo('cristobal.henriquez.g@gmail.com'); //session()->get('email')
+		$email->setSubject('Membresia pagada con exito');
+		$nombre = "Cristobal Henriquez";//session()->get('nombre');
+		$pedido = "0001";//session()->get('numeroAux');
+		$email->setMessage('
+				<h3><b>¡Felicidades '.$nombre.'!</b>, hemos recibido correctamente tu pago. Nuestro equipo se encuentra preparando tu pedido y próximamente lo tendrás disponible.</h3>
+				<h3>El identificador del pado de la membresia es: <b>Nuc'.$pedido.'</b></h3>
+				<br>					
+				<h3>Atentamente: EQUIPO NUCLEOVA</h3>
+				<div align="center"><img  src="http://app.nucleova.com/public/assets/Logos/LogoHSF.png" heigth="415" width="160" class="mx-auto d-block"></div>
+		');
+
+		if($email->send()){
+			return true;
+		}
+		else{
+			return false;
+		}
+
+	}
+    public function verPlanes(){   
+        $modelR = new RegionesModel();
+		$modelCo = new ComunasModel();
+        $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
+        $data['region'] = $modelR->findAll();
+		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+        $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
+        echo view('newViews/plans');
+        echo view('limites/Fother',$data);
+    }
 }

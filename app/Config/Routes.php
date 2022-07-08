@@ -55,7 +55,7 @@ $routes->get('/registrarPersona', 'Home::registrarPersona');
 // Registro de imagen para la empresa
 $routes->post('registrarPersona/fileUpload', 'Persona::fileUpload');
 
-$routes->get('/suscripcion', 'Home::suscripcion');
+//$routes->get('/suscripcion', 'Home::suscripcion'); Suscriocion para usarios free
 
 $routes->POST('/registerUsserAdmin', 'Ussers::registerUsserAdmin');
 $routes->get('/agregarUsuario', 'Ussers::agregarUsuario');
@@ -82,10 +82,13 @@ $routes->get('/proveedor/(:any)', 'CategoriasController::proveedor/$1');
 $routes->get('/filtro', 'CategoriasController::filtro');
 
 
-$routes->get('/pasareladepago', 'Ussers::crearTransaccion');
+$routes->get('/pasareladepago/(:any)', 'Ussers::crearTransaccion/$1');
+
+$routes->get('/suscripcion', 'proController::suscripcion');
+$routes->get('/verplanes', 'proController::verplanes');
 
 /* webpay*/
-$routes->match(['get','post'],'/Ussers/respuesta', 'Ussers::respuesta');
+$routes->match(['get','post'],'/respuesta', 'Ussers::respuesta');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

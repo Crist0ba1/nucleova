@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfcb9ca964122ae6e28e9341208e48ad",
+    "content-hash": "6943b29793be1bc0ab1ab3707033f7c0",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -1495,16 +1495,16 @@
         },
         {
             "name": "transbank/transbank-sdk",
-            "version": "2.0.9",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TransbankDevelopers/transbank-sdk-php.git",
-                "reference": "e408a922d7b7c5db00ba98cb6d3997fbcd6b3612"
+                "reference": "3358b277154b293aa7344a8a32bf46b4d3929e3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TransbankDevelopers/transbank-sdk-php/zipball/e408a922d7b7c5db00ba98cb6d3997fbcd6b3612",
-                "reference": "e408a922d7b7c5db00ba98cb6d3997fbcd6b3612",
+                "url": "https://api.github.com/repos/TransbankDevelopers/transbank-sdk-php/zipball/3358b277154b293aa7344a8a32bf46b4d3929e3f",
+                "reference": "3358b277154b293aa7344a8a32bf46b4d3929e3f",
                 "shasum": ""
             },
             "require": {
@@ -1512,7 +1512,7 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "guzzlehttp/guzzle": "^5|^6|^7",
-                "php": ">=7.0"
+                "php": ">=5.6.0"
             },
             "require-dev": {
                 "dms/phpunit-arraysubset-asserts": "^0.2.1",
@@ -1540,9 +1540,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TransbankDevelopers/transbank-sdk-php/issues",
-                "source": "https://github.com/TransbankDevelopers/transbank-sdk-php/tree/2.0.9"
+                "source": "https://github.com/TransbankDevelopers/transbank-sdk-php/tree/2.0"
             },
-            "time": "2022-04-21T17:03:24+00:00"
+            "time": "2021-04-13T22:11:34+00:00"
         }
     ],
     "packages-dev": [

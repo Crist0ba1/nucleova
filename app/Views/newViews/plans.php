@@ -18,7 +18,7 @@
                     <h4 class="display-4 fw-bold card-title">$5.000</h4>
                 </div>
                 <div class="card-footer p-4">
-                    <a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    <a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/5000">Contratar Ahora</a>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                             <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $4.800 mensual.</li>
                             
                         </ul>
-                    </div><a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    </div><a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/28000">Contratar Ahora</a>
                 </div>
             </div>
         </div>
@@ -49,9 +49,55 @@
                         <ul class="list-unstyled">
                             <li><span class="fa-regular fa-circle-dot"></span> Nucleova pro por $4.500 mensual.</li>                            
                         </ul>
-                    </div><a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                    </div><a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/54000">Contratar Ahora</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php if(session()->has('auxTDK')):?>
+    <form id="tdk" method="post" action="<?php echo session()->get('url')?>">
+    <input type="hidden" name="token_ws" value="<?php echo session()->get('token')?>" />
+    </form>
+<?php endif;?>
+
+<?php if(session()->has('mensajeControlador')):?>
+    <div id="modalController" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><?php echo session()->get('mensajeControlador')['titulo']?>.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><?php echo session()->get('mensajeControlador')['mensaje']?>.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="mensajeTDK" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
+
+ <script>
+
+    $(document).ready(function(){
+
+        $('#mensajeTDK').click(function() {
+            <?php session()->remove('mensajeControlador'); ?>
+        });
+
+        <?php if(session()->has('auxTDK')):?>
+            document.getElementById("tdk").submit();
+        <?php endif;?>
+
+        <?php if(session()->has('mensajeControlador')):?>
+            $('#modalController').modal('show');
+        <?php endif;?>
+        
+	});
+ </script>

@@ -55,11 +55,10 @@
                 </ul>  
            </div>           
            <div class="row">
-               <button class="btn btn-primary">Ver Planes</button>
+               <button onclick="location.href='<?php echo base_url('/verplanes')?>'" class="btn btn-primary">Ver Planes</button>
            </div>  
         </div>
     </div>
 </div>
-        
+<br>    
 
- 
