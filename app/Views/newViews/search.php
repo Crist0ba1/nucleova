@@ -4,12 +4,36 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3">            
+        <div class="col-sm-3 d-flex">
+            <button class="btn bottom15 right10" data-toggle="collapse" data-target="#collapsableFilters" aria-expanded="false" aria-controls="collapsableFilters"><span class="fa-solid fa-grip-lines"></span></button>
             <form class="d-flex bottom15">
                 <input class="form-control right15" type="search" placeholder="Buscar" aria-label="Search">
                 <button class="btn btn-purple text-light" type="submit"><span class="fa-regular fa-search"></span></button>
-            </form>
-            <p class="bottom15"><span class="fa-regular fa-filter"></span> Filtrar por</p>            
+            </form>            
+        </div>
+        <div class="col">
+            <div class="d-flex flex-row-reverse bottom15">                              
+                <div class="dropdown left5">
+                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropOrderBy" data-bs-toggle="dropdown" aria-expanded="false">Ordenar Por</a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Nombre</a></li>
+                        <li><a class="dropdown-item" href="#">Puntuación</a></li>
+                        <li><a class="dropdown-item" href="#">Fecha de ingreso</a></li>
+                    </ul>
+                </div> 
+                <div class="btn-group">
+                  <button type="button" class="btn btn-light active"><span class="fa-regular fa-list"></span></button>
+                  <button type="button" class="btn btn-light"><span class="fa-regular fa-th"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 collapse" id="collapsableFilters">        
+            
+            <p class="bottom15"><span class="fa-regular fa-filter"></span> Filtrar por</p>
+
+        
             <div id="accordion-1" class="accordion " role="tablist">
                 <div class="accordion-item">
                     <h2 class="accordion-header" role="tab">
@@ -89,17 +113,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="d-flex flex-row-reverse bottom15">                              
-                <div class="dropdown right5">
-                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropOrderBy" data-bs-toggle="dropdown" aria-expanded="false">Ordenar Por</a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Nombre</a></li>
-                        <li><a class="dropdown-item" href="#">Puntuación</a></li>
-                        <li><a class="dropdown-item" href="#">Fecha de ingreso</a></li>
-                    </ul>
-                </div> 
-            </div>
+        <div class="col">
+            
             <div class="container-fluid justify-content-end">
                 <div class="card-deck d-flex justify-content-end">
                     <?php
@@ -115,6 +130,14 @@
                         }
                     ?>
                 </div>
+                <div class="container justify-content-end">
+                    <?php
+                        for($i = 0; $i <4; $i++){
+                            include("searchResultCardList.php");
+                        }
+                    ?>
+                </div>
+
                 
             </div>
             <nav>
