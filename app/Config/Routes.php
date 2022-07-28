@@ -87,6 +87,8 @@ $routes->get('/pasareladepago/(:any)', 'Ussers::crearTransaccion/$1');
 $routes->get('/suscripcion', 'proController::suscripcion');
 $routes->get('/verplanes', 'proController::verplanes');
 
+/* Cliente (Busca proveedor)*/
+$routes->get('/dashbordCliente1', 'Ussers::dashbordCliente1');
 /* webpay*/
 $routes->match(['get','post'],'/respuesta', 'Ussers::respuesta');
 /*

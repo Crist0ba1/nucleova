@@ -6,6 +6,7 @@ use App\Models\ComunasModel;
 use App\Models\CategoriasModel;
 use App\Models\UssersModel;
 use App\Models\SubCategoriasModel;
+use App\Models\PagosModel;
 
 class proController extends BaseController
 {
@@ -26,12 +27,14 @@ class proController extends BaseController
 		$modelCo = new ComunasModel();
         $modelCategoria = new CategoriasModel();
         $modelSubCategoria = new SubCategoriasModel();
+        $modelPagos = new PagosModel();
+        $data['pagos'] = $modelPagos->findAll();
         $data['region'] = $modelR->findAll();
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
         $data['subCategoria'] = $modelSubCategoria->findAll();
-        echo view('newViews/plans');
-        echo view('limites/Fother',$data);
+        echo view('newViews/plans',$data);
+        echo view('limites/Fother');
     }
     
 }

@@ -12,67 +12,40 @@
         </div>
     </div>
     <div class="row gy-4 gy-xl-0 row-cols-1 row-cols-md-2 row-cols-xl-3 d-xl-flex align-items-xl-center gutter-y">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center p-4">
-                    <h6 class="text-uppercase text-muted card-subtitle">Mensual</h6>
-                    <h4 class="display-4 fw-bold card-title" style="font-size:2vw;">$8.000</h4>
-                </div>
-                <div class="card-footer p-4">
-                    <a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/5000">Contratar Ahora</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center p-4">
-                    <h6 class="text-uppercase text-muted card-subtitle">Trimestral</h6>
-                    <h4 class="display-4 fw-bold card-title" style="font-size:2vw;">$21.900</h4>
-                </div>
-                <div class="card-footer p-4">
-                    <div>
-                        <ul class="list-unstyled">
-                            <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $7.300 mensual.</li>
-                            
-                        </ul>
+        <?php foreach($pagos as $pago):?>
+            <div class="col-md-3">
+                <?php if($pago['mejorPrecio']==1):?>
+                    <div class="card border-blue border-2">
+                    <div class="card">
+                        <div class="card-body text-center p-4"><span class="badge rounded-pill bg-blue position-absolute top-0 start-50 translate-middle text-uppercase">Mejor precio</span>
+                            <h6 class="text-uppercase text-muted card-subtitle"><?php echo $pago['texto1']?></h6>
+                            <h4 class="display-4 fw-bold card-title font-scale-price" style="font-size:2vw;">$<?php echo $pago['precio']?></h4>
+                        </div>
                     </div>
-                    <a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center p-4">
-                    <h6 class="text-uppercase text-muted card-subtitle">Semestral</h6>
-                    <h4 class="display-4 fw-bold card-title font-scale-price" style="font-size:2vw;">$42.000</h4>
-                </div>
-                <div class="card-footer p-4">
-                    <div>
-                        <ul class="list-unstyled">
-                            <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $7.000 mensual.</li>
-                            
-                        </ul>
+
+                <?php else:?>
+                    <div class="card">
+                    <div class="card">
+                        <div class="card-body text-center p-4">
+                        <h6 class="text-uppercase text-muted card-subtitle"><?php echo $pago['texto1']?></h6>
+                        <h4 class="display-4 fw-bold card-title" style="font-size:2vw;">$<?php echo $pago['precio']?></h4>
                     </div>
-                    <a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-blue border-2">
-                <div class="card-body text-center p-4"><span class="badge rounded-pill bg-blue position-absolute top-0 start-50 translate-middle text-uppercase">Mejor precio</span>
-                    <h6 class="text-uppercase text-muted card-subtitle">Anual</h6>
-                    <h4 class="display-4 fw-bold card-title font-scale-price" style="font-size:2vw;">$81.000</h4>
-                </div>
-                <div class="card-footer p-4">
-                    <div>
-                        <ul class="list-unstyled">
-                            <li><span class="fa-regular fa-circle-dot"></span> Nucleova pro por $6.750 mensual.</li>                            
-                        </ul>
+                    <?php endif?>
+                    
+                    <div class="card-footer p-4">
+                        <div>
+                            <ul class="list-unstyled">
+                                <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $<?php echo $pago['precio']?> mensual.</li>
+                                
+                            </ul>
+                        </div>
+                        <a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/<?php echo $pago['precio']?>">Contratar Ahora</a>
                     </div>
-                    <a class="btn btn-blue text-white d-block w-100" role="button" href="#">Contratar Ahora</a>
+                </div>
                 </div>
             </div>
-        </div>
+           
+        <?php endforeach;?>
     </div>
 </div>
 
@@ -102,7 +75,25 @@
         </div>
     </div>
 <?php endif;?>
-
+<div id="modalSeguro" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Portal de pago.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que desea continuar a la pasarela de pago?.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="mdAceptar" type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+                    <button id="mensajeTDK" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
  <script>
 
     $(document).ready(function(){
@@ -112,12 +103,23 @@
         });
 
         <?php if(session()->has('auxTDK')):?>
-            document.getElementById("tdk").submit();
+            //document.getElementById("tdk").submit();
+            $('#modalSeguro').modal('show');
         <?php endif;?>
+
+        $('#mdAceptar').click(function() {
+            <?php session()->remove('auxTDK'); ?>
+            document.getElementById("tdk").submit();
+            
+        });
+
+
 
         <?php if(session()->has('mensajeControlador')):?>
             $('#modalController').modal('show');
         <?php endif;?>
+        
+
         
 	});
  </script>

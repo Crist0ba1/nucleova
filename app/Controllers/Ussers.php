@@ -75,7 +75,8 @@ class Ussers extends BaseController
                             return redirect()->to('/dashbordAdmin');
                         }
                         if($user['tipo']==1){//Proveedor
-                            return redirect()->to('/dashbordCliente');
+                            //return redirect()->to('/dashbordCliente');
+                            return redirect()->to('/dashbordCliente1');
                         }
                         if($user['tipo']==2){//cliente
                             return redirect()->to('/dashbordProveedor');
@@ -685,5 +686,20 @@ class Ussers extends BaseController
         $data['subCategoria'] = $modelSubCategoria->findAll();
         echo view('newViews/plans');
         echo view('limites/Fother',$data);
+    }
+
+
+    /*Cliente */
+    public function dashbordCliente1(){
+        $modelR = new RegionesModel();
+		$modelCo = new ComunasModel();
+        $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
+        $data['region'] = $modelR->findAll();
+		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+        $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
+        echo view('newViews/inicio',$data);
+        //echo view('limites/Fother');
     }
 }
