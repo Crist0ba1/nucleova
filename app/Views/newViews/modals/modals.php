@@ -30,8 +30,28 @@
                         <div class="col">
                             <div class="row">
                                 <div class="col">
-                                    <select class="form-select bottom10" aria-label="Default select example">
-                                        <option selected>Opcion seleccionada</option>
+                                    <select class="form-select bottom10">
+                                        <option selected>Categoría</option>
+                                        <option value="1">Otra opcion 1</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select bottom10" >
+                                        <option selected>Subcategoría</option>
+                                        <option value="1">Otra opcion 1</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select bottom10">
+                                        <option selected>Prestador de servicio</option>
                                         <option value="1">Otra opcion 1</option>
                                         <option value="2">Two</option>
                                         <option value="3">Three</option>
@@ -260,7 +280,7 @@
                             </div>                                                        
                             <div class="row">
                                 <div class="col">
-                                    <label for="textRatingReq" class="control-label">Nota</label>
+                                    <label for="textRatingReq" class="control-label">Observaciones</label>
                                     <textarea class="form-control bottom10" id="textRatingReq" rows="3"></textarea>
                                 </div>
                             </div>
@@ -306,6 +326,123 @@
                                 </div>
                                 <div class="d-grid gap-2 col-6">
                                     <button class="btn btn-purple text-light text-start" type="button" style="display: inline-block;"><span class="fa-regular fa-xmark"></span> Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Cancelar Requerimiento Proveedor-->
+        <!-- Botón para prueba -->
+        <button type="button" class="btn btn-primary top10 bottom10" data-bs-toggle="modal" data-bs-target="#modalCancelarReqProv">Cancelar Requerimiento proveedor</button>
+        <!-- Modal-->
+        <div class="modal fade" id="modalCancelarReqProv" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Cancelar Requerimiento</h4>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col">                            
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input id="formCheck-1" class="form-check-input" type="checkbox" />
+                                        <label class="form-check-label" for="formCheck-1">El cliente no especificó el requerimiento</label>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input id="formCheck-1" class="form-check-input" type="checkbox" />
+                                        <label class="form-check-label" for="formCheck-1">El cliente no cumple los horarios establecidos</label>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input id="formCheck-1" class="form-check-input" type="checkbox" />
+                                        <label class="form-check-label" for="formCheck-1">Otro</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <textarea class="form-control bottom10" id="textDescriptionReq" rows="3"></textarea>
+                                </div>
+                            </div>
+                           
+                           
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display: block;">
+                        <div class="col">
+                            <div class="row">
+                                <div class="d-grid gap-2 col-6">
+                                    <button class="btn btn-purple text-light text-start" type="button" style="display: inline-block;"><span class="fa-regular fa-check"></span> Cancelar Requerimiento</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- Modal Finalizar Requerimiento completo proveedor-->
+        <!-- Botón para prueba -->
+        <button type="button" class="btn btn-primary top10 bottom10" data-bs-toggle="modal" data-bs-target="#modalFinReqComProv">Finalizar Requerimiento Completo proveedor</button>
+        <!-- Modal-->
+        <div class="modal fade" id="modalFinReqComProv" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Finalizar Requerimiento</h4>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">                               
+                                    <label for="ratingTrabajo" class="control-label">Trabajo</label>
+                                    <input id="ratingTrabajo" name="ratingTrabajo" class="rating rating-loading bottom5" data-size="xs" data-min="0" data-max="5" data-step="1" data-show-clear="false" data-show-caption="false">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">                                                                  
+                                    <label for="ratingTiempos" class="control-label">Tiempos</label>
+                                    <input id="ratingTiempos" name="ratingTiempos" class="rating rating-loading bottom5" data-size="xs" data-min="0" data-max="5" data-step="1" data-show-clear="false" data-show-caption="false">                                 
+                                </div>
+                            </div>                            
+                            <div class="row">
+                                <div class="col">                                                                  
+                                    <label for="ratingResponsabilidad" class="control-label">Responsabilidad</label>
+                                    <input id="ratingResponsabilidad" name="ratingResponsabilidad" class="rating rating-loading bottom5" data-size="xs" data-min="0" data-max="5" data-step="1" data-show-clear="false" data-show-caption="false">                                 
+                                </div>
+                            </div>                                                        
+                            <div class="row">
+                                <div class="col">
+                                    <label for="textRatingReq" class="control-label">Observaciones</label>
+                                    <textarea class="form-control bottom10" id="textRatingReq" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="d-grid gap-2 col-6">
+                                    <button class="btn btn-blue text-light text-start" type="button"><span class="fa-solid fa-image"></span> Adjuntar Imágenes</button>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display: block;">
+                        <div class="col">
+                            <div class="row">
+                                <div class="d-grid gap-2 col-6">
+                                    <button class="btn btn-success text-start" type="button" style="display: inline-block;"><span class="fa-regular fa-check"></span> Finalizar Requerimiento</button>
                                 </div>
                             </div>
                         </div>
