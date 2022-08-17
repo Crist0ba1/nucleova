@@ -102,14 +102,13 @@
             if($id == <?php echo $row['refCat'];?>){
                 let btn = document.createElement("button");
                 btn.innerHTML = "<?php echo $row['nombreSub'];?>";  
-                btn.classList.add('listadoBtn','btn','btn-link','text-white','btn-sm','btn-block','col-5');
+                btn.classList.add('listadoBtn','btn','btn-link','text-black','btn-sm','btn-block','col-5');
                 btn.onclick = function () {
                 location.href = "<?php echo base_url('/subCategoria')?>/<?php echo $row['idSubCat'];?>";
                 };
                 document.getElementById("Listado").appendChild(btn);
             }
         <?php endforeach;?>
-        alert('finciona wiiii');
         $("#categoriaModal1").modal('show');
     }
 </script>

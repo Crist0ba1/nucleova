@@ -77,7 +77,7 @@
 <body>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light nav-gradiente">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
   <div class="row justify-content-between">
 

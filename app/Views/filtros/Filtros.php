@@ -121,6 +121,7 @@
                 	}
             	<?php endforeach;?>
         	});
+        	$('#comuna1').selectpicker('refresh');
     });
 	
 </script>
@@ -197,6 +198,7 @@
 				optgroup += " ";				
 			}
 		}
+		
 		$('#subCategoriaSelect').append(optgroup);
         $('#subCategoriaSelect').selectpicker('refresh');
 

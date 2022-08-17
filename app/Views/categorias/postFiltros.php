@@ -32,8 +32,8 @@
                         <div id="cardContenedor" class="col-4 espacio cardContenedor">
                             <div class="card text-white gradiente3 ">
                                 <div class="row">                                                                    
-                                    <div id="cardH" class="card-header cardH">                            
-                                        <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
+                                    <div id="cardH<?php echo $row['idUsser']?>" class="card-header cardH">                            
+                                        <div id="carrucel<?php echo $row['idUsser']?>" class="carousel slide" data-ride="carousel">
                                             <?php foreach($row['imagenes'] as $image):?>
                                                 <div class="carousel-item active">
                                                     <img id="logo2" src="<?php echo base_url('/public/imgs/');?>/<?php echo  $image['idUsers']?>/<?php echo  $image['imagen1']?>" heigth="50px" class="img-fluid">
@@ -51,11 +51,11 @@
                                                     <img id="logo2" src="<?php echo base_url('/public/imgs/');?>/<?php echo  $image['idUsers']?>/<?php echo  $image['imagen5']?>" heigth="50px" class="img-fluid">
                                                 </div>
                                             <?php endforeach;?>
-                                            <a class="carousel-control-prev" href="#carouselExampleControls3" role="button" data-slide="prev">
+                                            <a class="carousel-control-prev" href="#carrucel<?php echo $row['idUsser']?>" role="button" data-slide="prev">
                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                 <span class="sr-only">Previous</span>
                                             </a>
-                                            <a class="carousel-control-next" href="#carouselExampleControls3" role="button" data-slide="next">
+                                            <a class="carousel-control-next" href="#carrucel<?php echo $row['idUsser']?>" role="button" data-slide="next">
                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                 <span class="sr-only">Next</span>
                                             </a>                                  

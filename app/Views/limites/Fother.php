@@ -1,7 +1,7 @@
 <!-- https://uigradients.com/#Lunada -->
 <style type="text/css" media="screen">
     #fother{    
-		background-color: #331a9a;
+		background-color: #314A9A;
     }
 	.blanco{
 		color: #ffffff;
@@ -61,7 +61,7 @@
 				</div>
 			</div>
 </footer>
-<footer class="text-center"> Todos los derechos recervados, &copy; Copyright 2022 Nucleova</footer>
+<footer class="text-center"> Todos los derechos reservados, &copy; Copyright 2022 Nucleova</footer>
 
 	<div class="modal fade" id="landingMsj" role="dialog" >
 		<div class="modal-dialog ">
