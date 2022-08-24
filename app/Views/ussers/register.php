@@ -25,7 +25,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear tu cuenta!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crea tu cuenta!</h1>
                             </div>
                             <form id="registerForm" class="registerForm" action="<?php echo base_url('/registrarPersona')?>" method="post">
                                 <div class="form-group">
@@ -74,14 +74,13 @@
                                 </div>
                                  <input type="submit" name ="submit" id="submit_button2" class="btn btn-primary btn-user btn-block text-white" value="Registrar cuenta" />
                             </form>
-                                <hr>
+                                <!--hr>
                                 <a href="index.html" class="btn btn-danger btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Registrarse con Google
                                 </a>
                                 <a href="index.html" class="btn btn-info btn-user btn-block">
                                     <i class="fab fa-facebook-f fa-fw"></i> Registrarse con Facebook
-                                </a>
-                            
+                                </a-->
                             <hr>
                             <div class="text-center">
                                 <a class="small" href="<?php echo base_url('/lostPassword');?>" >¿Olvido su contraseña?</a>
@@ -141,9 +140,10 @@
 			$('.icon').removeClass('fa fa-eye').addClass('fa fa-eye-slash');
 		}
 	} 
-	
 	$(document).ready(function () {
 	//CheckBox mostrar contraseña
+        $('#registerForm')[0].reset();
+        
         $('#ShowPassword1').click(function () {
             $('#Passwordr1').attr('type', $(this).is(':checked') ? 'text' : 'password');
         });

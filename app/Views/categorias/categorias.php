@@ -63,7 +63,7 @@
     z-index: 100 !important;
     color: #DAF7A6;
     background-color: #314a9a;
-        background-image: linear-gradient(180deg, #314a9a 0%, #c04894 50%, #ffffff 100%);
+    background-image: linear-gradient(180deg, #314a9a 0%, #c04894 50%, #ffffff 100%);
 
     }
     .inner{
@@ -133,7 +133,7 @@
 
 <div class="modal fade" id="categoriaModal" role="dialog" >
 		<div class="modal-dialog ">
-			<div class="modal-content">
+			<div class="modal-content gradiente">
 				<div class="modal-body">
 					<h4 id="tituloModal" style="color:#FFFFFF;"class="modal-title float-left"> 
 						
@@ -142,7 +142,8 @@
 						<i class="fas fa-window-close" style="color:#ff0000;"></i></button>
 				</div>
 				<div class="modal-body">
-					<h5 style="color:#314A9A;">Elija la subcategoria que desee:<i class="fa-solid fa-circle-check"></i></h5>
+                    <!-- 314A9A -->
+					<h5 style="color:#FFFFFF;">Elija la subcategoria que desee:<i class="fa-solid fa-circle-check"></i></h5>
 				</div>
 				<div class="modal-body">
                     

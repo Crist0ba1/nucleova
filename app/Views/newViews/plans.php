@@ -35,11 +35,12 @@
                     <div class="card-footer p-4">
                         <div>
                             <ul class="list-unstyled">
-                                <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $<?php echo $pago['precio']?> mensual.</li>
+                                <li><span class="fa-regular fa-circle-dot"></span>  Nucleova pro por $<?php echo $pago['precio']/$pago['meses']?> mensual.</li>
                                 
                             </ul>
                         </div>
-                        <a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/<?php echo $pago['precio']?>">Contratar Ahora</a>
+                        <!--a class="btn btn-blue text-white d-block w-100" role="button" href="<?php echo base_url('/pasareladepago');?>/<?php echo $pago['precio']?>">Contratar Ahora</a-->
+                        <a class="btn btn-blue text-white d-block w-100" type="button" onclick ="contruModal()" id="contru">Contratar Ahora</a>
                     </div>
                 </div>
                 </div>
@@ -93,7 +94,44 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
+
+<div class="modal fade" id="construccion" role="dialog" >
+		<div class="modal-dialog ">
+			<div class="modal-content">
+				<div class="modal-header">
+                    <h5 class="modal-title">Próximamente:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+                    
+                    <div class="row" id="">
+                                <div><img style="
+					width: 400px;
+       				 max-width:100%;
+        			height:100%;
+        			max-height:300px;
+					" src="https://pinguinodigital.com/wp-content/uploads/2020/08/pagina-en-construcci%C3%B3n1.jpg" class="mx-auto d-block"></div>
+                                
+
+					<div><img style="
+					width: 150px;
+       				 max-width:100%;
+        			height:100%;
+        			max-height:150px;
+					" src="<?php echo base_url('')?>/public/assets/Logos/LogoPequeno2.png" class="mx-auto d-block"></div>
+				</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+			</div>
+		</div>
+</div>
+<script>
+    function contruModal() {
+        $("#construccion").modal('show');
+        }
+</script>
  <script>
 
     $(document).ready(function(){

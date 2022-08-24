@@ -10,8 +10,7 @@ use App\Models\SubCategoriasModel;
 use monken\TablesIgniter;
 class Home extends BaseController
 {
-    public function index()
-    {
+    public function index(){
         session()->set("verModal", "1");
         $modelR = new RegionesModel();
 		$modelCo = new ComunasModel();
@@ -27,8 +26,7 @@ class Home extends BaseController
         echo view('limites/Fother');
     }
 
-    public function register()
-    {
+    public function register(){
         $modelR = new RegionesModel();
 		$modelCo = new ComunasModel();
         $modelCategoria = new CategoriasModel();
@@ -39,6 +37,7 @@ class Home extends BaseController
         $data['subCategoria'] = $modelSubCategoria->findAll();
         echo view('limites/Header',$data);
         echo view('ussers/register');
+        //echo view('ussers/AddUsser');
         echo view('limites/Fother');
     }
 
@@ -170,7 +169,7 @@ class Home extends BaseController
         $date=date("Y-m-d H:i:s",strtotime($input_date));
         return $date;
     }
-    private function registerError(){
+    public function registerError(){
             $modelR = new RegionesModel();
             $modelCo = new ComunasModel();
             session()->set("errorRegister", "yes");
@@ -424,20 +423,6 @@ class Home extends BaseController
         }
         return json_encode($val);
     }
-    public function suscripcion(){
-        $modelR = new RegionesModel();
-		$modelCo = new ComunasModel();
-        $modelCategoria = new CategoriasModel();
-        $modelSubCategoria = new SubCategoriasModel();
-        $data['region'] = $modelR->findAll();
-		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-        $data['categoria'] = $modelCategoria->findAll();
-        $data['subCategoria'] = $modelSubCategoria->findAll();
-        echo view('limites/Header',$data);
-        echo view('ussers/Suscripciones');
-        echo view('limites/Fother');
-    }
-
 
 
     /* Persona */
@@ -447,7 +432,7 @@ class Home extends BaseController
         $model = new PersonaModel();
         $session = session();
         $correo = $this->request->getVar('emailRegister');
-        $aux = $this->verifiarCorreo( $correo);
+        $aux = $this->verifiarCorreoPersona( $correo);
 
 		if($this-> request -> getMethod() == 'post' && !$aux){
             $data['nombre'] = $this->request->getVar('nombre');
@@ -456,72 +441,105 @@ class Home extends BaseController
             $data['tipo'] = $this->request->getVar('tipoDeCuenta');
             $data['email'] = $this->request->getVar('emailRegister');
             
-            $model->insert($data);
-            $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
-        
-                if($user != null){
-                    $this-> setPersonaSession($user); // aqui tenemos ya al usuario que corresponde
-                    $this->correoRegistroPersona($this->request->getVar('nombre'),$this->request->getVar('emailRegister'),$this->request->getVar('passwordr1'));
-                    $modelR = new RegionesModel();
+            if($model->insert($data)){
+                $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+            }else{
+                $user=null;
+            }
+            
+            if($user != null){
+                $this-> setPersonaSessionRegister($user); // aqui tenemos ya al usuario que corresponde
+                $this->correoRegistroPersona($this->request->getVar('nombre'),$this->request->getVar('emailRegister'),$this->request->getVar('passwordr1'));
+                $this->perfil();
+                /*$modelR = new RegionesModel();
                     $modelCo = new ComunasModel();
                     $modelCategoria = new CategoriasModel();
+                    $modelSubCategoria = new SubCategoriasModel();
                     $data['region'] = $modelR->findAll();
                     $data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
                     $data['categoria'] = $modelCategoria->findAll();
+                    $data['subCategoria'] = $modelSubCategoria->findAll();
                     if($this->request->getVar('tipoDeCuenta')== 1){ //Buscador
+                        
                         echo view('limites/Header',$data);
-                        echo view('ussers/registerBuscador');
                         echo view('dashbord/Empresa');
                         echo view('limites/Fother');
                     }
-                    if($this->request->getVar('tipoDeCuenta')== 2){//P Persona Natural
+                    elseif($this->request->getVar('tipoDeCuenta')== 2){//P Persona Natural
                         echo view('limites/Header',$data);
-                        echo view('ussers/registerPersonaNatural');
                         echo view('dashbord/Proveedor');
                         echo view('limites/Fother');
                     }
-                    if($this->request->getVar('tipoDeCuenta')== 3){//P Empresa
+                    elseif($this->request->getVar('tipoDeCuenta')== 3){//P Empresa
                         echo view('limites/Header',$data);
-                        echo view('ussers/registerEmpresa');
+                        echo view('dashbord/ProveedorE');
                         echo view('limites/Fother');
                     }
                     else{
-                        $this->registerError();
-                    }
-                    
-                }
-                else{
-                    $this->registerError();
-                }
+                        die('Murio en el else ');
+                        return redirect()->to('/registerError');
+                        //$this->registerError();
+                    }  
+                */
+            }
+            else{
+                //return redirect()->to('/registerError');
+                die('Murio en el else de usuario');
+                $this->registerError();
+                   
+            }
         
         }
-        if(session()->has("isLoggedIn")){
-            $modelR = new RegionesModel();
-            $modelCo = new ComunasModel();
-            $modelCategoria = new CategoriasModel();
-            $data['region'] = $modelR->findAll();
-		    $data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-            $data['categoria'] = $modelCategoria->findAll();
+    }
+    public function perfil(){
+        $modelR = new RegionesModel();
+		$modelCo = new ComunasModel();
+        $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
+        $data['region'] = $modelR->findAll();
+		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+        $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
+        if(session()->get("isComplete") == true){
+           $valor = 0;
         }
+        else{
+            $valor = 1;
+        }
+        $data['verModal'] = $valor;
         if(session()->has("isLoggedIn") && session()->get("tipo") == 1 ){ //Buscador
             echo view('limites/Header',$data);
-            echo view('ussers/registerBuscador');
             echo view('dashbord/Empresa');
             echo view('limites/Fother');
         }
-        if(session()->has("isLoggedIn") && session()->get("tipo") == 2){//P Persona Natural
-            echo view('limites/Header',$data);
-            echo view('ussers/registerPersonaNatural');
-            echo view('dashbord/Proveedor');
+        elseif(session()->has("isLoggedIn") && session()->get("tipo") == 2){//P Persona Natural
+            //echo view('limites/Header',$data);
+            //echo view('dashbord/Proveedor');
+            echo view('newViews/userProfile',$data);
             echo view('limites/Fother');
         }
-        if(session()->has("isLoggedIn") && session()->get("tipo") == 3){//P Empresa
-            echo view('limites/Header',$data);
-            echo view('ussers/registerEmpresa');
+        elseif(session()->has("isLoggedIn") && session()->get("tipo") == 3){//P Empresa
+            //echo view('limites/Header',$data);
+            //echo view('dashbord/ProveedorE');
+            echo view('newViews/userProfile',$data);
             echo view('limites/Fother');
         }
         else{
-            $this->registerError();
+            return redirect()->to('/');
+        }
+            
+    }
+    
+    private function verifiarCorreoPersona($correo){
+        $model = new PersonaModel();
+        $user = $model->where('email', $correo)
+            ->first();
+        if(!$user){
+            return false;
+        }
+        else{
+            session()->set("correo", "yes"); 
+            return true;
         }
     }
     private function correoRegistroPersona($nombre, $correo, $clave){
@@ -560,6 +578,21 @@ class Home extends BaseController
             'tipo' => $user['tipo'],			
             'email' => $user['email'],
 			'isLoggedIn' => true,
+            'isComplete' => true,
+		];
+		session()->set($data);
+		
+		return true;
+	}
+    private function setPersonaSessionRegister($user){
+		$data =[
+			'id' => $user['idPersona'],
+			'nombre' => $user['nombre'],
+            'apellidos' => $user['apellidos'],
+            'tipo' => $user['tipo'],			
+            'email' => $user['email'],
+			'isLoggedIn' => true,
+            'isComplete' => false,
 		];
 		session()->set($data);
 		
@@ -582,5 +615,18 @@ class Home extends BaseController
         
         echo view('limites/Fother');
 
+    }
+    public function suscripcion(){   
+        $modelR = new RegionesModel();
+		$modelCo = new ComunasModel();
+        $modelCategoria = new CategoriasModel();
+        $modelSubCategoria = new SubCategoriasModel();
+        $data['region'] = $modelR->findAll();
+		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
+        $data['categoria'] = $modelCategoria->findAll();
+        $data['subCategoria'] = $modelSubCategoria->findAll();
+        echo view('limites/Header',$data);
+        echo view('categorias/subscription');
+        echo view('limites/Fother');
     }
 }

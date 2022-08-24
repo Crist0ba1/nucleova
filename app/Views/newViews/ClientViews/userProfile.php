@@ -42,5 +42,20 @@
 		</div>
 	</div>    
 </div>
-        
+
+<script>
+	$(document).ready(function() { 
+	alert('funciona');
+	});
+	if(session()->get("verModaResienRegistrado") == 1){	
+		alert(' el primer if');
+	}else{
+		alert('falla el primer if');
+	}
+</script>
+<?php
+	if(session()->get("verModaResienRegistrado") == 1){
+		include("userRegister.php");	
+	}
+?>
 

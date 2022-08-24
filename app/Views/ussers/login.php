@@ -55,17 +55,14 @@
 
                                 <!--input type="hidden" name ="action" id="action" value="ini" /-->
                                 <input type="submit" name ="submit" id="submit_button" class="btn btn-primary btn-user btn-block" value="Iniciar" />
-                                <a href="<?php echo base_url('/invitado');?>" class="btn btn-secondary btn-user btn-block">
-                                    Seguir como invitado
-                                </a>
                                 <hr>
                                 <!--  login con face y gmail -->
-                                <a href="index.html" class="btn btn-danger btn-user btn-block">
+                                <!--a href="index.html" class="btn btn-danger btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Iniciar sesion con Google
                                 </a>
                                 <a href="index.html" class="btn btn-info btn-user btn-block">
                                     <i class="fab fa-facebook-f fa-fw"></i> Iniciar sesion con Facebook
-                                </a>                                
+                                </a-->                                
                                 
                             </form>
                             <hr>

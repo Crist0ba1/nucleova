@@ -49,8 +49,12 @@ $routes->POST('/iniciarSession', 'Ussers::iniciarSession');
 $routes->get('/registrar', 'Home::register');
 $routes->POST('/registerUsser', 'Home::registerUsser');/* Lo debo eliminar*/ 
 
+/* Registrar persona */
 $routes->POST('/registrarPersona', 'Home::registrarPersona');
 $routes->get('/registrarPersona', 'Home::registrarPersona');
+$routes->get('/registerError', 'Home::registerError');
+$routes->get('/perfil', 'Home::perfil');
+
 
 // Registro de imagen para la empresa
 $routes->post('registrarPersona/fileUpload', 'Persona::fileUpload');
@@ -85,6 +89,7 @@ $routes->get('/filtro', 'CategoriasController::filtro');
 $routes->get('/pasareladepago/(:any)', 'Ussers::crearTransaccion/$1');
 
 $routes->get('/suscripcion', 'proController::suscripcion');
+//$routes->get('/suscripcion', 'Home::suscripcion');
 $routes->get('/verplanes', 'proController::verplanes');
 
 /* Cliente (Busca proveedor)*/
