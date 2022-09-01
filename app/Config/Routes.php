@@ -38,22 +38,22 @@ $routes->post('/enviarCorreo', 'Home::enviarCorreo');
 /*  rutas para ver lo del serguio */
 $routes->get('/verVistas', 'home::verVistas');
 
-$routes->get('/invitado', 'InvitadoController::invitado');
-
 $routes->get('/lostPassword', 'Home::lostPassword');
 $routes->post('/lostPasswordForm', 'Home::lostPasswordForm');
 
 $routes->get('/login', 'Ussers::login');
 $routes->POST('/iniciarSession', 'Ussers::iniciarSession');
 
-$routes->get('/registrar', 'Home::register');
-$routes->POST('/registerUsser', 'Home::registerUsser');/* Lo debo eliminar*/ 
 
 /* Registrar persona */
+$routes->get('/registrar', 'Home::register');
 $routes->POST('/registrarPersona', 'Home::registrarPersona');
-$routes->get('/registrarPersona', 'Home::registrarPersona');
-$routes->get('/registerError', 'Home::registerError');
+$routes->get('/registerError', 'Home::registerError'); // Envia mensaje de error, no se si se ocupa AUN
 $routes->get('/perfil', 'Home::perfil');
+$routes->POST('/registerUsserEmpresa', 'Ussers::registerUsserEmpresa');
+$routes->POST('/editarUsserEmpresa', 'Ussers::editarUsserEmpresa');
+$routes->POST('/registerUsserProveedor', 'Ussers::registerUsserProveedor');
+$routes->POST('/editarUsserProveedor', 'Ussers::editarUsserProveedor');
 
 
 // Registro de imagen para la empresa
@@ -84,6 +84,12 @@ $routes->get('/subCategoria/(:any)/', 'CategoriasController::subCategoria/$1');
 $routes->get('/postFiltros', 'home::postFiltros');
 $routes->get('/proveedor/(:any)', 'CategoriasController::proveedor/$1');
 $routes->get('/filtro', 'CategoriasController::filtro');
+
+
+$routes->get('/pasareladepago1/(:any)', 'Ussers::crearTransaccion1/$1');
+$routes->get('/pasareladepago2/(:any)', 'Ussers::crearTransaccion2/$1');
+$routes->get('/pasareladepago3/(:any)', 'Ussers::crearTransaccion3/$1');
+$routes->get('/pasareladepago4/(:any)', 'Ussers::crearTransaccion4/$1');
 
 
 $routes->get('/pasareladepago/(:any)', 'Ussers::crearTransaccion/$1');

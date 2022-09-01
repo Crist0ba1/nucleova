@@ -27,7 +27,7 @@ class CategoriasController extends BaseController
         $data['subCategoria'] = $modelSubCategoria->findAll();
         echo view('limites/Header',$data);
         echo view('filtros/Filtros');
-        $data2['proveedores'] = $modelCL->join('ussers','idUsser = idUssers','left')->where('idSubCat', $subCat)->select('idUsser, firstname')->findAll();
+        $data2['proveedores'] = $modelCL->join('ussers','idUsser = idUssers','left')->where('idSubCat', $subCat)->where('tipo !=', '1')->select('idUsser, firstname')->findAll();
         $data2['proveedores'] = $this->encontrarLugar($data2['proveedores']);
         $data2['proveedores'] = $this->encontrarSubCat($data2['proveedores']);
         //die(json_encode($data2));
@@ -163,6 +163,7 @@ class CategoriasController extends BaseController
                                             ->join('comunaslist','comunaslist.idUsser = idUssers','left')
                                             ->whereIn('idSubCat', $listSubCategorias)
                                             ->whereIn('idComuna', $comunas)
+                                            ->where('tipo !=', '1')
                                             ->select('comunaslist.idUsser, firstname')
                                             ->groupBy("comunaslist.idUsser")->findAll();
             $data2['proveedores'] = $this->encontrarLugar($data2['proveedores']);
@@ -171,18 +172,18 @@ class CategoriasController extends BaseController
             
         }elseif(isset($comunas)){
             $comunas = array_column($comunas, 'id');   
-            $data2['proveedores'] = $modelCoList->join('ussers','idUsser = idUssers','left')->whereIn('idComuna', $comunas)->select('idUsser, firstname')->groupBy("idUsser")->findAll();
+            $data2['proveedores'] = $modelCoList->join('ussers','idUsser = idUssers','left')->whereIn('idComuna', $comunas)->where('tipo !=', '1')->select('idUsser, firstname')->groupBy("idUsser")->findAll();
             $data2['proveedores'] = $this->encontrarLugar($data2['proveedores']);
             $data2['proveedores'] = $this->encontrarSubCat($data2['proveedores']);
             $data2['proveedores'] = $this->encontrarImagenes1($data2['proveedores']);
         }elseif(isset($listSubCategorias)){
             $listSubCategorias = array_column($listSubCategorias, 'idSubCat');            
-            $data2['proveedores'] = $modelCL->join('ussers','idUsser = idUssers','left')->whereIn('idSubCat', $listSubCategorias)->select('idUsser, firstname')->groupBy("idUsser")->findAll();
+            $data2['proveedores'] = $modelCL->join('ussers','idUsser = idUssers','left')->whereIn('idSubCat', $listSubCategorias)->where('tipo !=', '1')->select('idUsser, firstname')->groupBy("idUsser")->findAll();
             $data2['proveedores'] = $this->encontrarLugar($data2['proveedores']);
             $data2['proveedores'] = $this->encontrarSubCat($data2['proveedores']);
             $data2['proveedores'] = $this->encontrarImagenes1($data2['proveedores']);
         }else{ /* Ningun filtro */
-            $data2['proveedores'] = $modelCL->join('ussers','idUsser = idUssers','left')->select('idUsser, firstname')->groupBy("idUsser")->findAll();
+            $data2['proveedores'] = $modelCL->join('ussers','idUsser = idUssers','left')->where('tipo !=', '1')->select('idUsser, firstname')->groupBy("idUsser")->findAll();
             $data2['proveedores'] = $this->encontrarLugar($data2['proveedores']);
             $data2['proveedores'] = $this->encontrarSubCat($data2['proveedores']);
             $data2['proveedores'] = $this->encontrarImagenes1($data2['proveedores']);

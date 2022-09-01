@@ -56,7 +56,7 @@
 </style>
 
 <div class="modal fade" id="setData" role="dialog" >
-	<div class="modal-dialog ">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content gradiente">
     		<div class="modal-body">
 				<h4 id="tituloModal" style="color:#FFFFFF;"class="modal-title float-left"> 
@@ -71,17 +71,7 @@
 			</div>
 			<div class="modal-body">
             
-            <form id="registerForm" class="registerForm" action="<?php echo base_url('/registerUsserAdmin')?>" method="post" enctype="multipart/form-data">
-                                
-                                <div class="form-group">                                     
-                                    <h4><span class="badge badge-secondary">Tipo de cuenta:</span></h4>
-                                    <select class="form-control" id="tipoDeCuenta" name="tipoDeCuenta"   >
-                                        <option value="">Seleccione tipo de cuenta</option>
-                                        <option value="2">Persona natural</option>
-                                        <option value="3">Empresa</option>
-                                    </select>
-                                    <span id="tipoDeCuenta_error" class="text-danger">
-                                </div>
+                <form id="registerForm" class="registerForm" action="<?php echo base_url('/registerUsserEmpresa')?>" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <h4><span class="badge badge-secondary">Nombre de usuario o empresa:</span></h4>
                                     <input   type="text" class="form-control form-control-user" id="nombreCompleto" name="nombreCompleto"
@@ -206,20 +196,11 @@
                                     </div>
                                     <div class="form-group col-12 col-sm-12">
                                         <input type="file" class="form-control form-control-user" id="file1" name="file1"
-                                            placeholder="Imagen"  >
-                                        <input type="file" class="form-control form-control-user" id="file2" name="file2"
-                                            placeholder="Imagen"  >
-                                        <input type="file" class="form-control form-control-user" id="file3" name="file3"
-                                            placeholder="Imagen"  >
-                                        <input type="file" class="form-control form-control-user" id="file4" name="file4"
-                                            placeholder="Imagen"  >
-                                        <input type="file" class="form-control form-control-user" id="file5" name="file5"
-                                            placeholder="Imagen"  >
-                                            
+                                            placeholder="Imagen"  >                                                                     
                                     </div>
                                 </div>
                                 
-                                <div class="form-group">                                    
+                                <!--div class="form-group">                                    
                                     <div class="container">
                                         <h4><span class="badge badge-secondary"> Seleccione categorias en las que se desempeñe:</span></h4>
                                         <select id="selectpicker" name="selectpicker" class="selectpicker" title="Seleccione su(s) actividade(s)" 
@@ -236,26 +217,23 @@
                                         </select>     
                                         <input type="text" id="selectpickerValue2" name="selectpickerValue2" hidden>
                                     </div>                                                                                       
-                                </div>
+                                </div-->
                                 <input id="editordata" name="editordata" type="hidden">
-                                 <input type="submit" onClick="placeOrder()" name ="submit" id="submit_button2" class="btn btn-primary btn-user btn-block text-white" value="Registrar cuenta" />
+                                 <input type="submit" onClick="placeOrder()" name ="submit" id="submit_button2" class="btn btn-primary btn-user btn-block text-white" value="Agregar informacion" />
                 <!--/form-->
 				
 			</div>
-            <div class="modal-footer"> 
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
-            </div>
                 </form>
 		</div>
 	</div>
 </div>
-    <div id="cardInfo" class="container mt-5 mb-3">
+    <!--div id="cardInfo" class="container mt-5 mb-3">
         <div class="row justify-content-around " >
             <h2>Debe ingresar mas informacion Empresa que busca a un proveedor</h2>
         </div>
-    </div>
+    </div-->
     <?php
-		include("userProfile.php");
+		include("userProfileE.php");
 	?> 
 
 <script>
@@ -422,8 +400,12 @@
 </script>
 <script>
     $(document).ready(function() { 
-        $('#setData').modal();
-
+        /* Modal que ingresa datos */
+        <?php if(session()->get('isComplete') == 1 ):?> //si no esta completo
+            
+            $('#setData').modal();
+        <?php endif;?> //0 esta completo y no muestra nada
+        //alert('<?php echo session()->get('isComplete')?>');
         var optgroup ="";
         <?php foreach($categoria as $car):?>
             optgroup += "<optgroup value='<?php echo $car['id']?>' label='<?php echo $car['id']?> <?php echo $car['nombre']?>' >"; 

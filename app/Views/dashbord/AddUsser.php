@@ -10,6 +10,8 @@
                                 
                                 <div class="form-group">                                     
                                     <h4><span class="badge badge-secondary">Tipo de cuenta:</span></h4>
+                                    <input type="text" class="form-control form-control-user" id="tipoDeCuenta" name="nombreCompleto"
+                                        placeholder="Nombre completo" >
                                     <select class="form-control" id="tipoDeCuenta" name="tipoDeCuenta"   >
                                         <option value="">Seleccione tipo de cuenta</option>
                                         <option value="2">Persona natural</option>

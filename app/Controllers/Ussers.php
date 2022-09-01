@@ -18,7 +18,9 @@ use App\Models\ImagenesModel;
 use App\Models\SubCategoriasModel;
 use App\Models\CategoriasListModel;
 use App\Models\ComunasListModel;
+use App\Models\PersonaModel;
 use monken\TablesIgniter;
+use App\Models\PagosModel;
 class Ussers extends BaseController
 {
     public function login()
@@ -62,32 +64,39 @@ class Ussers extends BaseController
                 if($response->success){
                   
                     $bool = $this->validarUSuario($this->request->getVar('emailrL'),$this->request->getVar('passwordrL'));
+                    $bool = $this->validarUSuarioEmpresa($this->request->getVar('emailrL'),$this->request->getVar('passwordrL'));
 
                     if(!$bool){
                         session()->set('errorLogin',"Error, credenciales de acceso erroneas");
                     } else{
-                        $model = new UssersModel();
+                        $model = new PersonaModel();
+                        //$model = new UssersModel();
                         $user = $model->where('email', $this->request->getVar('emailrL'))->first();
-        
-                        $this-> setUserSession($user); // aqui tenemos ya al usuario que corresponde
-        
+                        $this-> setPersonaSession($user);
+                        //$this-> setUserSession($user); // aqui tenemos ya al usuario que corresponde
+                        
                         if($user['tipo']==0){//admin
-                            return redirect()->to('/dashbordAdmin');
+                            return redirect()->to('/perfil');
                         }
                         if($user['tipo']==1){//Proveedor
                             //return redirect()->to('/dashbordCliente');
-                            return redirect()->to('/dashbordCliente1');
+                            return redirect()->to('/perfil');
                         }
                         if($user['tipo']==2){//cliente
-                            return redirect()->to('/dashbordProveedor');
+                            return redirect()->to('/perfil');
                         }
+                        if($user['tipo']==3){//cliente
+                            return redirect()->to('/perfil');
+                        }
+                        session()->destroy();
                         session()->set('errorLogin',"Error, al iniciar sesion, intentelo otra vez");
                         return redirect()->to('/login');
                     }
         
                 }
                 else{
-                    return redirect()->to('/')->with('mensaje','Error, intente mas tarde');
+                    session()->set('errorLogin',"Error, al iniciar sesion, intentelo otra vez");
+                    return redirect()->to('/login');
                 }
                 
                 
@@ -109,18 +118,17 @@ class Ussers extends BaseController
         return password_verify($clave,$user['clave']);
 
     }
-    public function register()
-    {
-        $modelR = new RegionesModel();
-		$modelCo = new ComunasModel();
-        $modelCategoria = new CategoriasModel();
-        $data['region'] = $modelR->findAll();
-		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-        $data['categoria'] = $modelCategoria->findAll();
-        echo view('limites/Header3',$data);
-        echo view('ussers/register');
-        echo view('limites/Fother');
+    private function validarUSuarioEmpresa($correo,$clave){
+        $model = new PersonaModel();
+        $user = $model-> where('email', $correo)
+            ->first();
+        if(!$user)
+            return false;
+        
+        return password_verify($clave,$user['clave']);
+
     }
+
     public function dashbordAdmin()
     {
         $modelR = new RegionesModel();
@@ -159,19 +167,6 @@ class Ussers extends BaseController
         echo view('dashbord/Empresa');
         echo view('limites/Fother');
     }
-    public function dashbordInvitado()
-    {
-        $modelR = new RegionesModel();
-		$modelCo = new ComunasModel();
-        $modelCategoria = new CategoriasModel();
-        $data['region'] = $modelR->findAll();
-		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-        $data['categoria'] = $modelCategoria->findAll();
-        echo view('limites/Header',$data);
-        echo view('filtros/filtros');
-        echo view('categorias/categorias');
-        echo view('limites/Fother');
-    }
     public function logout(){
 		if(!session()->get('isLoggedIn'))
 			redirect()->to('/');
@@ -179,6 +174,7 @@ class Ussers extends BaseController
 		session()->destroy();
 		return redirect()->to('/');
 	}
+
     public function cambiar_ubicacion(){
         $model = new UssersModel();
 
@@ -214,8 +210,7 @@ class Ussers extends BaseController
             }
             return json_encode("es post");
 
-    }
-    
+    }  
     public function cambiar_contacto(){
         $model = new UssersModel();
 
@@ -264,7 +259,7 @@ class Ussers extends BaseController
         $aux = false;
         //$comunasUsser = $this->request->getVar('selectpickerValue2');
         //die('$comunasUsser = '.$comunasUsser.' No redirecciona:'.$val);
-                
+       /*falta verificar que el correo sea unico*/
 		if($this-> request -> getMethod() == 'post' && !$aux){
             $data['firstname'] = $this->request->getVar('nombreCompleto');
             $data['fech_nac'] = $this->dateToDate($this->request->getVar('fech_nac'));
@@ -307,7 +302,11 @@ class Ussers extends BaseController
                 //$this->enviarCorreoRegister($this->request->getVar('emailRegister'));
             }
             $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+
             if($user != null){       
+                /* Asocio la empresa al usuario creado*/
+                
+
                 //id de las comunas en las que puede trabajar un proveedor
                 $val = $this->insertCategoriasList($user, $subCatUsser);            
                 //id de las comunas en las que puede trabajar un proveedor
@@ -341,7 +340,7 @@ class Ussers extends BaseController
                     $imageFile3->move($nombre_fichero, $dataFile['imagen3']);
                     $imageFile4->move($nombre_fichero, $dataFile['imagen4']);
                     $imageFile5->move($nombre_fichero, $dataFile['imagen5']);
-                
+                    
                     return redirect()->to('/agregarUsuario')->with('status',true);
                     die('No redirecciona, true');
 
@@ -362,6 +361,279 @@ class Ussers extends BaseController
         return redirect()->to('/agregarUsuario');
 
     }
+
+    /* Para registrar los datos de los usuarios */
+    public function registerUsserEmpresa(){
+        helper(['form']);
+        $model = new UssersModel();
+        $modelI = new ImagenesModel();
+        $session = session();
+        //$aux = $this->verifiarCorreo( $this->request->getVar('emailRegister'));
+        //$aux = false;
+                
+		if($this-> request -> getMethod() == 'post' ){
+            $data['firstname'] = $this->request->getVar('nombreCompleto');
+            $data['fech_nac'] = $this->dateToDate($this->request->getVar('fech_nac'));
+            $data['genero'] = $this->request->getVar('genero');
+            $data['refRegion'] = $this->request->getVar('regionRegister');
+            $data['refComuna'] = $this->request->getVar('comunaRegister');
+            $data['calle'] = $this->request->getVar('calle');
+            $data['numero'] = $this->request->getVar('numero');
+            $data['optional'] = $this->request->getVar('optional');
+            $data['email'] = $this->request->getVar('emailRegister');
+            $data['telefono'] = $this->request->getVar('celular');
+            $data['clave'] = $this->request->getVar('emailRegister');
+            $data['tipo'] = 1; //Es una empresa que busca proveedores de servicio
+            $data['text'] = $this->request->getVar('editordata');
+            $imageFile1 = $this->request->getFile('file1');
+
+            $data['rf'] = $this->request->getVar('face');
+            $data['rl'] = $this->request->getVar('linkedin');
+            $data['ri'] = $this->request->getVar('instagram');
+
+            $model->insert($data);
+            $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+            $idEmpresa = $user['idUssers'];
+            if($user != null){       
+                /* Asocio la empresa al usuario creado*/
+                $modelPersona = new PersonaModel();
+                $data2['otraID'] = $idEmpresa;
+                $modelPersona->where("idPersona",session()->get('id'))->set($data2)->update();
+                $data = [
+                    'otroID' => $idEmpresa,
+                    'isComplete' => 0,
+                ];
+                session()->set($data);
+
+                $nombre_fichero = './public/imgs/'.$idEmpresa;
+                if(!file_exists($nombre_fichero)){
+                   //Si no existe, lo crea
+                    mkdir($nombre_fichero, 0777, true);
+                    /*
+                        if(!file_exists($nombre_fichero)) {
+                            die('Fallo al crear las carpetas...'.$nombre_fichero);                           
+                        }else{
+                            die('Creo las carpetas'.$nombre_fichero);
+                        }
+                    */
+                }
+                
+                $dataFile['idUsers'] = $idEmpresa;
+                $dataFile['imagen1'] = $imageFile1->getRandomName();
+                $this->setUserSessionEmpresa($user);
+                if($modelI->insert($dataFile)){
+                    //Si se agrega a la BD, se mueven las imagenes
+                    $imageFile1->move($nombre_fichero, $dataFile['imagen1']);
+
+                    return redirect()->to('/perfil');
+                    //return redirect()->to('/agregarUsuario')->with('status',true);
+                    die('No redirecciona, true');
+
+                }else{
+                    rmdir($nombre_fichero);
+                    //Falta eliminar al usuario que se agrego
+                    return redirect()->to('/perfil');
+                    die('No redirecciona, false');
+                }
+                
+
+            }           
+        
+        }
+        else{
+            die('Borra el correo de ejemplo');
+        }
+        return redirect()->to('/perfil');
+
+    }
+    public function editarUsserEmpresa(){
+        helper(['form']);
+        $model = new UssersModel();
+        $session = session();
+        //$aux = $this->verifiarCorreo( $this->request->getVar('emailRegister'));
+        //$aux = false;
+                
+		if($this-> request -> getMethod() == 'post' ){
+            $data['firstname'] = $this->request->getVar('nombreCompleto');
+            $data['fech_nac'] = $this->dateToDate($this->request->getVar('fech_nac'));
+            $data['genero'] = $this->request->getVar('genero');
+            $data['refRegion'] = $this->request->getVar('regionRegister');
+            $data['refComuna'] = $this->request->getVar('comunaRegister');
+            $data['calle'] = $this->request->getVar('calle');
+            $data['numero'] = $this->request->getVar('numero');
+            $data['optional'] = $this->request->getVar('optional');
+            $data['email'] = $this->request->getVar('emailRegister');
+            $data['telefono'] = $this->request->getVar('celular');
+            $data['clave'] = $this->request->getVar('emailRegister');
+            $data['tipo'] = 1; //Es una empresa que busca proveedores de servicio
+            $data['text'] = $this->request->getVar('editordata');
+
+            $data['rf'] = $this->request->getVar('face');
+            $data['rl'] = $this->request->getVar('linkedin');
+            $data['ri'] = $this->request->getVar('instagram');
+
+            $model->where("idUssers",session()->get('idEM'))->set($data)->update();
+            return redirect()->to('/perfil');
+                
+        
+        }
+
+        return redirect()->to('/perfil');
+
+    }
+
+    public function registerUsserProveedor(){
+        helper(['form']);
+        $model = new UssersModel();
+        $modelI = new ImagenesModel();
+        $session = session();
+
+       /*falta verificar que el correo sea unico*/      
+		if($this-> request -> getMethod() == 'post' ){
+            $data['firstname'] = $this->request->getVar('nombreCompleto');
+            $data['fech_nac'] = $this->dateToDate($this->request->getVar('fech_nac'));
+            $data['genero'] = $this->request->getVar('genero');
+            $data['refRegion'] = $this->request->getVar('regionRegister');
+            $data['refComuna'] = $this->request->getVar('comunaRegister');
+            $data['calle'] = $this->request->getVar('calle');
+            $data['numero'] = $this->request->getVar('numero');
+            $data['optional'] = $this->request->getVar('optional');
+            $data['email'] = $this->request->getVar('emailRegister');
+            $data['telefono'] = $this->request->getVar('celular');
+            $data['clave'] = $this->request->getVar('emailRegister');
+            $data['tipo'] = session()->get("tipo");
+            $data['text'] = $this->request->getVar('editordata');
+            $imageFile1 = $this->request->getFile('file1');
+            $imageFile2 = $this->request->getFile('file2');
+            $imageFile3 = $this->request->getFile('file3');
+            $imageFile4 = $this->request->getFile('file4');
+            $imageFile5 = $this->request->getFile('file5');
+            $subCatUsser = $this->request->getVar('selectpickerValue');
+            $comunasUsser = $this->request->getVar('selectpickerValue2');
+            $data['rf'] = $this->request->getVar('face');
+            $data['rl'] = $this->request->getVar('linkedin');
+            $data['ri'] = $this->request->getVar('instagram');
+
+            if(session()->get("tipo") == 2){
+                $data['rz'] = '';
+                $data['rut'] = '';
+                $model->insert($data);
+                //$this->enviarCorreoRegister($data);
+            }
+            if(session()->get("tipo") == 3){
+                $data['rz'] = $this->request->getVar('rz');
+                $data['rut'] = $this->request->getVar('rut');
+                $model->insert($data);
+                //$this->enviarCorreoRegister($this->request->getVar('emailRegister'));
+            }
+            $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+            $idEmpresa = $user['idUssers'];
+            if($user != null){       
+                /* Asocio la empresa al usuario creado*/
+                
+                //id de las comunas en las que puede trabajar un proveedor
+                $val = $this->insertCategoriasList($user, $subCatUsser);            
+                //id de las comunas en las que puede trabajar un proveedor
+                $val2 = $this->insertComunasList($user, $comunasUsser);   
+                //Si val o val2 son false, es por que exitio un error en alguno de los insert
+
+                $modelPersona = new PersonaModel();
+                $data2['otraID'] = $idEmpresa;
+                $modelPersona->where("idPersona",session()->get('id'))->set($data2)->update();
+                $data = [
+                    'otroID' => $idEmpresa,
+                    'isComplete' => 0,
+                ];
+                session()->set($data);
+
+                $nombre_fichero = './public/imgs/'.$idEmpresa;
+                if(!file_exists($nombre_fichero)){
+                   //Si no existe, lo crea
+                    mkdir($nombre_fichero, 0777, true);
+                    /*
+                        if(!file_exists($nombre_fichero)) {
+                            die('Fallo al crear las carpetas...'.$nombre_fichero);                           
+                        }else{
+                            die('Creo las carpetas'.$nombre_fichero);
+                        }
+                    */
+                }
+
+                $dataFile['idUsers'] = $idEmpresa;
+                $dataFile['imagen1'] = $imageFile1->getRandomName();
+                $dataFile['imagen2'] = $imageFile1->getRandomName();
+                $dataFile['imagen3'] = $imageFile1->getRandomName();
+                $dataFile['imagen4'] = $imageFile1->getRandomName();
+                $dataFile['imagen5'] = $imageFile1->getRandomName();
+
+                if($modelI->insert($dataFile)){
+                    //Si se agrega a la BD, se mueven las imagenes
+                    $imageFile1->move($nombre_fichero, $dataFile['imagen1']);
+                    $imageFile2->move($nombre_fichero, $dataFile['imagen2']);
+                    $imageFile3->move($nombre_fichero, $dataFile['imagen3']);
+                    $imageFile4->move($nombre_fichero, $dataFile['imagen4']);
+                    $imageFile5->move($nombre_fichero, $dataFile['imagen5']);
+                    
+                    return redirect()->to('/perfil');
+                    //return redirect()->to('/agregarUsuario')->with('status',true);
+                    die('No redirecciona, true');
+
+                }else{
+                    rmdir($nombre_fichero);
+                    //Falta eliminar al usuario que se agrego
+                    return redirect()->to('/perfil');
+                    //return redirect()->to('/agregarUsuario')->with('status',true);
+                    die('No redirecciona, true');
+                }
+            }           
+        
+        }
+        else{
+            die('Borra el correo de ejemplo');
+        }
+        return redirect()->to('/perfil');
+
+    }
+    public function editarUsserProveedor(){
+        helper(['form']);
+        $model = new UssersModel();
+        $session = session();
+        //$aux = $this->verifiarCorreo( $this->request->getVar('emailRegister'));
+        //$aux = false;
+                
+		if($this-> request -> getMethod() == 'post' ){
+            $data['firstname'] = $this->request->getVar('nombreCompleto');
+            $data['fech_nac'] = $this->dateToDate($this->request->getVar('fech_nac'));
+            $data['genero'] = $this->request->getVar('genero');
+            $data['refRegion'] = $this->request->getVar('regionRegister');
+            $data['refComuna'] = $this->request->getVar('comunaRegister');
+            $data['calle'] = $this->request->getVar('calle');
+            $data['numero'] = $this->request->getVar('numero');
+            $data['optional'] = $this->request->getVar('optional');
+            $data['email'] = $this->request->getVar('emailRegister');
+            $data['telefono'] = $this->request->getVar('celular');
+            $data['clave'] = $this->request->getVar('emailRegister');
+            $data['tipo'] = 1; //Es una empresa que busca proveedores de servicio
+            $data['text'] = $this->request->getVar('editordata');
+
+            $data['rf'] = $this->request->getVar('face');
+            $data['rl'] = $this->request->getVar('linkedin');
+            $data['ri'] = $this->request->getVar('instagram');
+
+            $model->where("idUssers",session()->get('idEM'))->set($data)->update();
+            return redirect()->to('/perfil');
+                
+        
+        }
+
+        return redirect()->to('/perfil');
+
+    }
+
+
+
+
+
     private function verifiarCorreo($correo){
         $model = new UssersModel();
         $user = $model->where('email', $correo)
@@ -390,10 +662,33 @@ class Ussers extends BaseController
             'text' => $user['aux'],
 			'isLoggedIn' => true,
 		];
-		session()->set($data);
+		session()->set('empresa',$data);
 		
 		return true;
 	}   
+    private function setUserSessionEmpresa($user){
+		//$user['idUssers']
+        //$modelI = new ImagenesModel();
+        //$imagen = $modelI->where()
+        $data =[
+			'idEM' => $user['idUssers'],
+			'nombreEM' => $user['firstname'],
+            'fech_nacEM' => $user['fech_nac'],
+            'generoEM' => $user['genero'],			
+			'userRegionEM' =>$user['refRegion'],
+            'userComunaEM' =>$user['refComuna'],
+            'telefonoEM'=>$user['telefono'],
+            'emailEM' => $user['email'],
+			'tipoEM' => $user['tipo'],
+            'rzEM' => $user['rz'],
+            'rutEM' => $user['rut'],
+            'textEM' => $user['aux'],
+			'isLoggedInEM' => true,
+		];
+		session()->set('empresa',$data);
+		
+		return true;
+	}  
     public function deleteUsser(){
         $model = new UssersModel();
         $id = $this->request->getVar('id');
@@ -471,6 +766,48 @@ class Ussers extends BaseController
 
 
     /* webpay */
+    public function crearTransaccion1($num){
+        if(is_numeric($num)){    
+            $modelPagos = new PagosModel();
+            $pagos = $modelPagos->where('meses', '1')->first();
+            $valor = $pagos['precio']*$num;
+            $url= '/pasareladepago'.'/'.$valor;
+            return redirect()->to($url);
+        }else{
+            return redirect()->to('/verplanes');
+        }
+    }
+    public function crearTransaccion2($num){
+        if(is_numeric($num)){    
+            $modelPagos = new PagosModel();
+            $pagos = $modelPagos->where('meses', '3')->first();
+            $valor = $pagos['precio']*$num;
+            $url= '/pasareladepago'.'/'.$valor;
+            return redirect()->to($url);
+        }else{
+            return redirect()->to('/verplanes');
+        }
+    }
+    public function crearTransaccion3($num){
+        if(is_numeric($num)){    
+            $modelPagos = new PagosModel();
+            $pagos = $modelPagos->where('meses', '6')->first();
+            $valor = $pagos['precio']*$num;
+            $this->crearTransaccion($valor);
+        }else{
+            return redirect()->to('/verplanes');
+        }
+    }
+    public function crearTransaccion4($num){
+        if(is_numeric($num)){    
+            $modelPagos = new PagosModel();
+            $pagos = $modelPagos->where('meses', '12')->first();
+            $valor = $pagos['precio']*$num;
+            $this->crearTransaccion($valor);
+        }else{
+            return redirect()->to('/verplanes');
+        }
+    }
 
     public function crearTransaccion($valor){
         /* $aux1, $aux2, $aux3 */
@@ -548,10 +885,42 @@ class Ussers extends BaseController
 
 	}
     public function respuesta(){
-        //die($this->request->getVar('token_ws'));
-        //die($_POST['token_ws']);
-        //$token_ws = $this->request->getVar('token_ws');
-        //$TBK_TOKEN = $this->request->getVar('TBK_TOKEN');
+        //TBK_TOKEN, cuando falla, token_ws, cuando todo va bien 
+        //Cuando falla se envia igual: 
+        //TBK_ID_SESION
+        //TBK_ORDEN_COMRA
+
+        if($this->request->getVar('TBK_TOKEN')){//error
+            $tbk = $this->request->getVar('TBK_TOKEN');
+            $data['tbk']=$tbk;
+        }
+        if($this->request->getVar('token_ws')){//correcto
+            $ws = $this->request->getVar('token_ws');
+            $data['ws']=$ws;
+        }
+        if($this->request->getVar('TBK_ID_SESION')){
+            $tbk_id = $this->request->getVar('TBK_ID_SESION');
+            $data['tbk_id']=$tbk_id;
+        }
+        if($this->request->getVar('TBK_ORDEN_COMRA')){
+            $tbk_oc = $this->request->getVar('TBK_ORDEN_COMRA');
+            $data['tbk_oc']=$tbk_oc;
+        }        
+        if(isset($ws)){    
+            $response = (new Transaction)->commit($ws); // ó cualquiera de los métodos detallados en el ejemplo anterior del método create.
+            if ($response->isApproved()) {
+                $data['texto']= "Aprobado";
+            } else {
+            // Transacción rechazada
+            $data['texto']= "rechazada";
+            }
+        }
+        session()->remove('token');
+        session()->remove('url');
+        session()->remove('auxTDK');
+
+        die(json_encode($data));
+        
         session()->remove('token');
         session()->remove('url');
         session()->remove('auxTDK');
@@ -702,4 +1071,19 @@ class Ussers extends BaseController
         echo view('newViews/inicio',$data);
         //echo view('limites/Fother');
     }
+    private function setPersonaSession($user){
+		$data =[
+			'id' => $user['idPersona'],
+            'otroID' =>$user['otraID'],
+			'nombre' => $user['nombre'],
+            'apellidos' => $user['apellidos'],
+            'tipo' => $user['tipo'],			
+            'email' => $user['email'],
+			'isLoggedIn' => true,
+            'isComplete' => 0,
+		];
+		session()->set($data);
+		
+		return true;
+	}
 }

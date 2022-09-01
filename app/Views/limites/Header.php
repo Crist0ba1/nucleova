@@ -90,7 +90,7 @@
           <ul class="navbar-nav d-flex justify-content-between">
             <li>
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?>
+              <i class="fa fa-user-circle"></i> <?= session()->get('nombre'); ?>
             </a>
             <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
               <a id="opacar" class="dropdown-item" href="<?php echo base_url('/dashbordAdmin');?>"><b>Gestion de usuarios</b></a>
@@ -110,7 +110,7 @@
             </li>
             <li>
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?>
+                <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?></i>
               </a>
               <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
                 <a id="opacar" class="dropdown-item" href="<?php echo base_url('/perfil');?>"><b>Perfil de usuario</b></a>
@@ -122,34 +122,48 @@
       <?php elseif(session()->get('isLoggedIn') && session()->get('tipo') == 2): ?>
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio</b></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
+            </li>
             <li>
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?>
-            </a>
-            <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
-              <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
-            </div>
-          </li>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?></i>
+              </a>
+              <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/perfil');?>"><b>Perfil de usuario</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
+              </div>
+            </li>
           </ul>
         </div>
       <?php elseif(session()->get('isLoggedIn') && session()->get('tipo') == 3): ?>
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio</b></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
+            </li>
             <li>
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?>
-            </a>
-            <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
-              <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
-            </div>
-          </li>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?></i>
+              </a>
+              <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/perfil');?>"><b>Perfil de usuario</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
+              </div>
+            </li>
           </ul>
         </div>
       <?php else:?>  
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/login');?>"><b>Iniciar sesion</b> </a>
+              <a class="nav-link" href="<?php echo base_url('/login');?>"><b>Iniciar sesión</b> </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo base_url('/registrar'); ?>"><b>Registrarce</b></a>

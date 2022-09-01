@@ -14,7 +14,7 @@
 					<button class="nav-link" id="records-tab" data-toggle="tab" data-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">Antecedentes</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="information-tab" data-toggle="tab" data-target="#information" type="button" role="tab" aria-controls="information" aria-selected="false">Información Personal</button>
+					<button class="nav-link" id="information-tab" data-toggle="tab" data-target="#information" type="button" role="tab" aria-controls="information" aria-selected="false">Información Empresa</button>
 				</li>
 			</ul>			
 		</div>
@@ -22,17 +22,17 @@
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 					<?php
-						include("userProfileTab.php");
+						include("userProfileTabP.php");
 					?> 
 				</div>
 				<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab">
 					<?php
-						include("userRecordsTab.php");
+						include("userRecordsTabP.php");
 					?> 
 				</div>
 				<div class="tab-pane fade" id="information" role="tabpanel" aria-labelledby="information-tab">
 					<?php
-						include("userInformationTab.php");
+						include("userInformationTabP.php");
 					?> 
 				</div>
 			</div>

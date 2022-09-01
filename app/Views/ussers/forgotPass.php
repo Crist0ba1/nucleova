@@ -19,10 +19,10 @@
                                     <p class="mb-4">Sabemos que estas cosas pasan, ingrese su email y le
                                         enviaremos una nueva. </p>
                                 </div>
-                                <form action="<?php echo base_url('/lostPasswordForm')?>" method="post">
+                                <form action="<?php echo base_url('/lostPasswordForm')?>" method="post" >
                                     <div class="form-group">
-                                        <input type="email" id="emailFP" mame="emailFP" class="form-control" required
-                                            placeholder="Ingrese su email...">
+                                        <input type="email" class="form-control form-control-user" id="emailFP1" name="emailFP1" aria-describedby="emailHelp"
+                                        placeholder="Ingrese su email..." required>
                                     </div>
                                     <input type="submit" name ="submit" class="btn btn-primary btn-user btn-block text-white" value="Enviar contraseña" />
                                 </form>
@@ -38,10 +38,44 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
+    
+        <div class="row">
+            <div class="col-12">
+                <div class="row justify-content-center" style="background-color:#314A9A;">                        
+                    <img class="img-fluid" src="<?php echo base_url('')?>/public/assets/Logos/logoCorreo.png" style="max-height: 150px;">
+                </div>
+            </div>
+            <br>
+            <hr>
+            <div class="col-12">
+                <hr>
+                <h5>Bienvenido: Nicolas, se a modificado su contraseña con exito </h5>
+                <br>
+                <h5><b> Nueva contraseña</b>:</h5>
+            </div>
+            <br>
+            <hr>
+            <div class="col-12">
+                <hr>
+                <h5>¿Necesitas ayuda? Contacta con nosotros o a través de nuestras redes sociales:</h5>
+                <div class="row justify-content-center"> 
+							<div class="single-footer-widget ">
+								<h6 style="color:#ffffff">Encuentranos en:</p>
+								<div class="footer-social d-flex align-items-center">
+									<a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
+									<img src="<?php echo base_url('')?>/public/assets/rrss/facebook.png" class="img-fluid"></a>	
+									<a class="btn btn-outline-info border-0" title="Linkedin" style="padding: 15px;" target="_blank" href="https://www.linkedin.com/company/nucleova/">
+									<img src="<?php echo base_url('')?>/public/assets/rrss/linkedin.png" class="img-fluid"></a>											
+									<a class="btn btn-outline-info border-0" title="Instagram" style="padding: 15px;" target="_blank" href="https://www.instagram.com/nucleova/">
+									<img src="<?php echo base_url('')?>/public/assets/rrss/instagram.png" class="img-fluid"></a>											
+								</div>								
+							</div>
+						</div>
+                <hr>
+            </div>
+        </div>
 
 </div>
 <div class="modal fade" id="msj_correo" role="dialog" >
