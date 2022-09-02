@@ -6,11 +6,11 @@
         <title>Nucleova Pro</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         
-        <link href="<?php echo base_url('')?>/public/sergio/assets/bootstrap5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo base_url('')?>/public/sergio/assets/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url('')?>/public/sergio/assets/css/customStyles.css" rel="stylesheet" type="text/css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-        <!--link href="<?php echo base_url('')?>/public/assets/bootstrap5/css/bootstrap.min.css" rel="stylesheet" type="text/css"-->
+        <!--link href="<?php echo base_url('')?>/public/assets/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css"-->
         <!--link href="<?php echo base_url('')?>/public/assets/css/customStyles.css" rel="stylesheet" type="text/css"-->
         <!-- Tempus Dominus Styles -->
         <link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css" rel="stylesheet" crossorigin="anonymous">    

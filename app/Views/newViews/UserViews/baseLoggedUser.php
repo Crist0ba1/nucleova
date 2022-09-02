@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Nucleova Pro</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-        <link href="../assets/bootstrap5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="../assets/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/customStyles.css" rel="stylesheet" type="text/css">
         <!-- Tempus Dominus Styles -->
         <link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css" rel="stylesheet" crossorigin="anonymous">    
@@ -52,7 +52,7 @@
         
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
         <script src="../assets/js/jquery-3.6.0.min.js"></script>
-        <script src="../assets/bootstrap5/js/bootstrap.min.js"></script>
+        <script src="../assets/bootstrap4/js/bootstrap.min.js"></script>
          <!-- Tempus Dominus JavaScript -->
         <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js" crossorigin="anonymous"></script>
     </body>

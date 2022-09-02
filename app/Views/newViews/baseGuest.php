@@ -6,7 +6,7 @@
         <title>Nucleova</title>
         <link rel="shortcut icon"  type="image/png" href="<?php echo base_url('')?>/public/assets/Logos/LogoPequeno.png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="<?php echo base_url('')?>/public/sergio/assets/bootstrap5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo base_url('')?>/public/sergio/assets/bootstrap4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url('')?>/public/sergio/assets/css/customStyles.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -112,6 +112,6 @@
           
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
         <script src="<?php echo base_url('')?>/public/sergio/assets/js/jquery-3.6.0.min.js"></script>
-        <script src="<?php echo base_url('')?>/public/sergio/assets/bootstrap5/js/bootstrap.min.js"></script>
+        <script src="<?php echo base_url('')?>/public/sergio/assets/bootstrap4/js/bootstrap.min.js"></script>
     </body>
 </html>
