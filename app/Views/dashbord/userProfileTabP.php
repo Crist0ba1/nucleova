@@ -8,6 +8,8 @@
             <div class="row">
                 <div class="col">
                     <?php include("carrucelProveedor.php");?>
+                    <button type="button" onclick="cambiarImagen()" class="btn btn-primary btn-block"><i class="fa fa-camera" aria-hidden="true"></i> Cambiar imagen
+                    </button>  
                 </div>
             </div><br>            
             <div class="row text-center">
@@ -53,7 +55,94 @@
         </div>
     </div>
 
+    <div class="modal fade" id="msj_cambiar_imagen" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="imageUploadForm" action="<?php echo base_url('/cambiar_imagen_empresaN');?>" method="post" enctype="multipart/form-data">
+                    <div class="row" style="justify-content: center;">
+                        <div class="col-4">
+                            <?php include("carrucelProveedorN.php");?>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary btn-block"> 
+                        <div class="form-group small">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="exampleInputEmail1">Imagen 1</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="file" class="form-control form-control-user" id="filePhoto0" name="filePhoto0"
+                                    placeholder="Editar imagen" >
+                                </div>
+                            </div>                                                       
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="exampleInputEmail1">Imagen 2</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="file" class="form-control form-control-user" id="filePhoto1" name="filePhoto1"
+                                    placeholder="Editar imagen" >
+                                </div>
+                            </div>                                                       
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="exampleInputEmail1">Imagen 3</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="file" class="form-control form-control-user" id="filePhoto2" name="filePhoto2"
+                                    placeholder="Editar imagen" >
+                                </div>
+                            </div>                                                       
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="exampleInputEmail1">Imagen 4</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="file" class="form-control form-control-user" id="filePhoto3" name="filePhoto3"
+                                    placeholder="Editar imagen" >
+                                </div>
+                            </div>                                                       
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="exampleInputEmail1">Imagen 5</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="file" class="form-control form-control-user" id="filePhoto4" name="filePhoto4"
+                                    placeholder="Editar imagen" >
+                                </div>
+                            </div>                                                       
+                        </div>            
+                    </button>       
+                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Cambiar imagen</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+    </div>  
 <script>
+        function cambiarImagen(){
+            $('#msj_cambiar_imagen').modal('show');
+        }
     <?php if(session()->get('isComplete') == 0 ):?>
 
         <?php if(session()->has('rf')):?>

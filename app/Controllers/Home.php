@@ -8,6 +8,10 @@ use App\Models\UssersModel;
 use App\Models\PersonaModel;
 use App\Models\SubCategoriasModel;
 use App\Models\ImagenesModel;
+
+use App\Models\CategoriasListModel;
+use App\Models\ComunasListModel;
+
 use monken\TablesIgniter;
 class Home extends BaseController
 {
@@ -67,7 +71,7 @@ class Home extends BaseController
                 $this-> setPersonaSessionRegister($user); // aqui tenemos ya al usuario que corresponde
                 $this->correoRegistroPersona($this->request->getVar('nombre'),$this->request->getVar('emailRegister'),$this->request->getVar('passwordr1'));
                 //Se deve enviar el correo de usuario registrado a quien corresponda
-                $this->perfil();
+                return redirect()->to('/perfil');
             }
             else{
                 //return redirect()->to('/registerError');
@@ -77,6 +81,7 @@ class Home extends BaseController
             }
         
         }
+        return redirect()->to('/registerError');
     }
     public function perfil(){
         $modelR = new RegionesModel();
@@ -87,7 +92,6 @@ class Home extends BaseController
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
         $data['subCategoria'] = $modelSubCategoria->findAll();
-
         $modelU = new UssersModel();
         $model = new PersonaModel();
         $user = $model->where('idPersona ', session()->get('id'))->first();
@@ -309,6 +313,12 @@ class Home extends BaseController
             
         }
 
+        $modelCL = new CategoriasListModel();
+        $catList = $modelCL->where('idUsser', $user['idUssers'])->findAll();
+
+        $modelCoL = new ComunasListModel();
+        $comunaList= $modelCoL->where('idUsser', $user['idUssers'])->findAll();
+
         //Datos de usuario
         $data =[
 			'idEM' => $user['idUssers'],
@@ -331,6 +341,8 @@ class Home extends BaseController
             'rutEM' => $user['rut'],
             'textEM' => $user['text'],
 			'isLoggedInEM' => true,
+            'categoriaList' => $catList,
+            'comunaList' => $comunaList,
 		];
 		session()->set($data);
   
@@ -366,17 +378,18 @@ class Home extends BaseController
             $correo = $this->request->getVar('emailFP1');
         }
         $aux = $this->verifiarCorreoPersona($correo);
-        if($aux != ""){
-            $aux = $this->setNewPass($correo);
+        if($aux){
+            $pass = $this->setNewPass($correo);
             if($aux){
-                $bool = $this->correoLostPass($correo, $aux);
+                $bool = $this->correoLostPass($correo, $pass);
                 if($bool){
                     $mensaje = "Verifique su correo: ".$correo.".";
                     session()->set("msj_correo", $mensaje); 
                 }else{
-                    session()->set("msj_correo", "Error, al enviar el correo."); 
+                    $error = session()->get('errorEmail');
+                    $mensaje = "Error, al enviar el correo. Error:".$error.".";
+                    session()->set("msj_correo", $mensaje); 
                 }
-                
             }
             else{
                 session()->set("msj_correo", "Error, verifique la direccion de correo o intente más tarde."); 
@@ -530,32 +543,26 @@ class Home extends BaseController
 
 	private function correoLostPass($correo, $pass){
 		$email = \Config\Services::email();
-        $modelPersona = new PersonaModel();
-        $userData = $modelPersona->where("email", $correo)->first();
+        
+        //$modelPersona = new PersonaModel();
+        //$userData = $modelPersona->where("email", $correo)->first();
 
 		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
-		$email->setTo($correo);
-		$email->setSubject('Cambio de contraseña');
-		$email->setMessage('
-            <div class="row">
-                <div class="col-12">
-                    <hr>
-                    <h5>Bienvenido: '.$userData["nombre"].', se a modificado su contraseña con exito </h5>
-                    <br>
-                    <h5><b> Nueva contraseña</b>: '.$pass.'</h5>
-                </div>
-            </div>
-
-		');
+		//$email->setTo($correo);
+        $email->setTo('cristobal.henriquez.g@gmail.com');
+		$email->setSubject('Cambio de credenciales de acceso');
+		$email->setMessage('Mensaje de prueba');
 		
-
+       // $succes = $email->send();
 		if($email->send()){
 			return true;
 		}
 		else{
+            $error = $email->printDebugger();
+            session()->set('errorEmail',$error);
 			return false;
 		}
 	}
-    /* Fin seccion de correos HOME */
+
 
 }

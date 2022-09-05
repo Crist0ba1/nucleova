@@ -52,6 +52,9 @@ $routes->get('/registerError', 'Home::registerError'); // Envia mensaje de error
 $routes->get('/perfil', 'Home::perfil');
 $routes->POST('/registerUsserEmpresa', 'Ussers::registerUsserEmpresa');
 $routes->POST('/editarUsserEmpresa', 'Ussers::editarUsserEmpresa');
+$routes->POST('/cambiar_imagen_empresa', 'Ussers::cambiar_imagen_empresa');
+$routes->POST('/cambiar_imagen_empresaN', 'Ussers::cambiar_imagen_empresaN');
+
 $routes->POST('/registerUsserProveedor', 'Ussers::registerUsserProveedor');
 $routes->POST('/editarUsserProveedor', 'Ussers::editarUsserProveedor');
 

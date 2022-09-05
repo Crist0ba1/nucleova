@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class PersonaModel extends Model{
     protected $table = 'persona';
     protected $primaryKey = 'idPersona';
-    protected $allowedFields = ['idPersona','otraID', 'nombre','apellidos','clave','tipo','email', 'actualizado', 'creado'];
+    protected $allowedFields = ['idPersona','otraID', 'nombre','apellidos','clave','tipo','email', 'actualizado', 'creado','tiempo'];
     protected $beforeInsert = ['beforeInsert'];
     protected $beforeUpdate = ['beforeUpdate'];
 

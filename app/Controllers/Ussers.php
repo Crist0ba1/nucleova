@@ -482,6 +482,114 @@ class Ussers extends BaseController
 
     }
 
+    public function cambiar_imagen_empresa(){
+        $modelI = new ImagenesModel();
+        $model = new UssersModel();
+        if($this-> request -> getMethod() == 'post' ){
+            $imageFile1 = $this->request->getFile('filePhoto');
+            $idEmpresa = session()->get('idEM');
+            $nombre_fichero = './public/imgs/'.$idEmpresa;
+
+            $this->borrar_directorio($nombre_fichero);
+
+            if(!file_exists($nombre_fichero)){
+                mkdir($nombre_fichero, 0777, true);
+            }
+
+            $dataFile['idUsers'] = $idEmpresa;
+            $dataFile['imagen1'] = $imageFile1->getRandomName();
+            if($modelI->where("idUsers",$idEmpresa)->set($dataFile)->update()){
+                //Si se agrega a la BD, se mueven las imagenes
+                $imageFile1->move($nombre_fichero, $dataFile['imagen1']);
+                $user = $model->where("idUssers",$idEmpresa)->first();
+                $this->setUserSessionEmpresa($user);
+
+                return redirect()->to('/perfil');
+                //return redirect()->to('/agregarUsuario')->with('status',true);
+                die('No redirecciona, true');
+
+            }else{
+                rmdir($nombre_fichero);
+                //Falta eliminar al usuario que se agrego
+                return redirect()->to('/perfil');
+                die('No redirecciona, false');
+            }
+        }
+    }
+
+    public function cambiar_imagen_empresaN(){
+        $modelI = new ImagenesModel();
+        $model = new UssersModel();
+        if($this-> request -> getMethod() == 'post' ){
+            $imageFile1 = $this->request->getFile('filePhoto0');
+            $imageFile2 = $this->request->getFile('filePhoto1');
+            $imageFile3 = $this->request->getFile('filePhoto2');
+            $imageFile4 = $this->request->getFile('filePhoto3');
+            $imageFile5 = $this->request->getFile('filePhoto4');
+            $idEmpresa = session()->get('idEM');
+            $nombre_fichero = './public/imgs/'.$idEmpresa;
+
+            $imagenes = $modelI->where("idUsers",$idEmpresa)->first();
+            if($imageFile1->isValid()){                
+                $dataFile['imagen1'] = $imageFile1->getRandomName();
+                $imageFile1->move($nombre_fichero, $dataFile['imagen1']);
+                $this->borrar_file($nombre_fichero, $imagenes['imagen1']);
+            }else{
+                $dataFile['imagen1'] = $imagenes['imagen1'];
+            }
+            if($imageFile2->isValid()){
+                $dataFile['imagen2'] = $imageFile2->getRandomName();
+                $imageFile2->move($nombre_fichero, $dataFile['imagen2']);
+                $this->borrar_file($nombre_fichero, $imagenes['imagen2']);
+            }else{
+                $dataFile['imagen2'] = $imagenes['imagen2'];
+            }                                                
+            if($imageFile3->isValid()){                
+                $dataFile['imagen3'] = $imageFile3->getRandomName();
+                $imageFile3->move($nombre_fichero, $dataFile['imagen3']);
+                $this->borrar_file($nombre_fichero, $imagenes['imagen3']);
+            }else{
+                $dataFile['imagen3'] = $imagenes['imagen3'];
+            }
+            if($imageFile4->isValid()){                
+                $dataFile['imagen4'] = $imageFile4->getRandomName();
+                $imageFile4->move($nombre_fichero, $dataFile['imagen4']);
+                $this->borrar_file($nombre_fichero, $imagenes['imagen4']);
+            }else{
+                $dataFile['imagen4'] = $imagenes['imagen4'];
+            }
+            if($imageFile5->isValid()){                
+                $dataFile['imagen5'] = $imageFile5->getRandomName();
+                $imageFile5->move($nombre_fichero, $dataFile['imagen5']);
+                $this->borrar_file($nombre_fichero, $imagenes['imagen5']);
+            }else{
+                $dataFile['imagen5'] = $imagenes['imagen5'];
+            }
+
+            if(!file_exists($nombre_fichero)){
+                mkdir($nombre_fichero, 0777, true);
+            }
+
+            $dataFile['idUsers'] = $idEmpresa;
+            
+            if($modelI->where("idUsers",$idEmpresa)->set($dataFile)->update()){
+                //Si se agrega a la BD, se mueven las imagenes
+                $user = $model->where("idUssers",$idEmpresa)->first();
+                $this->setUserSessionEmpresa($user);
+
+                return redirect()->to('/perfil');
+                //return redirect()->to('/agregarUsuario')->with('status',true);
+                die('No redirecciona, true');
+
+            }else{
+                rmdir($nombre_fichero);
+                //Falta eliminar al usuario que se agrego
+                return redirect()->to('/perfil');
+                die('No redirecciona, false');
+            }
+        }
+    }
+
     public function registerUsserProveedor(){
         helper(['form']);
         $model = new UssersModel();
@@ -616,11 +724,23 @@ class Ussers extends BaseController
             $data['tipo'] = 1; //Es una empresa que busca proveedores de servicio
             $data['text'] = $this->request->getVar('editordata');
 
+            //id de las subcategorias en las que se desembuelve un proveedor
+            $subCatUsser = $this->request->getVar('selectpickerValue');
+            //id de las comunas en las que puede trabajar un proveedor
+            $comunasUsser = $this->request->getVar('selectpickerValue2');
+
             $data['rf'] = $this->request->getVar('face');
             $data['rl'] = $this->request->getVar('linkedin');
             $data['ri'] = $this->request->getVar('instagram');
-
-            $model->where("idUssers",session()->get('idEM'))->set($data)->update();
+            $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+            if($model->where("idUssers",session()->get('idEM'))->set($data)->update()){
+                //id de las comunas en las que puede trabajar un proveedor
+                $val = $this->insertCategoriasList($user, $subCatUsser);            
+                //id de las comunas en las que puede trabajar un proveedor
+                $val2 = $this->insertComunasList($user, $comunasUsser);   
+                //Si val o val2 son false, es por que exitio un error en alguno de los insert
+            }
+            
             return redirect()->to('/perfil');
                 
         
@@ -630,7 +750,47 @@ class Ussers extends BaseController
 
     }
 
+    private function borrar_directorio($dirname) {
+        //si es un directorio lo abro
+        if (is_dir($dirname)){
+            $dir_handle = opendir($dirname);
+        }
+        //si no es un directorio devuelvo false para avisar de que ha habido un error
+        if (!$dir_handle){
+            return false;
+        }
+        //recorro el contenido del directorio fichero a fichero
+        while($file = readdir($dir_handle)) {
+           if ($file != "." && $file != "..") {
+                //si no es un directorio elemino el fichero con unlink()
+                if (!is_dir($dirname."/".$file)){
+                    unlink($dirname."/".$file);
+                }
+                else{ //si es un directorio hago la llamada recursiva con el nombre del directorio
+                    borrar_directorio($dirname.'/'.$file);
+                }
+            }
+         }
+         closedir($dir_handle);
+        //elimino el directorio que ya he vaciado
+         rmdir($dirname);
+         return true;
+    }
+    private function borrar_file($dirname, $file) {
+        //si es un directorio lo abro
+        if (is_dir($dirname)){
+            $dir_handle = opendir($dirname);
+        }
+        //si no es un directorio devuelvo false para avisar de que ha habido un error
+        if (!$dir_handle){
+            return false;
+        }
+        unlink($dirname."/".$file);
 
+        closedir($dir_handle);
+
+         return true;
+    }
 
 
 
@@ -713,7 +873,7 @@ class Ussers extends BaseController
     private function insertCategoriasList($usser, $subCatUsser){
         $model = new CategoriasListModel();
         //subCatUsser = id de las comunas en las que puede trabajar un proveedor
-        $model->where('id', $usser['idUssers']);
+        $model->where('idUsser', $usser['idUssers']);
         $model->delete();
         $aux = true;
         $array = explode(",", $subCatUsser);
@@ -734,7 +894,7 @@ class Ussers extends BaseController
     private function insertComunasList($usser, $comunasUsser){
         //subCatUsser = id de las comunas en las que puede trabajar un proveedor
         $model = new ComunasListModel();
-        $model->where('id', $usser['idUssers']);
+        $model->where('idUsser', $usser['idUssers']);
         $model->delete();
         $aux = true;
         $array = explode(",", $comunasUsser);

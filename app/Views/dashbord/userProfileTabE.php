@@ -8,6 +8,9 @@
             <div class="row">
                 <div class="col">
                     <img id="imgPerfil" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 300px; max-height: 450px;" src="<?php echo base_url('')?>/public/assets/sin-foto.jpg" />
+                    <button type="button" onclick="cambiarImagen()" class="btn btn-primary btn-block"><i class="fa fa-camera" aria-hidden="true"></i> Cambiar imagen
+                    </button>   
+                    
                 </div>
             </div><br>            
             <div class="row text-center">
@@ -53,11 +56,43 @@
         </div>
     </div>
 
+    <div class="modal fade" id="msj_cambiar_imagen" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="imageUploadForm" action="<?php echo base_url('/cambiar_imagen_empresa');?>" method="post" enctype="multipart/form-data">
+                    <button type="button" class="btn btn-primary btn-block"> 
+                    <img id="imgPerfil2" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 300px; max-height: 450px;" src="<?php echo base_url('')?>/public/assets/sin-foto.jpg" />    
+                        <input type="file" class="form-control form-control-user" id="filePhoto" name="filePhoto"
+                        placeholder="Editar imagen" >
+                    </button>       
+                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Cambiar imagen</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+    </div>  
 <script>
+
+    function cambiarImagen(){
+        $('#msj_cambiar_imagen').modal('show');
+    }
+
     <?php if(session()->get('isComplete') == 0 ):?>
         <?php if(session()->has('imagenEM')):?>
             <?php if(session()->get('imagenEM') != 'No'):?>
                 $("#imgPerfil").attr("src", "<?php echo base_url('')?>/public/imgs/<?php echo session()->get('idEM')?>/<?php echo session()->get('imagenEM')?>");
+                $("#imgPerfil2").attr("src", "<?php echo base_url('')?>/public/imgs/<?php echo session()->get('idEM')?>/<?php echo session()->get('imagenEM')?>");
             <?php endif;?>        
         <?php endif;?>
         <?php if(session()->has('rf')):?>

@@ -33,7 +33,7 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $protocol = 'smtp';
+    public $protocol = 'SMTP';
 
     /**
      * The server path to Sendmail.
@@ -47,14 +47,14 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost= 'smtp.hostinger.es';
+    public $SMTPHost= 'smtp.hostinger.com';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'Contacto@nucleova.com';
+    public $SMTPUser = 'contacto@nucleova.com';
 
     /**
      * SMTP Password
@@ -75,7 +75,7 @@ class Email extends BaseConfig
      *
      * @var int
      */
-    public $SMTPTimeout = 20;
+    public $SMTPTimeout = 30;
 
     /**
      * Enable persistent SMTP connections
@@ -89,7 +89,7 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPCrypto = 'tls';
+    public $SMTPCrypto = 'tsl';
 
     /**
      * Enable word-wrap

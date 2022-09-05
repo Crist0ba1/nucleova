@@ -154,9 +154,10 @@
             <?php session()->remove('errorRegister');?>
             <?php if(session()->has('correo')):?>
                 <?php session()->remove('correo');?>
-                alert("Correo ya a fue registrado en el sistema");
-            <?php else:?>
-                alert("Error al registrar los datos, intentelo de nuevo mas tarde");
+                $(emailRegister_error).text('Correo ya a fue registrado en el sistema');
+                setTimeout(function(){
+                    $(emailRegister_error).text('');
+                }, 5000);
             <?php endif;?>
         <?php endif;?>
 

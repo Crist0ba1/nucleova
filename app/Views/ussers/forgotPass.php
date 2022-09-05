@@ -24,7 +24,7 @@
                                         <input type="email" class="form-control form-control-user" id="emailFP1" name="emailFP1" aria-describedby="emailHelp"
                                         placeholder="Ingrese su email..." required>
                                     </div>
-                                    <input type="submit" name ="submit" class="btn btn-primary btn-user btn-block text-white" value="Enviar contraseña" />
+                                    <input type="submit" name ="submit" class="btn btn-primary btn-user btn-block text-white" value="Enviar" />
                                 </form>
                                 <hr>
                                 <div class="text-center">

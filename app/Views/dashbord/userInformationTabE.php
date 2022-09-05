@@ -47,10 +47,10 @@
         </div>    
         <div class="row"> 
             <div class="col-12 col-sm-12">
-                <h4><span class="badge badge-primary">Direccion:</span></h4>
+                <h4><span class="badge badge-secondary">Direccion:</span></h4>
             </div>
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-primary">Region:</span></h4>
+                <h4><span class="badge badge-secondary">Region:</span></h4>
             	<select name="regionRegister" id="regionRegister1" class="form-control"  >
                     <option value="">-Seleccione una region-</option>
                     <?php foreach($region as $row):?>
@@ -60,26 +60,26 @@
                 <span id="regionRegister_error" class="text-danger">								
             </div>
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-primary">Comuna:</span></h4>
+                <h4><span class="badge badge-secondary">Comuna:</span></h4>
                 <select name="comunaRegister" id="comunaRegister1" class="form-control"  >
                     <option value="">-Falta seleccionar region-</option>
                 </select>
                 <span id="comunaRegister_error" class="text-danger">
             </div>
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-primary">Calle:</span></h4>
+                <h4><span class="badge badge-secondary">Calle:</span></h4>
                 <input   type="text" class="form-control form-control-user" id="calle1" name="calle"
                     placeholder="Calle, Ejemplo: Villa piedra azul, pasaje rio aconcagua" minlength="2" >
                 <span id="calle_error" class="text-danger">    
             </div>
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-primary">Numero:</span></h4>
+                <h4><span class="badge badge-secondary">Numero:</span></h4>
                 <input   type="text" class="form-control form-control-user" id="numero1" name="numero"
                 placeholder="Numero, Ejemplo: 1001" minlength="2" >
                 <span id="numero_error" class="text-danger">    
             </div>
             <div class="form-group col-12 col-sm-12">
-                <h4><span class="badge badge-primary">Dpto./ Casa/ Oficina/ Condominio (opcional):</span></h4>
+                <h4><span class="badge badge-secondary">Dpto./ Casa/ Oficina/ Condominio (opcional):</span></h4>
                 <input type="text" class="form-control form-control-user" id="optional1" name="optional"
                 placeholder="Ejemplo: Departamento 16C" minlength="2" >
                 <span id="optional_error" class="text-danger">   
@@ -87,16 +87,16 @@
         </div>
         <div class="row">
             <div class="col-12 col-sm-12">
-                <h4><span class="badge badge-success">Datos de contacto:</span></h4>
+                <h4><span class="badge badge-secondary">Datos de contacto:</span></h4>
             </div>
             <div class="form-group col-6 col-sm-6">
-            	<h4><span class="badge badge-success">Email:</span></h4>
+            	<h4><span class="badge badge-secondary">Email:</span></h4>
             	<input type="email" class="form-control form-control-user" id="emailRegister1" name="emailRegister"
                     placeholder="Email"  >
                 <span id="emailRegister_error" class="text-danger">
             </div>
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-success">Telefono:</span></h4>
+                <h4><span class="badge badge-secondary">Telefono:</span></h4>
             	<div class="form-inline">
                     <label style="margin-left: 15px;">Celulares sin el +
                     	<input type="tel" class="form-control form-control-user" id="celular1" name="celular" minlength="" maxlength="12"
@@ -107,22 +107,22 @@
         </div>
         <div class="row">
             <div class="col-12 col-sm-12">
-                <h4><span class="badge badge-info">Enlaces a redes sociales:</span></h4>
+                <h4><span class="badge badge-secondary">Enlaces a redes sociales:</span></h4>
             </div>
         	<div class="form-group col-6 col-sm-6">
-            	<h4><span class="badge badge-info">Facebook:</span></h4>
+            	<h4><span class="badge badge-secondary">Facebook:</span></h4>
             	<input type="url" class="form-control form-control-user" id="face1" name="face"
                 	placeholder="Ejemplo: https://www.facebook.com/nucleova"  >
                 <span id="face_error" class="text-danger">
             </div>
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-info">Linkedin:</span></h4>
+                <h4><span class="badge badge-secondary">Linkedin:</span></h4>
                 <input type="url" class="form-control form-control-user" id="linkedin1" name="linkedin"
                     placeholder="Ejemplo: https://www.linkedin.com/company/nucleova/"  >
                 <span id="linkedin_error" class="text-danger">
             </div> 
             <div class="form-group col-6 col-sm-6">
-                <h4><span class="badge badge-info">Instagram:</span></h4>
+                <h4><span class="badge badge-secondary">Instagram:</span></h4>
                 <input type="url" class="form-control form-control-user" id="instagram1" name="instagram"
                     placeholder="Ejemplo: https://www.instagram.com/nucleova/"  >
                 <span id="instagram_error" class="text-danger">
@@ -131,7 +131,7 @@
         <div class="card p-3 mb-2">
             <div class="d-flex justify-content-between">
             	<div class="d-flex flex-row align-items-center">
-            		<h4><span class="badge badge-warning"><i class="fa fa-keyboard" aria-hidden="true"></i> Texto descriptivo:</span></h4>                                        
+            		<h4><span class="badge badge-secondary"><i class="fa fa-keyboard" aria-hidden="true"></i> Texto descriptivo:</span></h4>                                        
             	</div>
             </div>
             <textarea id="summernote1" name="editordata"></textarea>
