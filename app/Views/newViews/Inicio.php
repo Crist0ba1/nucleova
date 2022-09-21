@@ -11,8 +11,8 @@
             <form>
                 <div class="row bottom30">
                     <div class="col-12 col-md-9 mb-2 mb-md-0">
-                        <input class="form-control form-control-lg" type="text" placeholder="ingresa el campo de búsqueda"/></div>
-                    <div class="col-12 col-md-3"><button class="btn btn-primary btn-lg" type="submit"><span class="fa-regular fa-search"></span> Buscar</button></div>
+                        <input class="form-control form-control-lg" type="text" placeholder="ingresa el campo de búsqueda"/></div>            
+                        <button class="btn btn-primary" type="submit"><span class="fa fa-search"></span> Buscar</button>                    
                 </div>
             </form>
         </div>        
@@ -30,7 +30,7 @@
             <br>
         <?php endforeach;?>
     </div>
-    <!--div class="row top30 bottom20">
+    <div class="row top30 bottom20">
         <div class="col right10 left10">
             <a href="#"><img src="/assets/images/categorias/ServiciosNucleova-01.png" style="width: 150px;    height: 150px;"></a>            
         </div>
@@ -63,7 +63,7 @@
         <div class="col right10 left10">
             <a href="#"><img src="/assets/images/categorias/ServiciosNucleova-10.png" style="width: 150px;    height: 150px;"></a>
         </div>        
-    </div-->
+    </div>
 </header>
 
 <div class="modal fade" id="categoriaModal1" role="dialog" >

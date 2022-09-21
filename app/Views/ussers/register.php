@@ -1,10 +1,13 @@
 <style>
     #centrador1{
-     position: relative;
+        justify-content: center;
+        align-items: center;
     }
 
     #imagen1{
-        position: absolute;
+        justify-content: center;
+        align-items: center;
+        position: relative;
         width: 80%;
         top: 0;
         left: 0;
@@ -19,13 +22,13 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div id="centrador1" class="col-lg-5">
+                    <div id="centrador1" class="col-lg-5 text-center">
                         <img id="imagen1" src="<?php echo base_url('')?>/public/assets/Logos/logoPequeno.png" >
                     </div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crea tu cuenta!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">!Crea tu cuenta!</h1>
                             </div>
                             <form id="registerForm" class="registerForm" action="<?php echo base_url('/registrarPersona')?>" method="post">
                                 <div class="form-group">
@@ -53,7 +56,7 @@
                                     <span id="tipoDeCuenta_error" class="text-danger">
                                 </div>
                                     <small id="passwordHelpBlock" class="form-text text-muted">
-                                        La contraseña debe ser de minimo 5 caracteres.
+                                        La contraseña debe ser de mínimo 5 caracteres.
                                     </small>
                                 <div class="form-group row ">
                                     <div class="col-sm-6 input-group">
@@ -83,10 +86,10 @@
                                 </a-->
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="<?php echo base_url('/lostPassword');?>" >¿Olvido su contraseña?</a>
+                                <a class="small" href="<?php echo base_url('/lostPassword');?>" >¿Olvidaste tu contraseña?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="<?php echo base_url('/login');?>" >¿Ya esta registrado? Inicie sesion aqui!</a>
+                                <a class="small" href="<?php echo base_url('/login');?>" >¿Ya estás registrado? !Inicie sesión aquí!</a>
                             </div>
                         </div>
                     </div>

@@ -32,42 +32,33 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->post('/enviarCorreo', 'Home::enviarCorreo');
 
 
-/*  rutas para ver lo del serguio */
-$routes->get('/verVistas', 'home::verVistas');
+$routes->get('/lostPassword', 'Home::lostPassword',['filter' =>'noAuth']);
+$routes->post('/lostPasswordForm', 'Home::lostPasswordForm',['filter' =>'noAuth']);
 
-$routes->get('/lostPassword', 'Home::lostPassword');
-$routes->post('/lostPasswordForm', 'Home::lostPasswordForm');
-
-$routes->get('/login', 'Ussers::login');
-$routes->POST('/iniciarSession', 'Ussers::iniciarSession');
-
+$routes->get('/login', 'Ussers::login',['filter' =>'noAuth']);
+$routes->POST('/iniciarSession', 'Ussers::iniciarSession',['filter' =>'noAuth']);
 
 /* Registrar persona */
-$routes->get('/registrar', 'Home::register');
-$routes->POST('/registrarPersona', 'Home::registrarPersona');
+$routes->get('/registrar', 'Home::register',['filter' =>'noAuth']);
+$routes->POST('/registrarPersona', 'Home::registrarPersona',['filter' =>'noAuth']);
+
 $routes->get('/registerError', 'Home::registerError'); // Envia mensaje de error, no se si se ocupa AUN
-$routes->get('/perfil', 'Home::perfil');
-$routes->POST('/registerUsserEmpresa', 'Ussers::registerUsserEmpresa');
-$routes->POST('/editarUsserEmpresa', 'Ussers::editarUsserEmpresa');
-$routes->POST('/cambiar_imagen_empresa', 'Ussers::cambiar_imagen_empresa');
-$routes->POST('/cambiar_imagen_empresaN', 'Ussers::cambiar_imagen_empresaN');
+$routes->get('/perfil', 'Home::perfil',['filter' =>'Auth']);
+$routes->POST('/registerUsserEmpresa', 'Ussers::registerUsserEmpresa',['filter' =>'Auth']);
+$routes->POST('/editarUsserEmpresa', 'Ussers::editarUsserEmpresa',['filter' =>'Auth']);
+$routes->POST('/registerUsserProveedor', 'Ussers::registerUsserProveedor',['filter' =>'Auth']);
+$routes->POST('/editarUsserProveedor', 'Ussers::editarUsserProveedor',['filter' =>'Auth']);
+$routes->POST('/cambiar_imagen_empresa', 'Ussers::cambiar_imagen_empresa',['filter' =>'Auth']);
+$routes->POST('/cambiar_imagen_empresaN', 'Ussers::cambiar_imagen_empresaN',['filter' =>'Auth']);
 
-$routes->POST('/registerUsserProveedor', 'Ussers::registerUsserProveedor');
-$routes->POST('/editarUsserProveedor', 'Ussers::editarUsserProveedor');
-
-
-// Registro de imagen para la empresa
-$routes->post('registrarPersona/fileUpload', 'Persona::fileUpload');
-
-//$routes->get('/suscripcion', 'Home::suscripcion'); Suscriocion para usarios free
 
 $routes->POST('/registerUsserAdmin', 'Ussers::registerUsserAdmin');
 $routes->get('/agregarUsuario', 'Ussers::agregarUsuario');
 $routes->get('/daleteUsuario', 'Ussers::daleteUsuario');
 $routes->post('/deleteUsser', 'Ussers::deleteUsser');
+
 
 $routes->get('/dashbordAdmin', 'Ussers::dashbordAdmin');
 $routes->get('/dashbordProveedor', 'Ussers::dashbordProveedor');
@@ -75,34 +66,73 @@ $routes->POST('/cambiar_ubicacion', 'Ussers::cambiar_ubicacion');
 $routes->POST('/cambiar_contacto', 'Ussers::cambiar_contacto');
 $routes->POST('/cambiar_texto', 'Ussers::cambiar_texto');
 
-$routes->get('/dashbordCliente', 'Ussers::dashbordCliente');
-$routes->get('/dashbordInvitado', 'Ussers::dashbordInvitado');
+
+
+
+//$routes->get('/dashbordCliente', 'Ussers::dashbordCliente');
+//$routes->get('/dashbordInvitado', 'Ussers::dashbordInvitado');
+
 $routes->get('/logout', 'Ussers::logout');
 
 /*Manejo de tabla de usuarios para el admin*/
 $routes->post('/usser_fetch_all', 'Ussers::usser_fetch_all');
 $routes->post('/deleteUsser', 'Ussers::deleteUsser');
 
+
 $routes->get('/subCategoria/(:any)/', 'CategoriasController::subCategoria/$1');
 $routes->get('/postFiltros', 'home::postFiltros');
 $routes->get('/proveedor/(:any)', 'CategoriasController::proveedor/$1');
+$routes->get('/empresa/(:any)', 'CategoriasController::empresa/$1');
 $routes->get('/filtro', 'CategoriasController::filtro');
 
 
-$routes->get('/pasareladepago1/(:any)', 'Ussers::crearTransaccion1/$1');
-$routes->get('/pasareladepago2/(:any)', 'Ussers::crearTransaccion2/$1');
-$routes->get('/pasareladepago3/(:any)', 'Ussers::crearTransaccion3/$1');
-$routes->get('/pasareladepago4/(:any)', 'Ussers::crearTransaccion4/$1');
+$routes->get('/pasareladepago1/(:any)', 'Ussers::crearTransaccion1/$1',['filter' =>'Auth']);
+$routes->get('/pasareladepago2/(:any)', 'Ussers::crearTransaccion2/$1',['filter' =>'Auth']);
+$routes->get('/pasareladepago3/(:any)', 'Ussers::crearTransaccion3/$1',['filter' =>'Auth']);
+$routes->get('/pasareladepago4/(:any)', 'Ussers::crearTransaccion4/$1',['filter' =>'Auth']);
 
 
+$routes->get('/historial', 'proController::historial');
+$routes->get('/buscador', 'proController::search');
+
+/* Empresa proo */
+$routes->get('/perfilPro', 'proController::proPerfil',['filter' =>'Auth']);
+
+$routes->get('/subCategoriaPRO/(:any)/', 'CategoriasController::subCategoriaPRO/$1');
+$routes->get('/proveedorPro/(:any)', 'CategoriasController::proveedorPro/$1');
+$routes->get('/filtroPRO', 'CategoriasController::filtroPRO');
+$routes->get('/grupoLista/(:any)/(:any)', 'CategoriasController::grupoLista/$1/$2');
+$routes->get('/enviarSolicitud/(:any)', 'proController::enviarSolicitud/$1');
+$routes->get('/aceptarSolicitud/(:any)', 'proController::aceptarSolicitud/$1');
+$routes->get('/cancelarSolicitud/(:any)', 'proController::cancelarSolicitud/$1');
+$routes->get('/eliminarSolicitud/(:any)', 'proController::eliminarSolicitud/$1');
+$routes->get('/eliminarProveedor/(:any)', 'proController::eliminarProveedor/$1');
+$routes->get('/eliminarRequerimiento/(:any)','proController::eliminarRequerimiento/$1');
+$routes->get('/cancelarRequerimiento/(:any)','proController::cancelarRequerimiento/$1');
+
+$routes->post('/nuevoRequerimiento', 'proController::nuevoRequerimiento');
+/* Proveedor pro */
+
+/* Usser que son los proveedores */ 
+
+$routes->get('/dashborEmpresa', 'proController::dashborEmpresa');
+$routes->get('/mis_clientes', 'proController::mis_clientes');
+$routes->get('/solicitudes', 'proController::solicitudes');
+$routes->get('/mis_requerimientos', 'proController::mis_requerimientos');
+
+$routes->get('/solicitudesProveedor', 'proController::solicitudesProveedor');
+/* Cliente que son las empresas */ 
+$routes->get('/mis_proveedores', 'proController::mis_proveedores');
+$routes->get('/requerimientos', 'proController::requerimientos');
+
+
+
+/*Informacion de un proveedor de servicios especifico*/
 $routes->get('/pasareladepago/(:any)', 'Ussers::crearTransaccion/$1');
-
 $routes->get('/suscripcion', 'proController::suscripcion');
 //$routes->get('/suscripcion', 'Home::suscripcion');
 $routes->get('/verplanes', 'proController::verplanes');
 
-/* Cliente (Busca proveedor)*/
-$routes->get('/dashbordCliente1', 'Ussers::dashbordCliente1');
 /* webpay*/
 $routes->match(['get','post'],'/respuesta', 'Ussers::respuesta');
 /*

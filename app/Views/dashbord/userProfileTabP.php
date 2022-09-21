@@ -2,6 +2,15 @@
     .notActive{
         filter: grayscale(75%);
     }
+    .imagenHori{
+        justify-content: center;
+        background-color: #314a9a;
+        align-items: center;
+        padding:7px;
+    }
+    .labelImagen {
+        color: white;
+    }
 </style>
     <div class="row ">
         <div class="col-md-5">
@@ -42,12 +51,12 @@
             <div class="row">
                 <div class="col-md-7">
                     <h4>Ingrese redes sociales</h4>
-                    <div class="form-group input-group align-items-center">            
-                        <a id="rrssF1" class="btn btn-outline-primary border-0 notActive " title="Facebook" style="padding: 15px;" target="_blank" href="" disabled>
+                    <div class="row align-items-center">            
+                        <a id="rrssF1" class="col-4 btn btn-outline-primary border-0 notActive " title="Facebook" style="padding: 15px;" target="_blank" href="" disabled>
                             <img src="<?php echo base_url('')?>/public/assets/rrss/facebook.png" class="img-fluid"></a>	
-                        <a id="rrssL1" class="btn btn-outline-info border-0 notActive " title="Linkedin" style="padding: 15px;" target="_blank" href="" disabled>
+                        <a id="rrssL1" class="col-4 btn btn-outline-info border-0 notActive " title="Linkedin" style="padding: 15px;" target="_blank" href="" disabled>
                             <img src="<?php echo base_url('')?>/public/assets/rrss/linkedin.png" class="img-fluid"></a>											
-                        <a id="rrssI1" class="btn btn-outline-info border-0 notActive " title="Instagram" style="padding: 15px;" target="_blank" href="" disabled>
+                        <a id="rrssI1" class="col-4 btn btn-outline-info border-0 notActive " title="Instagram" style="padding: 15px;" target="_blank" href="" disabled>
                             <img src="<?php echo base_url('')?>/public/assets/rrss/instagram.png" class="img-fluid"></a>											    
                     </div>
                 </div> 
@@ -56,13 +65,12 @@
     </div>
 
     <div class="modal fade" id="msj_cambiar_imagen" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg " role="document">
+            <div class="modal-content gradiente">
             <div class="modal-header">
-                <h5 class="modal-title">Cambiar imagen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title text-white">Cambiar imagen</h5>
+                <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+					<i class="fas fa-window-close" style="color:#ff0000;"></i></button>
             </div>
             <div class="modal-body">
                 <form id="imageUploadForm" action="<?php echo base_url('/cambiar_imagen_empresaN');?>" method="post" enctype="multipart/form-data">
@@ -71,64 +79,65 @@
                             <?php include("carrucelProveedorN.php");?>
                         </div>
                     </div>
-                    
-                    <button type="button" class="btn btn-primary btn-block"> 
-                        <div class="form-group small">
-                            <div class="row">
+                    <br>
+                    <div class="row" style="justify-content: center;">
+                        <div class="form-group col-10">
+                            <div class="row imagenHori">
                                 <div class="col-2">
-                                    <label for="exampleInputEmail1">Imagen 1</label>
+                                    <label class="labelImagen">Imagen 1</label>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-8">
                                     <input type="file" class="form-control form-control-user" id="filePhoto0" name="filePhoto0"
                                     placeholder="Editar imagen" >
                                 </div>
                             </div>                                                       
                         </div>
-                        <div class="form-group">
-                            <div class="row">
+                        <div class="form-group col-10">
+                            <div class="row imagenHori">
                                 <div class="col-2">
-                                    <label for="exampleInputEmail1">Imagen 2</label>
+                                    <label class="labelImagen">Imagen 2</label>
                                 </div>
-                                <div class="col-10">
-                                    <input type="file" class="form-control form-control-user" id="filePhoto1" name="filePhoto1"
+                                <div class="col-8">
+                                    <input type="file" class="form-control form-control-user small" id="filePhoto1" name="filePhoto1"
                                     placeholder="Editar imagen" >
                                 </div>
                             </div>                                                       
                         </div>
-                        <div class="form-group">
-                            <div class="row">
+                        <div class="form-group col-10">
+                            <div class="row imagenHori">
                                 <div class="col-2">
-                                    <label for="exampleInputEmail1">Imagen 3</label>
+                                    <label class="labelImagen">Imagen 3</label>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-8">
                                     <input type="file" class="form-control form-control-user" id="filePhoto2" name="filePhoto2"
                                     placeholder="Editar imagen" >
                                 </div>
                             </div>                                                       
                         </div>
-                        <div class="form-group">
-                            <div class="row">
+                        <div class="form-group col-10">
+                            <div class="row imagenHori">
                                 <div class="col-2">
-                                    <label for="exampleInputEmail1">Imagen 4</label>
+                                    <label class="labelImagen">Imagen 4</label>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-8">
                                     <input type="file" class="form-control form-control-user" id="filePhoto3" name="filePhoto3"
                                     placeholder="Editar imagen" >
                                 </div>
                             </div>                                                       
                         </div>
-                        <div class="form-group">
-                            <div class="row">
+                        <div class="form-group col-10">
+                            <div class="row imagenHori">
                                 <div class="col-2">
-                                    <label for="exampleInputEmail1">Imagen 5</label>
+                                    <label class="labelImagen">Imagen 5</label>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-8">
                                     <input type="file" class="form-control form-control-user" id="filePhoto4" name="filePhoto4"
                                     placeholder="Editar imagen" >
                                 </div>
                             </div>                                                       
                         </div>            
-                    </button>       
+                    </div>            
+                      
                 
             </div>
             <div class="modal-footer">

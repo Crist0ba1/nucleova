@@ -10,7 +10,7 @@
                     <!-- Nested Row within Card Body -->
                     <div class="row">
                         <div class="col-lg-6 d-none d-lg-block centrador">
-                        <img class="imagen" src="<?php echo base_url('')?>/public/assets/Logos/logoPequeno.png"  >
+                        <img class="imagen" src="<?php echo base_url('')?>/public/assets/Logos/LogoPequeno.png"  >
                         </div>
                         <div class="col-lg-6">
                             <div class="p-5">
@@ -28,10 +28,10 @@
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                    <a class="small" href="<?php echo base_url('/registrar');?>" >Crear una cuenta!</a>
+                                    <a class="small" href="<?php echo base_url('/registrar');?>" >!Crea tu cuenta!</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="<?php echo base_url('/login');?>">¿Ya esta registrado? Inicie sesion aqui!</a>
+                                    <a class="small" href="<?php echo base_url('/login');?>">¿Ya estás registrado? Inicie sesión aquí!</a>
                                 </div>
                             </div>
                         </div>
@@ -40,42 +40,9 @@
             </div>
         </div>
     </div>
-    
-        <div class="row">
-            <div class="col-12">
-                <div class="row justify-content-center" style="background-color:#314A9A;">                        
-                    <img class="img-fluid" src="<?php echo base_url('')?>/public/assets/Logos/logoCorreo.png" style="max-height: 150px;">
-                </div>
-            </div>
-            <br>
-            <hr>
-            <div class="col-12">
-                <hr>
-                <h5>Bienvenido: Nicolas, se a modificado su contraseña con exito </h5>
-                <br>
-                <h5><b> Nueva contraseña</b>:</h5>
-            </div>
-            <br>
-            <hr>
-            <div class="col-12">
-                <hr>
-                <h5>¿Necesitas ayuda? Contacta con nosotros o a través de nuestras redes sociales:</h5>
-                <div class="row justify-content-center"> 
-							<div class="single-footer-widget ">
-								<h6 style="color:#ffffff">Encuentranos en:</p>
-								<div class="footer-social d-flex align-items-center">
-									<a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
-									<img src="<?php echo base_url('')?>/public/assets/rrss/facebook.png" class="img-fluid"></a>	
-									<a class="btn btn-outline-info border-0" title="Linkedin" style="padding: 15px;" target="_blank" href="https://www.linkedin.com/company/nucleova/">
-									<img src="<?php echo base_url('')?>/public/assets/rrss/linkedin.png" class="img-fluid"></a>											
-									<a class="btn btn-outline-info border-0" title="Instagram" style="padding: 15px;" target="_blank" href="https://www.instagram.com/nucleova/">
-									<img src="<?php echo base_url('')?>/public/assets/rrss/instagram.png" class="img-fluid"></a>											
-								</div>								
-							</div>
-						</div>
-                <hr>
-            </div>
-        </div>
+
+</div>
+<div>
 
 </div>
 <div class="modal fade" id="msj_correo" role="dialog" >
@@ -116,3 +83,4 @@
             <?php session()->remove('msj_correo');?>
 	<?php endif;?>
 </script>
+

@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use CodeIgniter\I18n\Time;
 use App\Models\RegionesModel;
 use App\Models\ComunasModel;
 use App\Models\CategoriasModel;
@@ -25,8 +26,24 @@ class Home extends BaseController
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
         $data['subCategoria'] = $modelSubCategoria->findAll();
-        echo view('limites/Header',$data);
-        echo view('filtros/Filtros');
+        //die(json_encode(session()->get("tipo")));
+        if(session()->has('isLoggedIn') && session()->get('tipo') ==1 && session()->get('fecha') !=null){
+            $time = Time::parse(session()->get("fecha"));
+            $hoy = new Time('now');
+            if(session()->has('tipo') && session()->get('tipo') ==1 && $time->isAfter($hoy)){
+                echo view('newViews/ClientViews/baseLoggedClient',$data);
+            }else{
+                echo view('limites/Header',$data);
+                echo view('filtros/Filtros');
+            }
+        }
+        elseif(session()->has('tipo') && session()->get('tipo') >=2 && session()->get('tipo')<=3){
+            echo view('newViews/UserViews/baseLoggedUser',$data);
+        }else{
+            echo view('limites/Header',$data);
+            echo view('filtros/Filtros');
+        }
+
         echo view('categorias/categorias');
         echo view('limites/Fother');
     }
@@ -63,13 +80,13 @@ class Home extends BaseController
             
             if($model->insert($data)){
                 $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+                $this->usuarioCreado($this->request->getVar('emailRegister'));
             }else{
                 $user=null;
             }
             
             if($user != null){
-                $this-> setPersonaSessionRegister($user); // aqui tenemos ya al usuario que corresponde
-                $this->correoRegistroPersona($this->request->getVar('nombre'),$this->request->getVar('emailRegister'),$this->request->getVar('passwordr1'));
+                $this-> setPersonaSessionRegister($user); // aqui tenemos ya al usuario que corresponde               
                 //Se deve enviar el correo de usuario registrado a quien corresponda
                 return redirect()->to('/perfil');
             }
@@ -94,8 +111,7 @@ class Home extends BaseController
         $data['subCategoria'] = $modelSubCategoria->findAll();
         $modelU = new UssersModel();
         $model = new PersonaModel();
-        $user = $model->where('idPersona ', session()->get('id'))->first();
-        
+        $user = $model->where('idPersona', session()->get('id'))->first();
         if($user['otraID'] == null){
             $user2 = null;
         }else{
@@ -133,55 +149,41 @@ class Home extends BaseController
             //Redireccionar a la vista de admin
         }
 
-        if(session()->has("isLoggedIn") && session()->get("tipo") == 1 ){ //Buscador
-            echo view('limites/Header',$data);
-            echo view('dashbord/Empresa');
-            echo view('limites/Fother');
-        }
-        elseif(session()->has("isLoggedIn") && session()->get("tipo") == 2){//P Persona Natural
-            echo view('limites/Header',$data);
-            echo view('dashbord/Proveedor');            
-            echo view('limites/Fother');
-        }
-        elseif(session()->has("isLoggedIn") && session()->get("tipo") == 3){//P Empresa
-            echo view('limites/Header',$data);
-            echo view('dashbord/Proveedor');  
-            echo view('limites/Fother');
-        }
-        else{
-            return redirect()->to('/');
+        if(session()->has("fecha") && session()->get("fecha") != null){
+
+            $time = Time::parse(session()->get("fecha"));
+            $hoy = new Time('now');
+            // Si la fecha en persona es despues que el dia de hoy aun es pro
+            if($time->isAfter($hoy)){
+                return redirect()->to('/perfilPro');
+            }else{
+                $data['tiempo'] = NULL;
+                $model->where('idPersona', session()->get('id'))->set($data)->update();
+                return redirect()->to('/perfil');
+            }
+        }else{
+            if(session()->has("isLoggedIn") && session()->get("tipo") == 1 ){ //Buscador
+                echo view('limites/Header',$data);
+                echo view('dashbord/Empresa');
+                echo view('limites/Fother');
+            }
+            elseif(session()->has("isLoggedIn") && session()->get("tipo") == 2){//P Persona Natural
+                echo view('newViews/UserViews/baseLoggedUser',$data);
+                echo view('dashbord/Proveedor');
+                echo view('limites/Fother');
+            }
+            elseif(session()->has("isLoggedIn") && session()->get("tipo") == 3){//P Empresa
+                echo view('newViews/UserViews/baseLoggedUser',$data);
+                echo view('dashbord/Proveedor');
+                echo view('limites/Fother');
+            }
+            else{
+                return redirect()->to('/');
+            }
         }
             
     }
     
-    private function correoRegistroPersona($nombre, $correo, $clave){
-
-        $email = \Config\Services::email();
-
-        $email->setFrom('Contacto@nucleova.com', 'No responder este correo');
-        //$email->setTo($userData['email']);
-        $email->setTo('Contacto@nucleova.com');
-        $email->setSubject('Se a registrado en la aplicaicon web de Nucleova');
-        $email->setMessage('
-            <p>Estimad@, '.$nombre.' se a registrado con exito.<p>
-            <p>Credenciales de acceso:</p>
-            <p><b>Usuario:</b> '.$correo.'</p>
-            <p><b>Contraseña:</b> '.$clave.'</p>
-            <hn>
-            <p>Gracias por registrarse con nosotros.</p>
-
-            <h3>Atentamente: EQUIPO NUCLEOVA</h3>'
-        );
-
-        $val = 0;
-        if($email->send()){
-            $val= 1;
-        }
-        else{
-            $val = 2;
-        }
-        return $val;
-    }
     private function setPersonaSession($user){
 		$data =[
 			'id' => $user['idPersona'],
@@ -192,6 +194,7 @@ class Home extends BaseController
             'email' => $user['email'],
 			'isLoggedIn' => true,
             'isComplete' => 0,
+            'fecha' => $user['tiempo'],
 		];
 		session()->set($data);
 		
@@ -207,42 +210,13 @@ class Home extends BaseController
             'email' => $user['email'],
 			'isLoggedIn' => true,
             'isComplete' => 1, //uno es incompleto
+            'fecha' => $user['tiempo'],
 		];
 		session()->set($data);
 		
 		return true;
 	}
-    public function verVistas(){
-        session()->set("verModal", "1");
-        $modelR = new RegionesModel();
-		$modelCo = new ComunasModel();
-        $modelCategoria = new CategoriasModel();
-        $modelSubCategoria = new SubCategoriasModel();
-        $data['region'] = $modelR->findAll();
-		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-        $data['categoria'] = $modelCategoria->findAll();
-        $data['subCategoria'] = $modelSubCategoria->findAll();
-        //echo view('newViews/baseGuest',$data);
-        echo view('newViews/subscription');
-        
-        //echo view('newViews/myprofile');
-        
-        echo view('limites/Fother');
 
-    }
-    public function suscripcion(){   
-        $modelR = new RegionesModel();
-		$modelCo = new ComunasModel();
-        $modelCategoria = new CategoriasModel();
-        $modelSubCategoria = new SubCategoriasModel();
-        $data['region'] = $modelR->findAll();
-		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-        $data['categoria'] = $modelCategoria->findAll();
-        $data['subCategoria'] = $modelSubCategoria->findAll();
-        echo view('limites/Header',$data);
-        echo view('categorias/subscription');
-        echo view('limites/Fother');
-    }
     private function setUserSessionEmpresa($user){
         $modelI = new ImagenesModel();
         $imagen = $modelI->where('idUsers',$user['idUssers'])->first();
@@ -377,7 +351,9 @@ class Home extends BaseController
         if($this-> request -> getMethod() == 'post' ){
             $correo = $this->request->getVar('emailFP1');
         }
+        
         $aux = $this->verifiarCorreoPersona($correo);
+        //$aux = $this->verifiarCorreo($correo);
         if($aux){
             $pass = $this->setNewPass($correo);
             if($aux){
@@ -392,11 +368,11 @@ class Home extends BaseController
                 }
             }
             else{
-                session()->set("msj_correo", "Error, verifique la direccion de correo o intente más tarde."); 
+                session()->set("msj_correo", "Error, verifique la direccion de correo o intente más tarde 1."); 
             }
             
         }else{
-            session()->set("msj_correo", "Error, verifique la direccion de correo o intente más tarde."); 
+            session()->set("msj_correo", "Error, verifique la direccion de correo o intente más tarde 2."); 
         }
 
         return redirect()->to('/lostPassword');
@@ -452,106 +428,105 @@ class Home extends BaseController
         echo view('limites/Fother');
     }
 
-    public function dateToDate($date){
-        $input_date=$date;
-        $date=date("Y-m-d H:i:s",strtotime($input_date));
-        return $date;
-    }
-
-	private function correoUsuarioCreado($userData){
-		$email = \Config\Services::email();
-		
-		$email->setFrom('contacto@valchem.cl', 'Equipo Valchem');
-		$email->setTo('cristobal.henriquez.g@gmail.com');
-		$email->setSubject('Usuario creado con exito');
-		$email->setMessage('
-				<p>Estimado '.$userData['firstname'].', se a creado su usuario con exito.<p>
-				<p><b>Usuario:</b> '.$userData['email'].'.<p>
-				<p><b>Contraseña:</b> '.$userData['password'].'.<p>
-				<p>Al hacer ingreso a la pagina, dirigirse a configuracion de cuenta, seleccione editar usuario, y cambie su contraseña.<p>
-				<h3>Atentamente: EQUIPO VALCHEM</h3>
-				<div align="center"><img  src="https://valchem.cl/public/assets/empresa/mail2.png" heigth="400" class="d-block"></div>
-		');
-		
-
-		if($email->send()){
-			//echo "<script>alert('Se envio el correo');</script>";
-		}
-		else{
-			//echo "<script>alert('No se envio el correo');</script>";
-		}
-	}
-    private function enviarCorreoRegister($userData){
-       /*
-        $email = \Config\Services::email();
-        $rutaImagen = 'http://localhost/pega/appnucleova/public/assets/Logos/LogoPequeno2.png';
-        $email->setFrom('Contacto@nucleova.com', 'Nucleova');
-        //$email->setTo($userData['email']);
-        $email->setTo('cristobal.henriquez.g@gmail.com');
-        $email->setSubject('Usuario creado con exito');
-        $email->setMessage('
-            <p>Estimado '.$userData['firstname'].', se a creado su usuario con exito.<p>
-            <p><b>Usuario:</b> '.$userData['email'].'.<p>
-            <p><b>Contraseña:</b> '.$userData['clave'].'.<p>
-            
-            <h3>Atentamente: EQUIPO NUCLEOVA</h3>
-            <div align="center">
-                <img  src="'.$rutaImagen.'" class="d-block">
-            </div>'
-        );
-        if($email->send()){
-            //echo "<script>alert('Se envio el correo');</script>";
-        }
-        else{
-            //echo "<script>alert('No se envio el correo');</script>";
-        }
-        */
-    }
-    public function enviarCorreo(){
-        $nombre = $this->request->getVar('name');
-        $correo = $this->request->getVar('email');
-        $mensaje = $this->request->getVar('mensaje');
-
-        $email = \Config\Services::email();
-
-        $email->setFrom('Contacto@nucleova.com', 'No responder este correo');
-        //$email->setTo($userData['email']);
-        $email->setTo('Contacto@nucleova.com');
-        $email->setSubject('Formulario pie de pagina');
-        $email->setMessage('
-            <p>Estimado, '.$nombre.' a enviado el siguiente mensaje.<p>
-            <p>'.$mensaje.'.<p>
-            <p><b>Correo del emisor:</b> '.$correo.'.<p>
-            <hn>
-            <p>Recuerde que para responder este correo, debe enviar la respuesta al emisor.</p>
-            <p><b>No</b> debe responder directamente.</p>
-            <h3>Atentamente: EQUIPO NUCLEOVA</h3>'
-        );
-
-        $val = 0;
-        if($email->send()){
-            $val= 1;
-        }
-        else{
-            $val = 2;
-        }
-        return json_encode($val);
-    }
-
     /* Seccion de correos desde el HOME */
-
-
 	private function correoLostPass($correo, $pass){
 		$email = \Config\Services::email();
         
-        //$modelPersona = new PersonaModel();
+        $modelPersona = new PersonaModel();
+        $userData = $modelPersona->where("email", $correo)->first();
+        //$modelPersona = new UssersModel();
         //$userData = $modelPersona->where("email", $correo)->first();
-
+        
 		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
 		//$email->setTo($correo);
         $email->setTo('cristobal.henriquez.g@gmail.com');
 		$email->setSubject('Cambio de credenciales de acceso');
-		$email->setMessage('Mensaje de prueba');
+		$email->setMessage('
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <title>Nucleova</title>
+
+                <!-- bootstrap css-->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    
+                <!-- JS, Popper.js, and jQuery -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+                
+                <script src="https://kit.fontawesome.com/c818a46c29.js" crossorigin="anonymous"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+
+                <style>
+                        h5{
+                            font-size: 1.17em;
+                            color:#4F4F4F !important;
+                        }
+                        .hoverAzul:hover {
+                            background-color:#314A9A;
+                            filter: saturate(180%);
+                        }
+                        .box{
+                            position: relative;
+                            background-color:#FFFFFF !important;
+                            margin: auto;
+                            width: 50%;
+                        }
+                        .imgBox{
+                            position: absolute;
+                            top: 0;
+                            background-color:#314A9A; 
+                            text-align: center;
+                            
+                        }
+                        .sangria{
+                            padding-top: 10px;
+                              padding-bottom: 10px;
+                              padding-right: 30px;
+                              padding-left: 30px;
+                        }
+                </style>
+                <body>
+                    <div class="row">
+                        <div class="col-6" style="background-color:#C5C5C5;">
+                            <br>
+                            <div class="row box">
+                                <div class="col-12 " style="background-color:#314A9A; text-align: center;">
+                                    <div class="row justify-content-center">                        
+                                        <img class="img-fluid" src="https://app.nucleova.com/public/assets/Logos/logoCorreo.png" style="max-height: 100px;">
+                                    </div>
+                                </div>
+                        
+                                <div class="col-12 sangria">
+                                    <h5>'.$userData['nombre'].' ,esperando se encuentre bien, se ha modificado su contraseña con éxito </h5>
+                                    <h5><b> Nueva contraseña</b>: '.$pass.'</h5>
+                                </div>
+                                <hr>
+                                <div class="col-12 sangria">
+                                    <h5>¿Necesitas ayuda? Contacta con nosotros o a través de nuestras redes sociales:</h5>
+                                    <div class="row justify-content-center" style="text-align: center;"> 
+                                                <div class="single-footer-widget ">
+                                                    <h5 style="color:#ffffff">Encuentranos en:</h5>
+                                                    <div class="footer-social d-flex align-items-center">
+                                                        <a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/facebook.png" class="img-fluid hoverAzul"></a>	
+                                                        <a class="btn btn-outline-info border-0" title="Linkedin" style="padding: 15px;" target="_blank" href="https://www.linkedin.com/company/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/linkedin.png" class="img-fluid hoverAzul"></a>											
+                                                        <a class="btn btn-outline-info border-0" title="Instagram" style="padding: 15px;" target="_blank" href="https://www.instagram.com/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/instagram.png" class="img-fluid hoverAzul"></a>											
+                                                    </div>								
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        ');
 		
        // $succes = $email->send();
 		if($email->send()){
@@ -564,5 +539,114 @@ class Home extends BaseController
 		}
 	}
 
+    /*Correo usuario creado */
+    private function usuarioCreado($correo){
+		$email = \Config\Services::email();
+        
+        $modelPersona = new PersonaModel();
+        $userData = $modelPersona->where("email", $correo)->first();
+        
+		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
+		//$email->setTo($correo);
+        $email->setTo('cristobal.henriquez.g@gmail.com');
+		$email->setSubject('Usuario creado con éxito!');
+		$email->setMessage('
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <title>Nucleova</title>
+
+                <!-- bootstrap css-->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    
+                <!-- JS, Popper.js, and jQuery -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+                
+                <script src="https://kit.fontawesome.com/c818a46c29.js" crossorigin="anonymous"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+
+                <style>
+                        h5{
+                            font-size: 1.17em;
+                            color:#4F4F4F !important;
+                        }
+                        .hoverAzul:hover {
+                            background-color:#314A9A;
+                            filter: saturate(180%);
+                        }
+                        .box{
+                            position: relative;
+                            background-color:#FFFFFF !important;
+                            margin: auto;
+                            width: 50%;
+                        }
+                        .imgBox{
+                            position: absolute;
+                            top: 0;
+                            background-color:#314A9A; 
+                            text-align: center;
+                            
+                        }
+                        .sangria{
+                            padding-top: 10px;
+                              padding-bottom: 10px;
+                              padding-right: 30px;
+                              padding-left: 30px;
+                        }
+                        
+                </style>
+                <body>
+                    <div class="row">
+                        <div class="col-6" style="background-color:#C5C5C5;">
+                            <br>
+                            <div class="row box">
+                                <div class="col-12" style="background-color:#314A9A; text-align: center;">
+                                    <div class="row justify-content-center">                        
+                                        <img class="img-fluid" src="https://app.nucleova.com/public/assets/Logos/logoCorreo.png" style="max-height: 100px;">
+                                    </div>
+                                </div>
+                        
+                                <div class="col-12">
+                                    <h5> De parte del equipo de Nucleova te damos una calurosa bienvenida '.$userData['nombre'].'<h5>
+                                    <h5>Disfruta de todos nuestros servicios</h5>
+                                </div>
+                                <hr>
+                                <div class="col-12">
+                                    <h5>¿Necesitas ayuda? Contacta con nosotros o a través de nuestras redes sociales:</h5>
+                                    <div class="row justify-content-center" style="text-align: center;"> 
+                                                <div class="single-footer-widget ">
+                                                    <h5 style="color:#ffffff">Encuentranos en:</h5>
+                                                    <div class="footer-social d-flex align-items-center">
+                                                        <a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/facebook.png" class="img-fluid hoverAzul"></a>	
+                                                        <a class="btn btn-outline-info border-0" title="Linkedin" style="padding: 15px;" target="_blank" href="https://www.linkedin.com/company/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/linkedin.png" class="img-fluid hoverAzul"></a>											
+                                                        <a class="btn btn-outline-info border-0" title="Instagram" style="padding: 15px;" target="_blank" href="https://www.instagram.com/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/instagram.png" class="img-fluid hoverAzul"></a>											
+                                                    </div>								
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        ');
+		
+       // $succes = $email->send();
+		if($email->send()){
+			return true;
+		}
+		else{
+            $error = $email->printDebugger();
+            session()->set('errorEmail',$error);
+			return false;
+		}
+    }
 
 }

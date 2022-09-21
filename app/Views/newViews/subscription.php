@@ -1,3 +1,4 @@
+
 <?php
     include("baseGuest.php");
 ?>    
@@ -13,10 +14,10 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div id="carouselId" class="carousel slide top30" data-bs-ride="carousel">
+            <div id="carouselId" class="carousel slide top30" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
-                    <li data-bs-target="#carouselId" data-bs-slide-to="1" aria-label="Second slide"></li>
+                    <li data-bs-target="#carouselId" data-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
+                    <li data-bs-target="#carouselId" data-slide-to="1" aria-label="Second slide"></li>
                     <!--li data-bs-target="#carouselId" data-bs-slide-to="2" aria-label="Third slide"></li-->
                 </ol>
                 <div class="carousel-inner" role="listbox">
@@ -30,13 +31,13 @@
                         <img src="" alt="3">
                     </div-->
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                <button class="carousel-control-prev controls" type="button" data-target="#carouselId" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
+                    <span class="sr-only">Anterior</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                <button class="carousel-control-next controls" type="button" data-target="#carouselId" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
+                    <span class="sr-only">Siguiente</span>
                   </button>
             </div>
         </div>
@@ -48,10 +49,10 @@
                 <ul class="list-group list-group-flush bottom20">
                     <li class="list-group-item">Interfaz de administración</li>
                     <li class="list-group-item">Historial de servicios</li>
-                    <li class="list-group-item">control de servicios</li>
-                    <li class="list-group-item">Interfaz de administración</li>
+                    <li class="list-group-item">Control de servicios</li>
+                    <!--li class="list-group-item">Interfaz de administración</li>
                     <li class="list-group-item">Historial de servicios</li>
-                    <li class="list-group-item">control de servicios</li>
+                    <li class="list-group-item">Control de servicios</li-->
                 </ul>  
            </div>           
            <div class="row">

@@ -17,55 +17,6 @@
         text-align: center;
 
     }
-    .flip {
-    -webkit-perspective: 800;   
-            perspective: 800;
-
-    }
-    .flip .card.flipped {
-    -webkit-transform: rotatey(-180deg);
-            transform: rotatey(-180deg);
-
-    }
-    .flip .card {
-        z-index: 1;
-        width: 270px;
-        height: 250px;
-        -webkit-transform-style: preserve-3d;
-        -webkit-transition: 0.5s;
-        transform-style: preserve-3d;
-        transition: 0.5s;
-    
-    }
-    .flip .card .face {
-    -webkit-backface-visibility: hidden ;
-        backface-visibility: hidden ;
-        position: relative;
-        z-index: 1;
-    }
-    .flip .card .front {
-    width: 270px;
-    }
-    .flip .card .front img{
-    width: 270px;
-    height: 100%;
-    }
-    .flip .card .back {
-    padding-top: 10%;
-    -webkit-transform: rotatey(-180deg);
-            transform: rotatey(-180deg);
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    margin: 0 auto;
-    background-color: red;
-    z-index: 100 !important;
-    color: #DAF7A6;
-    background-color: #314a9a;
-    background-image: linear-gradient(180deg, #314a9a 0%, #c04894 50%, #ffffff 100%);
-
-    }
     .inner{
     margin:0px !important;
     width: auto;
@@ -86,39 +37,11 @@
     }
     
 </style>
-<!--div class="container">
-    <div  class="row">
-        <?php foreach($categoria as $row):?>			
-            <div id="cardCategoria" class="col-sm-3" >
-                <div class="flip">
-                    <div id="padre"class="card"> 
-                        <div class="face front hijoFront"> 
-                            <div class="inner my-auto">   
-                                <img id="logo2" src="<?php echo base_url('/public/assets/Logos/categorias/');?>/<?= $row['nombreImagen'];?>.png" heigth="50px" class="img-fluid">
-                            </div>
-                        </div> 
-                        <div class="face back hijoBack">  
-                            <div class="inner content-center row"> 
-                                <h4 style="margin-left: 15px;"><?php echo $row['nombre']?></h4>                                
-                                <br>
-                                <?php foreach($subCategoria as $row2):?>
-                                    <?php if($row['id'] == $row2['refCat']):?>
-                                        <a class="btn btn-block btn-link text-white btn-sm listadoBtn" href=""><?php echo  $row2['nombreSub'] ?><br></a>
-                                    <?php endif;?>
-                                <?php endforeach;?>
-                            </div>
-                        </div>
-                    </div>	 
-                </div>
-            </div>
-        <?php endforeach;?>
-    </div>
-</div-->
 
 <div class="container">
     <div id="padre" class="row">
         <?php foreach($categoria as $row):?>			
-            <div id="cardCategoria" class="col-sm-3" >
+            <div id="cardCategoria" class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
                     <div class="card"> 
                         <a onclick="myFunction(<?php echo $row['id']?>)"> 
                             <div class=" my-auto">   
@@ -168,10 +91,6 @@
 
 
 <script>
-    $('.flip').hover(function(){
-        $(this).find('.card').toggleClass('flipped');
-
-    });
     function myFunction($id){
         $('#Listado').empty();
         <?php foreach($subCategoria as $row):?>
@@ -181,19 +100,6 @@
                 btn.classList.add('listadoBtn','btn','btn-link','text-white','btn-sm','btn-block','col-5');
                 btn.onclick = function () {
                 location.href = "<?php echo base_url('/subCategoria')?>/<?php echo $row['idSubCat'];?>";
-                    /*
-                        $.ajax({
-                            url:"<?php echo base_url('/subCategoria')?>/<?php echo $row['idSubCat'];?>",
-                            type: "POST",                        
-                            success:function(data){
-                                alert(data);
-                            },
-                            error:function(){
-                                alert("Error, recargue el sitio \n si el error persiste intente más tarde");
-                            }
-
-                        });
-                    */
                 };
                 document.getElementById("Listado").appendChild(btn);
             }

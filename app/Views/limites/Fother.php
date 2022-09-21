@@ -15,7 +15,8 @@
 						<div class="single-footer-widget">
 							<div class="row">
 								<div class="col-md-offset-1 col-md-10 col-sm-12">
-									<h6 style="color:#ffffff">Contactanos al correo: <b>contacto@nucleova.cl</b></p> o llene el siguiente formulario:</h6></b>
+									<h6 style="color:#ffffff"> <p> Si quieres saber más sobre nosotros, escríbenos al siguiente correo <b>contacto@nucleova.cl</b></p> 
+									                           <p> O llena el siguiente formulario:</p>									
 								</div>
 								<div class="col-md-offset-1 col-md-10 col-sm-12 wow fadeIn">
 									<form method="post" id="fotherCorreo" >
@@ -42,7 +43,7 @@
 					<div class="col-lg-5 col-md-5 col-sm-5 ">
 						<div class="row justify-content-center"> 
 							<div class="single-footer-widget ">
-								<h6 style="color:#ffffff">Encuentranos en:</p>
+								<h6 style="color:#ffffff">Encuéntranos en:</p>
 								<div class="footer-social d-flex align-items-center">
 									<a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
 									<img src="<?php echo base_url('')?>/public/assets/rrss/facebook.png" class="img-fluid"></a>	

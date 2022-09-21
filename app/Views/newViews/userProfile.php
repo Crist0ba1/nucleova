@@ -1,6 +1,4 @@
-<?php
-    include("baseLoggedClient.php");
-?>   
+
 <div class="container cont60">
     <div class="row">
         <div class="col-sm-3 top30 bottom20">

@@ -32,14 +32,14 @@
     
     <form id="filtro"  class="form-inline form-row mx-auto " action="<?php echo base_url('/filtro')?>" method="GET"> 
 			<div class="col-12 text-center text-white">
-				<h4>Seleccione filtros de busqueda:</h4>
+				<h4>Seleccionar filtros de búsqueda:</h4>
 			</div>
 			<div class="col-10">
 				<div class="row text-center">
 					<div class="col-3 col-sm-3">
 						<div class="form-group select">
 							<select name="region" id="region1" data-live-search="true" class="form-control select-lg selectpicker"  style="width:100% !important;">
-								<option value="0">-Region-</option>
+								<option value="0">-Región-</option>
 								<?php foreach($region as $row):?>
 									<option value="<?= $row['id'];?>"><?= $row['region'];?></option>
 								<?php endforeach;?>
@@ -58,9 +58,9 @@
 					</div>
 					<div class="col-3 col-sm-3">
 						<div class="form-group select">
-							<select name="categoriaSelect" id="categoriaSelect" class="selectpicker select-lg" title="Categoria(s)" 
+							<select name="categoriaSelect" id="categoriaSelect" class="selectpicker select-lg" title="Categoría(s)" 
 							 multiple data-live-search="true" style="width:100% !important;">
-								<option disabled >- Categoria-</option>
+								<option disabled >- Categoría-</option>
 								<?php foreach($categoria as $rowC):?>
 									<option  value="<?= $rowC['id'];?>"><?= $rowC['id'];?>. <?= $rowC['nombre'];?></option>
 								<?php endforeach;?>
@@ -70,9 +70,9 @@
 					</div>
 					<div class="col-3 col-sm-3">
 						<div class="form-group select">
-							<select name="subCategoriaSelect" id="subCategoriaSelect" class="selectpicker select-lg" title="Subcategoria(s)" 
+							<select name="subCategoriaSelect" id="subCategoriaSelect" class="selectpicker select-lg" title="Subcategoría(s)" 
 							 multiple data-live-search="true" style="width:100% !important;">
-								<option >-Subcategoria-</option>
+								<option >-Subcategoría-</option>
 								<?php foreach($subCategoria as $row):?>
 									<option value="<?= $row['idSubCat'];?>"><?= $row['nombreSub'];?></option>
 								<?php endforeach;?>

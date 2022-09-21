@@ -7,7 +7,7 @@
         <div class="col-md-5">
             <div class="row">
                 <div class="col">
-                    <img id="imgPerfil" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 300px; max-height: 450px;" src="<?php echo base_url('')?>/public/assets/sin-foto.jpg" />
+                    <img id="imgPerfil" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 300px !important; max-height: 450px !important;   max-width: 450px !important;" src="<?php echo base_url('')?>/public/assets/sin-foto.jpg" />
                     <button type="button" onclick="cambiarImagen()" class="btn btn-primary btn-block"><i class="fa fa-camera" aria-hidden="true"></i> Cambiar imagen
                     </button>   
                     
@@ -43,12 +43,12 @@
             <div class="row">
                 <div class="col-md-7">
                     <h4>Ingrese redes sociales</h4>
-                    <div class="form-group input-group align-items-center">            
-                        <a id="rrssF1" class="btn btn-outline-primary border-0 notActive " title="Facebook" style="padding: 15px;" target="_blank" href="" disabled>
+                    <div class="row form-group input-group align-items-center">            
+                        <a id="rrssF1" class="col-4 btn btn-outline-primary border-0 notActive " title="Facebook" style="padding: 15px;" target="_blank" href="" disabled>
                             <img src="<?php echo base_url('')?>/public/assets/rrss/facebook.png" class="img-fluid"></a>	
-                        <a id="rrssL1" class="btn btn-outline-info border-0 notActive " title="Linkedin" style="padding: 15px;" target="_blank" href="" disabled>
+                        <a id="rrssL1" class="col-4 btn btn-outline-info border-0 notActive " title="Linkedin" style="padding: 15px;" target="_blank" href="" disabled>
                             <img src="<?php echo base_url('')?>/public/assets/rrss/linkedin.png" class="img-fluid"></a>											
-                        <a id="rrssI1" class="btn btn-outline-info border-0 notActive " title="Instagram" style="padding: 15px;" target="_blank" href="" disabled>
+                        <a id="rrssI1" class="col-4 btn btn-outline-info border-0 notActive " title="Instagram" style="padding: 15px;" target="_blank" href="" disabled>
                             <img src="<?php echo base_url('')?>/public/assets/rrss/instagram.png" class="img-fluid"></a>											    
                     </div>
                 </div> 
@@ -58,20 +58,34 @@
 
     <div class="modal fade" id="msj_cambiar_imagen" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content gradiente">
             <div class="modal-header">
-                <h5 class="modal-title">Cambiar imagen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title text-white">Cambiar imagen</h5>
+                <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+					<i class="fas fa-window-close" style="color:#ff0000;"></i></button>
             </div>
             <div class="modal-body">
                 <form id="imageUploadForm" action="<?php echo base_url('/cambiar_imagen_empresa');?>" method="post" enctype="multipart/form-data">
-                    <button type="button" class="btn btn-primary btn-block"> 
-                    <img id="imgPerfil2" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 300px; max-height: 450px;" src="<?php echo base_url('')?>/public/assets/sin-foto.jpg" />    
-                        <input type="file" class="form-control form-control-user" id="filePhoto" name="filePhoto"
-                        placeholder="Editar imagen" >
-                    </button>       
+                    <div class="row" style="justify-content: center;">
+                        <div class="contenedorImagen">
+                            <img id="imgPerfil2" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 250px; max-height: 300px;" src="<?php echo base_url('')?>/public/assets/sin-foto.jpg" />                            
+                        </div>
+                        <div class="col-10">
+                            <br>
+                            <div class="row" style="justify-content: center; background-color: #314a9a; padding:7px;">
+                                <div class="col-2">
+                                    <label class="labelImagen text-white">Imagen</label>
+                                </div>
+                                <div class="col-10">
+                                    <input type="file" class="form-control form-control-user text-white" id="filePhoto" name="filePhoto"
+                                    placeholder="Editar imagen" >     
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                    
                 
             </div>
             <div class="modal-footer">

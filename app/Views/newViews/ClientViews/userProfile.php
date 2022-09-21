@@ -1,7 +1,5 @@
-<?php
-    include("baseLoggedClient.php");
-?>   
-<div class="container cont60">
+
+	<div class="container cont60">
     <div class="row">
         <div class="col-sm-3 top30 bottom20">
             <h3>Mi perfil</h3>
@@ -11,13 +9,13 @@
 		<div class="card-header">
 			<ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Perfil</button>
+					<button class="nav-link active" id="profile-tab" data-toggle="tab" data-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">Perfil</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="records-tab" data-bs-toggle="tab" data-bs-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">Antecedentes</button>
+					<button class="nav-link" id="records-tab" data-toggle="tab" data-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">Antecedentes</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="information-tab" data-bs-toggle="tab" data-bs-target="#information" type="button" role="tab" aria-controls="information" aria-selected="false">Información Personal</button>
+					<button class="nav-link" id="information-tab" data-toggle="tab" data-target="#information" type="button" role="tab" aria-controls="information" aria-selected="false">Información Empresa</button>
 				</li>
 			</ul>			
 		</div>
@@ -42,20 +40,5 @@
 		</div>
 	</div>    
 </div>
-
-<script>
-	$(document).ready(function() { 
-	alert('funciona');
-	});
-	if(session()->get("verModaResienRegistrado") == 1){	
-		alert(' el primer if');
-	}else{
-		alert('falla el primer if');
-	}
-</script>
-<?php
-	if(session()->get("verModaResienRegistrado") == 1){
-		include("userRegister.php");	
-	}
-?>
+        
 

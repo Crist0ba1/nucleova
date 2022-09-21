@@ -1,10 +1,13 @@
 <style>
     .centrador{
-     position: relative;
+        justify-content: center;
+        align-items: center;
     }
 
     .imagen{
-        position: absolute;
+        justify-content: center;
+        align-items: center;
+        position: relative;
         width: 80%;
         top: 0;
         left: 0;
@@ -20,13 +23,13 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div id="centrador" class="col-lg-6 centrador">
+                    <div id="centrador" class="col-lg-6 text-center">
                         <img id="imagen" class="imagen" src="<?php echo base_url('')?>/public/assets/Logos/logoPequeno.png" >
                     </div>
                     <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Bienvenidos!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">!Bienvenidos!</h1>
                             </div>
                             <form id="loginForm" action="<?php echo base_url('/iniciarSession')?>"  class="user" method="post">
                                 <input type="hidden" id="g-token" name="g-token">
@@ -67,10 +70,10 @@
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="<?php echo base_url('/lostPassword');?>" >¿Olvido su contraseña?</a>
+                                <a class="small" href="<?php echo base_url('/lostPassword');?>" >¿Olvidaste tu contraseña?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="<?php echo base_url('/registrar');?>" >Crear una cuenta!</a>
+                                <a class="small" href="<?php echo base_url('/registrar');?>" >!Crea tu cuenta!</a>
                             </div>
                         </div>
                     </div>

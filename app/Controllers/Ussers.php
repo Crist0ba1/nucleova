@@ -8,13 +8,14 @@ use Transbank\Webpay\WebpayPlus\Transaction;
 \Transbank\Webpay\WebpayPlus::setCommerceCode("");
 \Transbank\Webpay\WebpayPlus::setApiKey("");
 */
-
+use CodeIgniter\I18n\Time;
 
 use App\Models\RegionesModel;
 use App\Models\ComunasModel;
 use App\Models\CategoriasModel;
 use App\Models\UssersModel;
 use App\Models\ImagenesModel;
+use App\Models\ContratacionesModel;
 use App\Models\SubCategoriasModel;
 use App\Models\CategoriasListModel;
 use App\Models\ComunasListModel;
@@ -95,7 +96,7 @@ class Ussers extends BaseController
         
                 }
                 else{
-                    session()->set('errorLogin',"Error, al iniciar sesion, intentelo otra vez");
+                    session()->set('errorLogin',"Error, al iniciar sesion, intentelo otra vez ");
                     return redirect()->to('/login');
                 }
                 
@@ -103,7 +104,7 @@ class Ussers extends BaseController
             }
  
 		}
-            return redirect()->to('/login')->with('mensaje','Error, intente mas tarde');
+            return redirect()->to('/login')->with('mensaje','Error, intente mas tarde 3');
 
 
             
@@ -395,6 +396,7 @@ class Ussers extends BaseController
             $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
             $idEmpresa = $user['idUssers'];
             if($user != null){       
+                
                 /* Asocio la empresa al usuario creado*/
                 $modelPersona = new PersonaModel();
                 $data2['otraID'] = $idEmpresa;
@@ -931,49 +933,59 @@ class Ussers extends BaseController
             $modelPagos = new PagosModel();
             $pagos = $modelPagos->where('meses', '1')->first();
             $valor = $pagos['precio']*$num;
-            $url= '/pasareladepago'.'/'.$valor;
-            return redirect()->to($url);
-        }else{
-            return redirect()->to('/verplanes');
+            $meses = 1;
+            $regalo = 1;
+            $this->crearTransaccion($valor ,$meses , $regalo);
         }
+        return redirect()->to('/verplanes');
     }
     public function crearTransaccion2($num){
         if(is_numeric($num)){    
             $modelPagos = new PagosModel();
             $pagos = $modelPagos->where('meses', '3')->first();
             $valor = $pagos['precio']*$num;
-            $url= '/pasareladepago'.'/'.$valor;
-            return redirect()->to($url);
-        }else{
-            return redirect()->to('/verplanes');
+            $meses = 3;
+            $regalo = 1;
+            $this->crearTransaccion($valor ,$meses , $regalo);
         }
+        return redirect()->to('/verplanes');
     }
-    public function crearTransaccion3($num){
+    public function crearTransaccion3($num){      
         if(is_numeric($num)){    
             $modelPagos = new PagosModel();
             $pagos = $modelPagos->where('meses', '6')->first();
             $valor = $pagos['precio']*$num;
-            $this->crearTransaccion($valor);
-        }else{
-            return redirect()->to('/verplanes');
+            $meses = 6;
+            $regalo = 1;
+            $this->crearTransaccion($valor ,$meses , $regalo);
         }
+        return redirect()->to('/verplanes');
+        
     }
     public function crearTransaccion4($num){
         if(is_numeric($num)){    
             $modelPagos = new PagosModel();
             $pagos = $modelPagos->where('meses', '12')->first();
             $valor = $pagos['precio']*$num;
-            $this->crearTransaccion($valor);
-        }else{
-            return redirect()->to('/verplanes');
+            $meses = 12;
+            $regalo = 1;
+            $this->crearTransaccion($valor ,$meses , $regalo);
         }
+        return redirect()->to('/verplanes');
+
     }
 
-    public function crearTransaccion($valor){
+    public function crearTransaccion($valor ,$meses ,$regalo){
         /* $aux1, $aux2, $aux3 */
-        $order = random_int(0, 999);
-		$buy_order = $order; // Este valor se obtendra de la BD, ya que sera el numero del carro
-		$session_id = 4;
+        /* aqui tengo que buscar en contrataciones */
+        $modelContrataciones = new ContratacionesModel();
+        $order = $modelContrataciones->countAll();
+		$buy_order = $order+1;
+        // Este valor se obtendra de la BD, ya que sera el numero del carro
+        session()->set('buy_order', $buy_order);
+        session()->set('meses', $meses);
+        session()->set('regalo', $regalo);
+		$session_id = session()->get('id');
 		$amount = $valor;
 		$return_url = "http://localhost/git/appnucleova/respuesta/";// a esta ruta llega del metodo de pago
 		$transaction = new Transaction();
@@ -987,7 +999,6 @@ class Ussers extends BaseController
         session()->set('auxTDK',$auxTDK);
         session()->set('url',$response->url);
 		session()->set('token',$response->token);
-
         return redirect()->to('/verplanes');
 	}
 	/*Aqui llega */
@@ -1079,131 +1090,120 @@ class Ussers extends BaseController
         session()->remove('url');
         session()->remove('auxTDK');
 
-        die(json_encode($data));
-        
-        session()->remove('token');
-        session()->remove('url');
-        session()->remove('auxTDK');
-        $mensajeControlador =[
-            'titulo' => "Por la mismisima csm",
-            'mensaje' => "Por que chicha la wea no funciona",
-            ];
-        session()->set('mensajeControlador',$mensajeControlador);	
-        if(!session()->has('mensajeControlador')){
-            
-        }
-        $aux = false; //Es para el else
-		if($this->request->getVar('token_ws')){
-			$token = $this->request->getVar('token_ws');
-        
-            $response = (new Transaction)->commit($token);
-			//$response = Transaction::commit($token);
-            /*
-            $value = substr ( $value, 9, 72);
-            $token = strtok($value, " \n\t");   
-            $response = (new Transaction)->status($token);
-            */
-            
-		}
-
-		if($this->request->getVar('TBK_TOKEN')){
-			//echo "<script>alert('TBK_token');</script>";
-			$token = $_POST['TBK_TOKEN'];
-			
-			$mensajeControlador =[
-			'titulo' => "Compra anulada",
-			'mensaje' => "A anulado la compra y a vuelto al comercio",
-			];
-			session()->set('mensajeControlador',$mensajeControlador);	
-			return redirect()->to('/verplanes');
-			
-		}
-
-		if(isset($response)){
-			$status = $response->getStatus();
-		 	 session()->remove('token');
-             session()->remove('url');
-             session()->remove('auxTDK');
-
-            if($response->isApproved()){
-				$aux = $this->sendEmailTDK();
+        if($data['texto'] == "Aprobado"){
+            //Se envia un correo
+            if( session()->has('email')){
+                $email = session()->get('email');
+                $buy_order = session()->get('buy_order');
+                $meses = session()->get('meses');
+                $regalo = session()->get('regalo');
+                $fecha = new Time('now');
+                $idPersona = session()->get('id');
                 
-                if(!$aux){
-                    $mensajeControlador =[
-                        'titulo' => "Compra realizada con exito",
-                        'mensaje' => "La compra fue realizada con exito, pero no se pudo enviar el correo de confirmacion <br> Verifique su correo en configuracion de cuenta",
-                        ];
+
+                $modelContrataciones = new ContratacionesModel();
+                $aux = $modelContrataciones->where('idPersona', $idPersona)->first();
+                if($aux != null){
+                    $regalo = 0;
+                }
+                // Ingreso la contratacion
+                $data1= [
+                    'idPersona' => $idPersona,
+                    'idCompra'  => $buy_order,
+                    'meses'  => $meses,
+                    'meses_regalo'  => $regalo,
+                    'fecha_compra'  => $fecha,
+                ];
+                
+                $modelContrataciones->insert($data1);
+
+                //Sumar los meses al usuario
+                $this->sumarFechaPersona($idPersona, $meses + $regalo);
+
+                //Mensaje controler, compra realizado con exito
+                if($regalo == 0){
+                    if($meses == 1){
+                        $mensaje = 'Felicidades por su compra, bienvenido a NUCLEOVA PRO. <br>
+                        Adquirió '.$meses.' mes de servicio. <br>
+                        Orden de compra: '.$buy_order.'.
+                        ';
+                    }
+                    else{
+                        $mensaje = 'Felicidades por su compra, bienvenido a NUCLEOVA PRO.<br>
+                        Adquirió '.$meses.' meses de servicio. <br>
+                        Orden de compra: '.$buy_order.'.
+                        ';
+                    }
+                }
+                elseif($regalo == 1){
+                    if($meses=1){
+                        $mensaje = 'Felicidades por su compra, bienvenido a NUCLEOVA PRO.
+                        Adquirió '.$meses.' mes de servicio y por su primera compra le otorgamos 1 mes de regalo.
+                        Orden de compra: '.$buy_order.'.
+                        ';
+                    }
+                    else{
+                        $mensaje = 'Felicidades por su compra, bienvenido a NUCLEOVA PRO. 
+                        Adquirió '.$meses.' meses de servicio y por su primera compra le otorgamos 1 mes de regalo.
+                        Orden de compra: '.$buy_order.'.
+                        ';
+                    }
                 }
                 else{
-                    $mensajeControlador =[
-                        'titulo' => "Compra realizada con exito",
-                        'mensaje' => "La compra fue realizada con exito, pero no se pudo enviar el correo de confirmacion <br> Verifique su correo en configuracion de cuenta",
-                        ];
-                }    
-                
-                session()->set('mensajeControlador',$mensajeControlador);	
-                if(!session()->has('mensajeControlador')){
-                    die($mensajeControlador['titulo']);
+                    if($meses == 1){
+                        $mensaje = 'Felicidades por su compra, bienvenido a NUCLEOVA PRO. <br>
+                        Adquirió '.$meses.' mes de servicio y por su primera compra le otorgamos '.$regalo.' meses de regalo. 
+                        Orden de compra: '.$buy_order.'.
+                        ';
+                    }
+                    else{
+                        $mensaje = 'Felicidades por su compra, bienvenido a NUCLEOVA PRO. <br>
+                        Adquirió '.$meses.' meses de servicio y por su primera compra le otorgamos '.$regalo.' meses de regalo. 
+                        Orden de compra: '.$buy_order.'.
+                        ';
+                    }
                 }
 
-                return redirect()->to('/verplanes');
+                $mensajeControlador= [
+                    'titulo' => 'Compra exitosa!',
+                    'mensaje'  => $mensaje,
+                ];               
+                session()->set('mensajeControlador1',$mensajeControlador);
 
-			}
-			else{
+
+                if($order = 0){
+                    //correo primera compra
+                    $this->correoUsuarioPro($email, $buy_order, $meses, $regalo, $fecha);
+                }else{
+                    //correo compra
+                    $this->correoUsuarioPro1($email, $buy_order, $meses, $fecha);
+                }
+                
+                
+            }
+            else{
                 $mensajeControlador =[
-                    'titulo' => "LA compra a fallado",
-                    'mensaje' => "La compra NO pudo ser realizada con exito",
+                    'titulo' => "Error en la compra",
+                    'mensaje' => "Por favor notifique a travez del correo: contacto@nucleova.com.",
                     ];
-                session()->set('mensajeControlador',$mensajeControlador);	
-                return redirect()->to('/verplanes');
-			} 
-				/* falta diferenciar el status
-				 y almacenarlo en la BD pero */
-		}
-		else{
+                session()->set('mensajeControlador1',$mensajeControlador);	
+            }
+            //Se agrega el apartado pro a perfiles y se redirecciona
             
-			/* A ocurrido un error, por favor intentelo de nuevo */
-			 if(!$aux){
-				$mensajeControlador =[
-					'titulo' => "Todo fallo",
-					'mensaje' => "Todo mal",
-					];
-			 }
-			//$status ='FAILED';
-			//$flag = $this->statePedido($status, $pedido);/* Cambiar estado en BD*/ //siempre true
-			session()->set('mensajeControlador',$mensajeControlador);	
-			return redirect()->to('/verplanes');
-		}
+            //Vista usuatios pro
 
-
-
-
+        }else{
+            //error en la compra se debe ver a mano que fue lo que paso
+            $mensajeControlador =[
+                'titulo' => "Error en la compra",
+                'mensaje' => "La transacción fue rechazada.",
+                ];
+            session()->set('mensajeControlador1',$mensajeControlador);	
+        }
+        
+        return redirect()->to('/verplanes');
 	}
 	
-    private function sendEmailTDK(){
-		$email = \Config\Services::email();
-
-		$email->setFrom('Contacto@nucleova.com', 'Equipo de ventas Nucleova');
-		$email->setTo('cristobal.henriquez.g@gmail.com'); //session()->get('email')
-		$email->setSubject('Membresia pagada con exito');
-		$nombre = "Cristobal Henriquez";//session()->get('nombre');
-		$pedido = "0001";//session()->get('numeroAux');
-		$email->setMessage('
-				<h3><b>¡Felicidades '.$nombre.'!</b>, hemos recibido correctamente tu pago. Nuestro equipo se encuentra preparando tu pedido y próximamente lo tendrás disponible.</h3>
-				<h3>El identificador del pado de la membresia es: <b>Nuc'.$pedido.'</b></h3>
-				<br>					
-				<h3>Atentamente: EQUIPO NUCLEOVA</h3>
-				<div align="center"><img  src="http://app.nucleova.com/public/assets/Logos/LogoHSF.png" heigth="415" width="160" class="mx-auto d-block"></div>
-		');
-
-		if($email->send()){
-			return true;
-		}
-		else{
-			return false;
-		}
-
-	}
     public function verPlanes(){   
         $modelR = new RegionesModel();
 		$modelCo = new ComunasModel();
@@ -1217,20 +1217,6 @@ class Ussers extends BaseController
         echo view('limites/Fother',$data);
     }
 
-
-    /*Cliente */
-    public function dashbordCliente1(){
-        $modelR = new RegionesModel();
-		$modelCo = new ComunasModel();
-        $modelCategoria = new CategoriasModel();
-        $modelSubCategoria = new SubCategoriasModel();
-        $data['region'] = $modelR->findAll();
-		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
-        $data['categoria'] = $modelCategoria->findAll();
-        $data['subCategoria'] = $modelSubCategoria->findAll();
-        echo view('newViews/inicio',$data);
-        //echo view('limites/Fother');
-    }
     private function setPersonaSession($user){
 		$data =[
 			'id' => $user['idPersona'],
@@ -1246,4 +1232,250 @@ class Ussers extends BaseController
 		
 		return true;
 	}
+
+    /* Sumar fecha a usuario persona */
+    private function sumarFechaPersona($persona, $meses){
+        $model = new PersonaModel();
+        $user = $model-> where('idPersona', $persona)->first();
+        if($user['tiempo'] == null){
+            $fecha = new Time('now');
+            $fecha = $fecha->addMonths($meses);
+            $data['tiempo'] = $fecha;
+            $model->where("idPersona", $persona)->set($data)->update();
+        }else{
+            $fecha = Time::parse($user['tiempo'])->addMonths($meses);
+            $data['tiempo'] = $fecha;
+            $model->where("idPersona", $persona)->set($data)->update();
+        }
+    }
+    /* correo primera compra */
+	private function correoUsuarioPro($correo, $buy_order, $meses, $regalo){
+		$email = \Config\Services::email();
+        
+        $modelPersona = new PersonaModel();
+        $userData = $modelPersona->where("email", $correo)->first();
+        $nombre = $userData['nombre']; 
+        //$modelPersona = new UssersModel();
+        //$userData = $modelPersona->where("email", $correo)->first();
+        if($regalo == 1){
+            $regalo = "1 mes";
+        }else{
+            $regalo = $regalo." meses";
+        }
+		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
+		//$email->setTo($correo);
+        $email->setTo('cristobal.henriquez.g@gmail.com');
+        $email->setSubject('Pago suscripción');
+		$email->setMessage('
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <title>Nucleova</title>
+
+                <!-- bootstrap css-->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    
+                <!-- JS, Popper.js, and jQuery -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+                
+                <script src="https://kit.fontawesome.com/c818a46c29.js" crossorigin="anonymous"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+
+                <style>
+                        h5{
+                            font-size: 1.17em;
+                            color:#4F4F4F !important;
+                        }
+                        .hoverAzul:hover {
+                            background-color:#314A9A;
+                            filter: saturate(180%);
+                        }
+                        .box{
+                            position: relative;
+                            background-color:#FFFFFF !important;
+                            margin: auto;
+                            width: 50%;
+                        }
+                        .imgBox{
+                            position: absolute;
+                            top: 0;
+                            background-color:#314A9A; 
+                            text-align: center;
+                            
+                        }
+                        .sangria{
+                            padding-top: 10px;
+                              padding-bottom: 10px;
+                              padding-right: 30px;
+                              padding-left: 30px;
+                        }
+                </style>
+                <body>
+                    <div class="row">
+                        <div class="col-6" style="background-color:#C5C5C5;">
+                            <br>
+                            <div class="row box">
+                                <div class="col-12 " style="background-color:#314A9A; text-align: center;">
+                                    <div class="row justify-content-center">                        
+                                        <img class="img-fluid" src="https://app.nucleova.com/public/assets/Logos/logoCorreo.png" style="max-height: 100px;">
+                                    </div>
+                                </div>
+                        
+                                <div class="col-12 sangria">
+                                    <h5>Felicidades '.$nombre.' , esperando se encuentre bien, como equipo NUCLEOVA queremos darle la bienvenida a la versión PRO de nuestro sistema.  </h5>
+                                    <h5><b>Orden de compra</b>: '.$buy_order.'</h5>
+                                    <h5><b>Has contratado </b>: Nucleova PRO por '.$meses.' meses.</h5>                                    
+                                    <h5>Por tu primera compra te regalamos '.$regalo.'.</h5>
+                                </div>
+                                <hr>
+                                <div class="col-12 sangria">
+                                    <h5>¿Necesitas ayuda? Contacta con nosotros o a través de nuestras redes sociales:</h5>
+                                    <div class="row justify-content-center" style="text-align: center;"> 
+                                                <div class="single-footer-widget ">
+                                                    <h5 style="color:#ffffff">Encuentranos en:</h5>
+                                                    <div class="footer-social d-flex align-items-center">
+                                                        <a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/facebook.png" class="img-fluid hoverAzul"></a>	
+                                                        <a class="btn btn-outline-info border-0" title="Linkedin" style="padding: 15px;" target="_blank" href="https://www.linkedin.com/company/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/linkedin.png" class="img-fluid hoverAzul"></a>											
+                                                        <a class="btn btn-outline-info border-0" title="Instagram" style="padding: 15px;" target="_blank" href="https://www.instagram.com/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/instagram.png" class="img-fluid hoverAzul"></a>											
+                                                    </div>								
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        ');
+		
+       // $succes = $email->send();
+		if($email->send()){
+			return true;
+		}
+		else{
+            $error = $email->printDebugger();
+            session()->set('errorEmail',$error);
+			return false;
+		}
+	}
+    /* correo compra */
+	private function correoUsuarioPro1($correo, $buy_order, $meses){
+		$email = \Config\Services::email();
+        
+        $modelPersona = new PersonaModel();
+        $userData = $modelPersona->where("email", $correo)->first();
+        $nombre = $userData['nombre']; 
+        //$modelPersona = new UssersModel();
+        //$userData = $modelPersona->where("email", $correo)->first();
+        
+		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
+		//$email->setTo($correo);
+        $email->setTo('cristobal.henriquez.g@gmail.com');
+        $email->setSubject('Pago suscripción');
+		$email->setMessage('
+            <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <title>Nucleova</title>
+
+                <!-- bootstrap css-->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    
+                <!-- JS, Popper.js, and jQuery -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+                
+                <script src="https://kit.fontawesome.com/c818a46c29.js" crossorigin="anonymous"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+
+                <style>
+                        h5{
+                            font-size: 1.17em;
+                            color:#4F4F4F !important;
+                        }
+                        .hoverAzul:hover {
+                            background-color:#314A9A;
+                            filter: saturate(180%);
+                        }
+                        .box{
+                            position: relative;
+                            background-color:#FFFFFF !important;
+                            margin: auto;
+                            width: 50%;
+                        }
+                        .imgBox{
+                            position: absolute;
+                            top: 0;
+                            background-color:#314A9A; 
+                            text-align: center;
+                            
+                        }
+                        .sangria{
+                            padding-top: 10px;
+                              padding-bottom: 10px;
+                              padding-right: 30px;
+                              padding-left: 30px;
+                        }
+                </style>
+                <body>
+                    <div class="row">
+                        <div class="col-6" style="background-color:#C5C5C5;">
+                            <br>
+                            <div class="row box">
+                                <div class="col-12 " style="background-color:#314A9A; text-align: center;">
+                                    <div class="row justify-content-center">                        
+                                        <img class="img-fluid" src="https://app.nucleova.com/public/assets/Logos/logoCorreo.png" style="max-height: 100px;">
+                                    </div>
+                                </div>
+                        
+                                <div class="col-12 sangria">
+                                    <h5>Felicidades '.$nombre.' , esperando se encuentre bien, como equipo NUCLEOVA queremos darle la bienvenida a la versión PRO de nuestro sistema.  </h5>
+                                    <h5><b>Orden de compra</b>: '.$buy_order.'</h5>
+                                    <h5><b>Has contratado </b>: Nucleova PRO por '.$meses.' meses.</h5>                                    
+                                </div>
+                                <hr>
+                                <div class="col-12 sangria">
+                                    <h5>¿Necesitas ayuda? Contacta con nosotros o a través de nuestras redes sociales:</h5>
+                                    <div class="row justify-content-center" style="text-align: center;"> 
+                                                <div class="single-footer-widget ">
+                                                    <h5 style="color:#ffffff">Encuentranos en:</h5>
+                                                    <div class="footer-social d-flex align-items-center">
+                                                        <a class="btn btn-outline-primary border-0" title="Facebook" style="padding: 15px;" target="_blank" href="https://www.facebook.com/nucleova">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/facebook.png" class="img-fluid hoverAzul"></a>	
+                                                        <a class="btn btn-outline-info border-0" title="Linkedin" style="padding: 15px;" target="_blank" href="https://www.linkedin.com/company/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/linkedin.png" class="img-fluid hoverAzul"></a>											
+                                                        <a class="btn btn-outline-info border-0" title="Instagram" style="padding: 15px;" target="_blank" href="https://www.instagram.com/nucleova/">
+                                                        <img src="https://app.nucleova.com/public/assets/rrss/instagram.png" class="img-fluid hoverAzul"></a>											
+                                                    </div>								
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        ');
+		
+       // $succes = $email->send();
+		if($email->send()){
+			return true;
+		}
+		else{
+            $error = $email->printDebugger();
+            session()->set('errorEmail',$error);
+			return false;
+		}
+	}
+
 }

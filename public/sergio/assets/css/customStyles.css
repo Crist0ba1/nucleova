@@ -11,6 +11,9 @@
     background-color: #294A9A;
     border-color: #294A9A;
 }
+.textGray{
+    background-color:#C7CEE5;
+}
 .bg-gray{ 
     background-color: #C7CEE5;
     border-color: #ffffff;
@@ -36,7 +39,7 @@
 .bottom15 { margin-bottom:15px; }
 .bottom20 { margin-bottom:20px; }
 .bottom30 { margin-bottom:30px; }
-
+.bottom30i { margin-bottom:-30px; }
 .left5 { margin-left:5px; }
 .left10 { margin-left:10px; }
 .left15 { margin-left:15px; }

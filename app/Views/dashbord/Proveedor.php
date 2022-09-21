@@ -265,7 +265,7 @@
 </div>
     <div id="cardInfo" class="container mt-5 mb-3">
         <div class="row justify-content-around " >
-            <h2>proveedor persona natural</h2>
+            <h2>Proveedor de servicios</h2>
         </div>
     </div>
     <?php

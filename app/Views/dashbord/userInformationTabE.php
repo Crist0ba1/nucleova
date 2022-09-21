@@ -134,10 +134,10 @@
             		<h4><span class="badge badge-secondary"><i class="fa fa-keyboard" aria-hidden="true"></i> Texto descriptivo:</span></h4>                                        
             	</div>
             </div>
-            <textarea id="summernote1" name="editordata"></textarea>
+            <textarea id="summernote11" name="editordata"></textarea>
         </div>
                
-        <input id="editordata1" name="editordata" type="hidden">
+        <input id="editordata11" name="editordata" type="hidden">
         <input type="submit" onClick="placeOrder1()" name ="submit" id="submit_button2" class="btn btn-primary btn-user btn-block text-white" value="Editar informacion" />
                 <!--/form-->		
     </form>
@@ -186,7 +186,7 @@
 			$("#face1").val("<?= session()->get('rf') ?>");
 			$("#linkedin1").val("<?= session()->get('fl') ?>");
 			$("#instagram1").val("<?= session()->get('ri') ?>");
-      		$('#summernote1').summernote('code', '<?php echo session()->get('textEM')?>');
+      		$('#summernote11').summernote('code', '<?php echo session()->get('textEM')?>');
 
 		<?php endif;?>
 
@@ -229,7 +229,7 @@
             <?php endif;?>
         <?php endif;?>
 
-        $('#summernote1').summernote({
+        $('#summernote11').summernote({
         placeholder: 'Ingrese texto descriptivo de los servicios que ofrece',
         tabsize: 2,
         height: 150,
@@ -347,8 +347,8 @@
         });
     });
     function placeOrder1(){
-        var markupStr = $('#summernote1').summernote('code');
-        document.getElementById("editordata1").value = markupStr;
+        var markupStr = $('#summernote11').summernote('code');
+        document.getElementById("editordata11").value = markupStr;
     }
 
 </script>

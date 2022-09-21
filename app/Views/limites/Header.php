@@ -34,12 +34,39 @@
 
 
     <style type="text/css" media="screen">
+      @font-face {
+        font-family: 'Acumin_Variable_Concept';
+        src: url('./public/fuentes/Acumin_Variable_Concept.ttf');
+      }
+      body{
+        font-family:'Acumin_Variable_Concept';
+      }
       #logo{
         width: 300px;
         max-width:100%;
         height:100%;
         max-height:300px;
       }
+      .carousel-control-prev {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+            height: 40px;
+            align-content: center;
+        }
+        .carousel-control-next {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+            height: 40px;
+            align-content: center;
+        }
+        .img-fluid {
+          max-width:250px;
+        }
+        .carouselPequeño{
+            max-width:250px;
+        }
       .nav-gradiente{
         background: rgb(255,255,255);
         background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(192,72,148,1) 50%, rgba(51,26,154,1) 100%);      
@@ -59,18 +86,21 @@
         background-color: #c04894;
       }
       .centrador{
-     position: relative;
-    }
+        justify-content: center;
+        align-items: center;
+        }
 
-    .imagen{
-        position: absolute;
-        width: 80%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-    }
+      .imagen{
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          width: 80%;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+      }
     </style>
     
 </head>
@@ -81,7 +111,7 @@
 
   <div class="row justify-content-between">
 
-    <div class="col">
+    <div class="col imagen">
       <a class="navbar-brand" href="<?php echo base_url('/');?>"><img id="logo" src="<?php echo base_url('')?>/public/assets/Logos/LogoHSF.png" class="img-fluid"></a>
     </div>
 
@@ -94,7 +124,7 @@
             </a>
             <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
               <a id="opacar" class="dropdown-item" href="<?php echo base_url('/dashbordAdmin');?>"><b>Gestion de usuarios</b></a>
-              <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
+              <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesión</b></a>
             </div>
           </li>
           </ul>
@@ -106,15 +136,26 @@
               <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio</b></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
+              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripción</b></a>
             </li>
+            <!--li>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-circle"></i> Servicios</i>
+              </a>
+              <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown0">
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/historial');?>"><b>Historial</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/mis_proveedores');?>"><b>Mis proveedores</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/requerimientos');?>"><b>Requerimientos</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesión</b></a>
+              </div>
+            </li-->
             <li>
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user-circle"></i> <?= session()->get('nombre') ?></i>
               </a>
               <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
                 <a id="opacar" class="dropdown-item" href="<?php echo base_url('/perfil');?>"><b>Perfil de usuario</b></a>
-                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesión</b></a>
               </div>
             </li>
           </ul>
@@ -123,10 +164,10 @@
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio</b></a>
+              <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio 2</b></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
+              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripción</b></a>
             </li>
             <li>
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,7 +175,7 @@
               </a>
               <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
                 <a id="opacar" class="dropdown-item" href="<?php echo base_url('/perfil');?>"><b>Perfil de usuario</b></a>
-                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesion</b></a>
+                <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesión</b></a>
               </div>
             </li>
           </ul>
@@ -143,7 +184,7 @@
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio</b></a>
+              <a class="nav-link" href="<?php echo base_url('/'); ?>"><b>Inicio 3/b></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
@@ -163,13 +204,13 @@
         <div class="col align-self-end">
           <ul class="navbar-nav d-flex justify-content-between">
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/login');?>"><b>Iniciar sesión</b> </a>
+              <a class="nav-link" href="<?php echo base_url('/login');?>"><b>   Iniciar sesión</b> </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/registrar'); ?>"><b>Registrarce</b></a>
+              <a class="nav-link" href="<?php echo base_url('/registrar'); ?>"><b>Registrarse</b></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripcion</b></a>
+              <a class="nav-link" href="<?php echo base_url('/suscripcion'); ?>"><b>Suscripción</b></a>
             </li>
           </ul>
         </div> 
@@ -182,6 +223,3 @@
   </div>
 
 </nav>
-<script>
-
-</script>
