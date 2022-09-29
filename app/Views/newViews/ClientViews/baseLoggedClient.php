@@ -130,6 +130,7 @@
                         </a>
                         <div class="dropdown-menu" style="right: 0; left: auto;" aria-labelledby="navbarDropdown">
                             <a id="opacar" class="dropdown-item" href="<?php echo base_url('/perfilPro');?>"><b>Perfil de usuario</b></a>
+                            <a id="opacar" class="dropdown-item" href="<?php echo base_url('/suscripcion');?>"><b>Suscripción</b></a>
                             <a id="opacar" class="dropdown-item" href="<?php echo base_url('/logout');?>"><b>Cerrar sesión</b></a>
                         </div>
                     </li>

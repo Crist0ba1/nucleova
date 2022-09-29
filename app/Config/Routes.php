@@ -53,7 +53,6 @@ $routes->POST('/editarUsserProveedor', 'Ussers::editarUsserProveedor',['filter' 
 $routes->POST('/cambiar_imagen_empresa', 'Ussers::cambiar_imagen_empresa',['filter' =>'Auth']);
 $routes->POST('/cambiar_imagen_empresaN', 'Ussers::cambiar_imagen_empresaN',['filter' =>'Auth']);
 
-
 $routes->POST('/registerUsserAdmin', 'Ussers::registerUsserAdmin');
 $routes->get('/agregarUsuario', 'Ussers::agregarUsuario');
 $routes->get('/daleteUsuario', 'Ussers::daleteUsuario');
@@ -109,8 +108,18 @@ $routes->get('/eliminarSolicitud/(:any)', 'proController::eliminarSolicitud/$1')
 $routes->get('/eliminarProveedor/(:any)', 'proController::eliminarProveedor/$1');
 $routes->get('/eliminarRequerimiento/(:any)','proController::eliminarRequerimiento/$1');
 $routes->get('/cancelarRequerimiento/(:any)','proController::cancelarRequerimiento/$1');
+$routes->get('/getNumeroEmpresa/(:any)','proController::getNumeroEmpresa/$1');// La empresa busca el numero
+$routes->get('/getNumeroProvedor/(:any)','proController::getNumeroProvedor/$1');// El proveedor busca el numero
+$routes->get('/getImagenesR/(:any)','proController::getImagenesR/$1');
+$routes->get('/verRporteRequerimientoM/(:any)','proController::verRporteRequerimientoM/$1');
+
 
 $routes->post('/nuevoRequerimiento', 'proController::nuevoRequerimiento');
+$routes->post('/respuestaFecha', 'proController::respuestaFecha');
+$routes->post('/reagendarFecha', 'proController::reagendarFecha');
+$routes->post('/finalizarRequerimiento', 'proController::finalizarRequerimiento');
+$routes->post('/finalzarRM', 'proController::finalzarRM');
+
 /* Proveedor pro */
 
 /* Usser que son los proveedores */ 

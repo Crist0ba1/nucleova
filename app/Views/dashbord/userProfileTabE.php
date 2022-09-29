@@ -72,16 +72,17 @@
                         </div>
                         <div class="col-10">
                             <br>
-                            <div class="row" style="justify-content: center; background-color: #314a9a; padding:7px;">
-                                <div class="col-2">
-                                    <label class="labelImagen text-white">Imagen</label>
+                            <div class="form-group col-12 col-sm-12">
+                                <div class="row imagenHori">
+                                    <div id="padre" class="col-8">
+                                        <input type="file" id="filePhoto" name="filePhoto" hidden required>
+                                        <label for="filePhoto" class="labelInImage border border-dark">
+                                            <img id="imagenFilefilePhoto" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style=" height: 49px!important; width: 49px!important;">
+                                        </label>
+                                        <span id="fileEPhoto"> Imagen, sin seleccionar</span>
+                                    </div>                                                                                                                     
                                 </div>
-                                <div class="col-10">
-                                    <input type="file" class="form-control form-control-user text-white" id="filePhoto" name="filePhoto"
-                                    placeholder="Editar imagen" >     
-                                </div>
-                                
-                            </div>
+                            </div>        
 
                         </div>
                     </div>
@@ -99,9 +100,11 @@
 <script>
 
     function cambiarImagen(){
+        $('#filePhoto').val("");
+        $('#imagenFilefilePhoto').attr('src', '<?php echo base_url('')?>/public/assets/img-plus.png');
+        $('#fileEPhoto').text('Imagen, sin seleccionar');
         $('#msj_cambiar_imagen').modal('show');
     }
-
     <?php if(session()->get('isComplete') == 0 ):?>
         <?php if(session()->has('imagenEM')):?>
             <?php if(session()->get('imagenEM') != 'No'):?>
@@ -109,6 +112,10 @@
                 $("#imgPerfil2").attr("src", "<?php echo base_url('')?>/public/imgs/<?php echo session()->get('idEM')?>/<?php echo session()->get('imagenEM')?>");
             <?php endif;?>        
         <?php endif;?>
+
+
+
+
         <?php if(session()->has('rf')):?>
             <?php if(session()->get('rf') != ''):?>
                 $("#rrssF1").attr("href", "<?php echo session()->get('rf')?>");
@@ -129,7 +136,15 @@
         <?php endif;?>
     <?php endif;?>
 
+    const actualBtn01 = document.getElementById('filePhoto');
+    const fileChosen01 = document.getElementById('fileEPhoto');
 
+    actualBtn01.addEventListener('change', function(){
+
+        fileChosen01.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenFilefilePhoto').attr('src', TmpPath);
+    });
 
       
 </script>

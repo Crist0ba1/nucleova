@@ -438,8 +438,8 @@ class Home extends BaseController
         //$userData = $modelPersona->where("email", $correo)->first();
         
 		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
-		//$email->setTo($correo);
-        $email->setTo('cristobal.henriquez.g@gmail.com');
+		$email->setTo($correo);
+        //$email->setTo('cristobal.henriquez.g@gmail.com');
 		$email->setSubject('Cambio de credenciales de acceso');
 		$email->setMessage('
             <!DOCTYPE html>
@@ -547,8 +547,8 @@ class Home extends BaseController
         $userData = $modelPersona->where("email", $correo)->first();
         
 		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
-		//$email->setTo($correo);
-        $email->setTo('cristobal.henriquez.g@gmail.com');
+		$email->setTo($correo);
+        //$email->setTo('cristobal.henriquez.g@gmail.com');
 		$email->setSubject('Usuario creado con éxito!');
 		$email->setMessage('
             <!DOCTYPE html>

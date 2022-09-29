@@ -2,11 +2,10 @@
 namespace App\Controllers;
 
 require_once './vendor/autoload.php';
+
 use Transbank\Webpay\WebpayPlus\Transaction;
 /*
-\Transbank\Webpay\WebpayPlus::setIntegrationType("");
-\Transbank\Webpay\WebpayPlus::setCommerceCode("");
-\Transbank\Webpay\WebpayPlus::setApiKey("");
+\Transbank\Webpay\WebpayPlus::configureForProduction('597045748126', 'e71e6af466966215bd025163ec7a1ad0');
 */
 use CodeIgniter\I18n\Time;
 
@@ -394,6 +393,7 @@ class Ussers extends BaseController
 
             $model->insert($data);
             $user = $model->where('email', $this->request->getVar('emailRegister'))->first();
+            
             $idEmpresa = $user['idUssers'];
             if($user != null){       
                 
@@ -597,9 +597,14 @@ class Ussers extends BaseController
         $model = new UssersModel();
         $modelI = new ImagenesModel();
         $session = session();
-
+        $correo = $this->request->getVar('emailRegister');
+        $aux = $this->verifiarCorreo($correo);
+        if($aux){
+            session()->set('CorreoNoValido', $correo);
+        }
        /*falta verificar que el correo sea unico*/      
-		if($this-> request -> getMethod() == 'post' ){
+		if($this-> request -> getMethod() == 'post' && !$aux){
+            session()->remove('CorreoNoValido');
             $data['firstname'] = $this->request->getVar('nombreCompleto');
             $data['fech_nac'] = $this->dateToDate($this->request->getVar('fech_nac'));
             $data['genero'] = $this->request->getVar('genero');
@@ -608,7 +613,7 @@ class Ussers extends BaseController
             $data['calle'] = $this->request->getVar('calle');
             $data['numero'] = $this->request->getVar('numero');
             $data['optional'] = $this->request->getVar('optional');
-            $data['email'] = $this->request->getVar('emailRegister');
+            $data['email'] = $correo;
             $data['telefono'] = $this->request->getVar('celular');
             $data['clave'] = $this->request->getVar('emailRegister');
             $data['tipo'] = session()->get("tipo");
@@ -670,19 +675,29 @@ class Ussers extends BaseController
                 }
 
                 $dataFile['idUsers'] = $idEmpresa;
-                $dataFile['imagen1'] = $imageFile1->getRandomName();
-                $dataFile['imagen2'] = $imageFile1->getRandomName();
-                $dataFile['imagen3'] = $imageFile1->getRandomName();
-                $dataFile['imagen4'] = $imageFile1->getRandomName();
-                $dataFile['imagen5'] = $imageFile1->getRandomName();
+                if($imageFile1->isValid()){    
+                    $dataFile['imagen1'] = $imageFile1->getRandomName();}
+                if($imageFile2->isValid()){    
+                    $dataFile['imagen2'] = $imageFile2->getRandomName();}
+                if($imageFile3->isValid()){    
+                    $dataFile['imagen3'] = $imageFile3->getRandomName();}
+                if($imageFile4->isValid()){    
+                    $dataFile['imagen4'] = $imageFile4->getRandomName();}
+                if($imageFile5->isValid()){    
+                    $dataFile['imagen5'] = $imageFile5->getRandomName();}
 
                 if($modelI->insert($dataFile)){
                     //Si se agrega a la BD, se mueven las imagenes
-                    $imageFile1->move($nombre_fichero, $dataFile['imagen1']);
-                    $imageFile2->move($nombre_fichero, $dataFile['imagen2']);
-                    $imageFile3->move($nombre_fichero, $dataFile['imagen3']);
-                    $imageFile4->move($nombre_fichero, $dataFile['imagen4']);
-                    $imageFile5->move($nombre_fichero, $dataFile['imagen5']);
+                    if($imageFile1->isValid()){    
+                    $imageFile1->move($nombre_fichero, $dataFile['imagen1']);}
+                    if($imageFile2->isValid()){    
+                    $imageFile2->move($nombre_fichero, $dataFile['imagen2']);}
+                    if($imageFile3->isValid()){    
+                    $imageFile3->move($nombre_fichero, $dataFile['imagen3']);}
+                    if($imageFile4->isValid()){    
+                    $imageFile4->move($nombre_fichero, $dataFile['imagen4']);}
+                    if($imageFile5->isValid()){    
+                    $imageFile5->move($nombre_fichero, $dataFile['imagen5']);}
                     
                     return redirect()->to('/perfil');
                     //return redirect()->to('/agregarUsuario')->with('status',true);
@@ -697,9 +712,6 @@ class Ussers extends BaseController
                 }
             }           
         
-        }
-        else{
-            die('Borra el correo de ejemplo');
         }
         return redirect()->to('/perfil');
 
@@ -779,19 +791,24 @@ class Ussers extends BaseController
          return true;
     }
     private function borrar_file($dirname, $file) {
-        //si es un directorio lo abro
-        if (is_dir($dirname)){
-            $dir_handle = opendir($dirname);
+        if($file != ""){
+            //si es un directorio lo abro
+            if (is_dir($dirname)){
+                $dir_handle = opendir($dirname);
+            }
+            //si no es un directorio devuelvo false para avisar de que ha habido un error
+            if (!$dir_handle){
+                return false;
+            }
+            unlink($dirname."/".$file);
+
+            closedir($dir_handle);
+
+            return true;
         }
-        //si no es un directorio devuelvo false para avisar de que ha habido un error
-        if (!$dir_handle){
+        else{
             return false;
         }
-        unlink($dirname."/".$file);
-
-        closedir($dir_handle);
-
-         return true;
     }
 
 
@@ -1263,8 +1280,8 @@ class Ussers extends BaseController
             $regalo = $regalo." meses";
         }
 		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
-		//$email->setTo($correo);
-        $email->setTo('cristobal.henriquez.g@gmail.com');
+		$email->setTo($correo);
+        //$email->setTo('cristobal.henriquez.g@gmail.com');
         $email->setSubject('Pago suscripción');
 		$email->setMessage('
             <!DOCTYPE html>
@@ -1376,8 +1393,8 @@ class Ussers extends BaseController
         //$userData = $modelPersona->where("email", $correo)->first();
         
 		$email->setFrom('Contacto@nucleova.com', 'Equipo Nucleova');
-		//$email->setTo($correo);
-        $email->setTo('cristobal.henriquez.g@gmail.com');
+		$email->setTo($correo);
+        //$email->setTo('cristobal.henriquez.g@gmail.com');
         $email->setSubject('Pago suscripción');
 		$email->setMessage('
             <!DOCTYPE html>
@@ -1478,4 +1495,5 @@ class Ussers extends BaseController
 		}
 	}
 
+    
 }

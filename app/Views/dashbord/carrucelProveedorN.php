@@ -17,7 +17,6 @@
                 <?php endforeach;?>
             <?php endif;?>        
         </ol>
-
         <div class="carousel-inner">
             <?php if($contador == 0):?>
                 <div class="carousel-item active">

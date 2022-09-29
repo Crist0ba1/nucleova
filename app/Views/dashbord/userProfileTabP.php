@@ -4,13 +4,31 @@
     }
     .imagenHori{
         justify-content: center;
-        background-color: #314a9a;
+        /**background-color: #314a9a;*/
         align-items: center;
-        padding:7px;
     }
     .labelImagen {
         color: white;
     }
+    .padre{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .labelInImage{
+        width: 50px;
+        height: 50px;
+        background-color: rgba(0,0,0,0);
+    }
+    .labelInImage:Hover{
+        background-color: rgba(0,0,0,0.5);
+    }
+    #file-chosen{
+    color: white;
+    margin-left: 0.3rem;
+    font-family: sans-serif;
+    }
+    
 </style>
     <div class="row ">
         <div class="col-md-5">
@@ -83,62 +101,60 @@
                     <div class="row" style="justify-content: center;">
                         <div class="form-group col-10">
                             <div class="row imagenHori">
-                                <div class="col-2">
-                                    <label class="labelImagen">Imagen 1</label>
-                                </div>
-                                <div class="col-8">
-                                    <input type="file" class="form-control form-control-user" id="filePhoto0" name="filePhoto0"
-                                    placeholder="Editar imagen" >
-                                </div>
-                            </div>                                                       
-                        </div>
-                        <div class="form-group col-10">
-                            <div class="row imagenHori">
-                                <div class="col-2">
-                                    <label class="labelImagen">Imagen 2</label>
-                                </div>
-                                <div class="col-8">
-                                    <input type="file" class="form-control form-control-user small" id="filePhoto1" name="filePhoto1"
-                                    placeholder="Editar imagen" >
+                                <div id="padre" class="col-8">
+                                    <input type="file" id="filePhoto0" name="filePhoto0" hidden>
+                                    <label for="filePhoto0" class="labelInImage border border-dark">
+                                        <img id="imagenfilePhoto0" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style="  height: 49px !important; width: 49px !important;">
+                                    </label>
+                                    <span id="file-chosen0"> Imagen 1, sin seleccionar</span>
                                 </div>
                             </div>                                                       
                         </div>
                         <div class="form-group col-10">
                             <div class="row imagenHori">
-                                <div class="col-2">
-                                    <label class="labelImagen">Imagen 3</label>
-                                </div>
-                                <div class="col-8">
-                                    <input type="file" class="form-control form-control-user" id="filePhoto2" name="filePhoto2"
-                                    placeholder="Editar imagen" >
+                                <div id="padre" class="col-8">
+                                    <input type="file" id="filePhoto1" name="filePhoto1" hidden>
+                                    <label for="filePhoto1" class="labelInImage border border-dark">
+                                        <img id="imagenfilePhoto1" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style="  height: 49px !important; width: 49px !important;">
+                                    </label>
+                                    <span id="file-chosen1"> Imagen 2, sin seleccionar</span>
+                                </div>                               
+                            </div>                                                       
+                        </div>
+                        <div class="form-group col-10">
+                            <div class="row imagenHori">
+                                <div id="padre" class="col-8">
+                                    <input type="file" id="filePhoto2" name="filePhoto2" hidden>
+                                    <label for="filePhoto2" class="labelInImage border border-dark">
+                                        <img id="imagenfilePhoto2" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style="  height: 49px !important; width: 49px !important;">
+                                    </label>
+                                    <span id="file-chosen2"> Imagen 3, sin seleccionar</span>
                                 </div>
                             </div>                                                       
                         </div>
                         <div class="form-group col-10">
                             <div class="row imagenHori">
-                                <div class="col-2">
-                                    <label class="labelImagen">Imagen 4</label>
-                                </div>
-                                <div class="col-8">
-                                    <input type="file" class="form-control form-control-user" id="filePhoto3" name="filePhoto3"
-                                    placeholder="Editar imagen" >
+                                <div id="padre" class="col-8">
+                                    <input type="file" id="filePhoto3" name="filePhoto3" hidden>
+                                    <label for="filePhoto3" class="labelInImage border border-dark">
+                                        <img id="imagenfilePhoto3" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style="  height: 49px !important; width: 49px !important;">
+                                    </label>
+                                    <span id="file-chosen3"> Imagen 4, sin seleccionar</span>
                                 </div>
                             </div>                                                       
                         </div>
                         <div class="form-group col-10">
                             <div class="row imagenHori">
-                                <div class="col-2">
-                                    <label class="labelImagen">Imagen 5</label>
-                                </div>
-                                <div class="col-8">
-                                    <input type="file" class="form-control form-control-user" id="filePhoto4" name="filePhoto4"
-                                    placeholder="Editar imagen" >
+                                <div id="padre" class="col-8">
+                                    <input type="file" id="filePhoto4" name="filePhoto4" hidden>
+                                    <label for="filePhoto4" class="labelInImage border border-dark">
+                                        <img id="imagenfilePhoto4" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style="  height: 49px !important; width: 49px !important;">
+                                    </label>
+                                    <span id="file-chosen4"> Imagen 5, sin seleccionar</span>
                                 </div>
                             </div>                                                       
                         </div>            
                     </div>            
-                      
-                
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Cambiar imagen</button>
@@ -149,7 +165,27 @@
         </div>
     </div>  
 <script>
-        function cambiarImagen(){
+        function cambiarImagen(){            
+            $('#filePhoto0').val("");
+            $('#imagenfilePhoto0').attr('src', '<?php echo base_url('')?>/public/assets/img-plus.png');
+            $('#file-chosen0').text('Imagen 1, sin seleccionar');
+
+            $('#filePhoto1').val("");
+            $('#imagenfilePhoto1').attr('src', '<?php echo base_url('')?>/public/assets/img-plus.png');
+            $('#file-chosen1').text('Imagen 2, sin seleccionar');
+
+            $('#filePhoto2').val("");
+            $('#imagenfilePhoto2').attr('src', '<?php echo base_url('')?>/public/assets/img-plus.png');
+            $('#file-chosen2').text('Imagen 3, sin seleccionar');
+
+            $('#filePhoto3').val("");
+            $('#imagenfilePhoto3').attr('src', '<?php echo base_url('')?>/public/assets/img-plus.png');
+            $('#file-chosen3').text('Imagen 4, sin seleccionar');
+
+            $('#filePhoto4').val("");
+            $('#imagenfilePhoto4').attr('src', '<?php echo base_url('')?>/public/assets/img-plus.png');
+            $('#file-chosen4').text('Imagen 5, sin seleccionar');
+
             $('#msj_cambiar_imagen').modal('show');
         }
     <?php if(session()->get('isComplete') == 0 ):?>
@@ -177,4 +213,51 @@
 
 
       
+</script>
+<script>
+    /* Para los botones de imagenes*/
+    const actualBtn0 = document.getElementById('filePhoto0');
+    const fileChosen0 = document.getElementById('file-chosen0');
+
+    actualBtn0.addEventListener('change', function(){
+        fileChosen0.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenfilePhoto0').attr('src', TmpPath);
+    });
+
+    const actualBtn1 = document.getElementById('filePhoto1');
+    const fileChosen1 = document.getElementById('file-chosen1');
+
+    actualBtn1.addEventListener('change', function(){
+        fileChosen1.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenfilePhoto1').attr('src', TmpPath);
+    });
+
+    const actualBtn2 = document.getElementById('filePhoto2');
+    const fileChosen2 = document.getElementById('file-chosen2');
+
+    actualBtn2.addEventListener('change', function(){
+        fileChosen2.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenfilePhoto2').attr('src', TmpPath);
+    });
+
+    const actualBtn3 = document.getElementById('filePhoto3');
+    const fileChosen3 = document.getElementById('file-chosen3');
+
+    actualBtn3.addEventListener('change', function(){
+        fileChosen3.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenfilePhoto3').attr('src', TmpPath);
+    });
+
+    const actualBtn4 = document.getElementById('filePhoto4');
+    const fileChosen4 = document.getElementById('file-chosen4');
+
+    actualBtn4.addEventListener('change', function(){
+        fileChosen4.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenfilePhoto4').attr('src', TmpPath);
+    });
 </script>

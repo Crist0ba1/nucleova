@@ -57,6 +57,37 @@
         background-color: #314a9a;
         color:white;
     }
+    .imagenHori{
+        justify-content: center;
+        /**background-color: #314a9a;*/
+        align-items: center;
+    }
+    .labelImagen {
+        color: white;
+    }
+    .padre{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .labelInImage{
+        width: 50px;
+        height: 50px;
+        background-color: rgba(0,0,0,0);
+    }
+    .labelInImage:Hover{
+        background-color: rgba(0,0,0,0.5);
+    }
+    #file-chosen{
+    color: white;
+    margin-left: 0.3rem;
+    font-family: sans-serif;
+    }
+    #imagenFile1{
+        width: 49px!important;
+        height: 49px!important;
+    }
+    
 </style>
 
 <div class="modal fade" id="setData" role="dialog" >
@@ -79,7 +110,7 @@
                                 <div class="form-group">
                                     <h4><span class="badge badge-secondary">Nombre de usuario o empresa:</span></h4>
                                     <input   type="text" class="form-control form-control-user" id="nombreCompleto" name="nombreCompleto"
-                                        placeholder="Nombre completo" minlength="2" >
+                                        placeholder="Nombre completo" minlength="2" required>
                                     <span id="nombreCompleto_error" class="text-danger">                                       
                                 </div>   
                                 <div id="contenidoUsuario">
@@ -88,7 +119,7 @@
                                     <div class="form-group col-6 col-sm-6">
                                     <h4><span class="badge badge-secondary">Fecha de nacimiento (usuario):</span></h4>
                                         <input   type="date" class="form-control form-control-user" id="fech_nac" name="fech_nac"
-                                            placeholder="Fecha de nacimiento" min='1900-01-01' max="<?= date('Y-m-d'); ?>">                                            
+                                            placeholder="Fecha de nacimiento" min='1900-01-01' max="<?= date('Y-m-d'); ?>" required>                                            
                                         <span id="fech_nac_error" class="text-danger">                                       
                                     </div>                
                                     <div class="form-group col-6 col-sm-6">
@@ -108,7 +139,7 @@
                                     </div>
                                     <div class="form-group col-6 col-sm-6">
                                         <h4><span class="badge badge-secondary">Region:</span></h4>
-                                        <select name="regionRegister" id="regionRegister" class="form-control"  >
+                                        <select name="regionRegister" id="regionRegister" class="form-control"  required>
                                             <option value="">-Seleccione una region-</option>
                                                 <?php foreach($region as $row):?>
                                                     <option value="<?= $row['id'];?>"><?= $row['region'];?></option>
@@ -118,7 +149,7 @@
                                     </div>
                                     <div class="form-group col-6 col-sm-6">
                                         <h4><span class="badge badge-secondary">Comuna:</span></h4>
-                                        <select name="comunaRegister" id="comunaRegister" class="form-control"  >
+                                        <select name="comunaRegister" id="comunaRegister" class="form-control"  required>
                                             <option value="">-Falta seleccionar region-</option>
                                         </select>
                                         <span id="comunaRegister_error" class="text-danger">
@@ -126,13 +157,13 @@
                                     <div class="form-group col-6 col-sm-6">
                                         <h4><span class="badge badge-secondary">Calle:</span></h4>
                                         <input   type="text" class="form-control form-control-user" id="calle" name="calle"
-                                                placeholder="Calle, Ejemplo: Villa piedra azul, pasaje rio aconcagua" minlength="2" >
+                                                placeholder="Calle, Ejemplo: Villa piedra azul, pasaje rio aconcagua" minlength="2" required>
                                         <span id="calle_error" class="text-danger">    
                                     </div>
                                     <div class="form-group col-6 col-sm-6">
                                         <h4><span class="badge badge-secondary">Numero:</span></h4>
                                         <input   type="text" class="form-control form-control-user" id="numero" name="numero"
-                                                placeholder="Numero, Ejemplo: 1001" minlength="2" >
+                                                placeholder="Numero, Ejemplo: 1001" minlength="2" required>
                                         <span id="numero_error" class="text-danger">    
                                     </div>
                                     <div class="form-group col-12 col-sm-12">
@@ -149,7 +180,7 @@
                                     <div class="form-group col-6 col-sm-6">
                                         <h4><span class="badge badge-secondary">Email:</span></h4>
                                         <input type="email" class="form-control form-control-user" id="emailRegister" name="emailRegister"
-                                            placeholder="Email"  >
+                                            placeholder="Email"  required>
                                             <span id="emailRegister_error" class="text-danger">
                                     </div>
                                     <div class="form-group col-6 col-sm-6">
@@ -157,7 +188,7 @@
                                         <div class="form-inline">
                                             <label style="margin-left: 15px;">Celulares sin el +
                                                 <input type="tel" class="form-control form-control-user" id="celular" name="celular" minlength="" maxlength="12"
-                                                    placeholder="9 9999 9999" style="margin-left: 15px;"  >
+                                                    placeholder="9 9999 9999" style="margin-left: 15px;"  required>
                                             </label>
                                             
                                         </div>                
@@ -199,29 +230,18 @@
                                     <h4><span class="badge badge-secondary"> Imagenes:</span></h4>
                                     </div>
                                     <div class="form-group col-12 col-sm-12">
-                                        <input type="file" class="form-control form-control-user" id="file1" name="file1"
-                                            placeholder="Imagen"  >                                                                     
+                                        <div class="row imagenHori">
+                                            <div id="padre" class="col-8">
+                                                <input type="file" id="file1" name="file1" hidden required>
+                                                <label for="file1" class="labelInImage border border-dark">
+                                                    <img id="imagenFile1" src="<?php echo base_url('')?>/public/assets/img-plus.png" class="img-fluid" style="  height: 49px !important; width: 49px !important;">
+                                                </label>
+                                                <span id="fileE"> Imagen, sin seleccionar</span>
+                                            </div>                                                                                                                     
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!--div class="form-group">                                    
-                                    <div class="container">
-                                        <h4><span class="badge badge-secondary"> Seleccione categorias en las que se desempeñe:</span></h4>
-                                        <select id="selectpicker" name="selectpicker" class="selectpicker" title="Seleccione su(s) actividade(s)" 
-                                          multiple data-live-search="true" data-width="100%">                                            
-                                        </select>     
-                                        <input type="text" id="selectpickerValue" name="selectpickerValue" hidden>
-                                    </div>                                                                                       
-                                </div>
-                                <div class="form-group">                                    
-                                    <div class="container">
-                                        <h4><span class="badge badge-danger"> Seleccione comunas en las que puede proveer sus servicios:</span></h4>
-                                        <select id="selectpicker2" name="selectpicker2" class="selectpicker" title="Seleccione su(s) actividade(s)" 
-                                          multiple data-live-search="true" data-width="100%">
-                                        </select>     
-                                        <input type="text" id="selectpickerValue2" name="selectpickerValue2" hidden>
-                                    </div>                                                                                       
-                                </div-->
+                            
                                 <input id="editordata" name="editordata" type="hidden">
                                  <input type="submit" onClick="placeOrder()" name ="submit" id="submit_button2" class="btn btn-primary btn-user btn-block text-white" value="Agregar informacion" />
                 <!--/form-->
@@ -231,11 +251,8 @@
 		</div>
 	</div>
 </div>
-    <!--div id="cardInfo" class="container mt-5 mb-3">
-        <div class="row justify-content-around " >
-            <h2>Debe ingresar mas informacion Empresa que busca a un proveedor</h2>
-        </div>
-    </div-->
+
+
     <?php
 		include("userProfileE.php");
 	?> 
@@ -293,52 +310,6 @@
 
     });
 
-    function ubicacionFunction(){
-        event.preventDefault();
-            $.ajax ({
-                type: "post",
-                url: "<?php echo base_url('/cambiar_ubicacion')?>",
-                data: $("#ubicacionForm").serialize(),
-                beforSend: function(){
-                  alert("entro a ajax");
-                },
-                success: function(data){
-                    if(data){
-                        alert(data);
-                    }
-                    else{
-                        alert(data);
-                    }
-                },
-                error: function(){
-                    alert("Error en la llamada ajax");
-                }
-
-            });
-    }
-    function contactoFunction(){
-        event.preventDefault();
-            $.ajax ({
-                type: "post",
-                url: "<?php echo base_url('/cambiar_contacto')?>",
-                data: $("#contactoForm").serialize(),
-                beforSend: function(){
-                  alert("entro a ajax");
-                },
-                success: function(data){
-                    if(data){
-                        alert(data);
-                    }
-                    else{
-                        alert(data);
-                    }
-                },
-                error: function(){
-                    alert("Error en la llamada ajax");
-                }
-
-            });
-    }
     $("#tipoDeCuenta").change(function() {
         $("#tipoDeCuenta option:selected").each(function() {
             var id = $('#tipoDeCuenta').val();
@@ -425,43 +396,15 @@
         $('#selectpicker').append(optgroup);
         $('#selectpicker').selectpicker('refresh');
     });
-    /* Mantiene los campos de subcategorias en arrSelected*/
-    $('#selectpicker').on('change', function(){
-        var selected = $(this).find("option:selected");
-        var arrSelected = [];
-        selected.each(function(){
-        arrSelected.push($(this).val());
-        });
-        $("#selectpickerValue").val(arrSelected);
-        //alert(arrSelected);
-    });
-</script>
-<script>
-    $(document).ready(function() { 
-        var optgroup ="";
-        <?php foreach($region as $car):?>
-            optgroup += "<optgroup value='<?php echo $car['id']?>' label='<?php echo $car['id']?> <?php echo $car['region']?>' >"; 
-            <?php foreach($comuna as $subcat):?>
-                <?php if($car['id']==$subcat['region_id']):?>
-                optgroup += "<option value='<?php echo $subcat['id']?>'> <?php echo $subcat['region_id']?>.<?php echo $subcat['id']?> <?php echo $subcat['comuna']?> </option>"
-                <?php endif;?>
-            <?php endforeach;?>
-            optgroup += "</optgroup>";
-        <?php endforeach;?>
-        optgroup += "";
-        //alert(optgroup);
-        $('#selectpicker2').append(optgroup);
-        $('#selectpicker2').selectpicker('refresh');
-    });
-    /* Mantiene los campos de subcategorias en arrSelected*/
-    $('#selectpicker2').on('change', function(){
-        var selected = $(this).find("option:selected");
-        var arrSelected = [];
-        selected.each(function(){
-        arrSelected.push($(this).val());
-        });
-        $("#selectpickerValue2").val(arrSelected);
-        //alert(arrSelected);
+
+    const actualBtn0 = document.getElementById('file1');
+    const fileChosen0 = document.getElementById('fileE');
+
+    actualBtn0.addEventListener('change', function(){
+
+        fileChosen0.textContent = this.files[0].name;
+        TmpPath = URL.createObjectURL(this.files[0]);
+        $('#imagenFile1').attr('src', TmpPath);
     });
 </script>
 

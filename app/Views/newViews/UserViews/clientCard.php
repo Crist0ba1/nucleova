@@ -1,4 +1,4 @@
-<?php foreach($solicitudes as $sol):?>
+
     <div class="card bottom20 border-blue">
         <div class="card-body">
             <div class="row"> 
@@ -6,7 +6,7 @@
                     <div class="card bg-gray text-secondary">
                         <div class="row g-0">
                             <div class="col-md-4">                                
-                                <?php foreach($sol['imagenes'] as $image):?>
+                                <?php foreach($usser['imagenes'] as $image):?>
                                     <?php if($image['imagen1'] != ""):?>
                                         <div class="carousel-item active">
                                             <img id="logo2" src="<?php echo base_url('/public/imgs/');?>/<?php echo  $image['idUsers']?>/<?php echo  $image['imagen1']?>" class="rounded img-fluid w-100 fit-cover bottom20" style="min-height: 300px;">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-<?php endforeach;?>
+
 
 <script>
     function aceptarSolicitud(idUsser){

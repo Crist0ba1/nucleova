@@ -15,6 +15,7 @@ use App\Models\CategoriasListModel;
 use App\Models\ComunasListModel;
 
 use App\Models\RequerimientoModel;
+use App\Models\FinalRequerimientoModel;
 use App\Models\ImagenesrModel;
 
 class proController extends BaseController
@@ -196,7 +197,7 @@ class proController extends BaseController
         $data['categoria'] = $modelCategoria->findAll();
         $data['subCategoria'] = $modelSubCategoria->findAll();
         echo view('newViews/ClientViews/baseLoggedClient',$data);
-        echo view('newViews/ClientViews/Empresa');
+        echo view('dashbord/Empresa');
         //echo view('newViews/inicio',$data);
         echo view('limites/Fother');
     }
@@ -216,7 +217,6 @@ class proController extends BaseController
         $data['proveedores'] = $this->searchProveedores();
         /* Se obtienen los requerimientos*/
         $data['requerimientos'] = $this->requerimientosEmpresa();
-        //die(json_encode($data['requerimientos']));
         echo view('newViews/ClientViews/baseLoggedClient',$data);
         echo view('newViews/ClientViews/requirementsClient');
         //echo view('newViews/inicio',$data);
@@ -247,6 +247,8 @@ class proController extends BaseController
            $requerimiento['subCat'] = $this->request->getVar('subCategoriaSelect');
            $requerimiento['estado'] = 1;
            $requerimiento['fechaPublicado'] = new Time('now');
+           $requerimiento['idE'] = $match['idEmpresa'];
+           $requerimiento['idP'] = $match['idProveedor'];
            
            /* Se inserta el nuevo requerimiento */
            if($model->insert($requerimiento)){
@@ -263,30 +265,30 @@ class proController extends BaseController
                     $dataFile['idR'] = $idReq;
                     $dataFile['estado'] = 1;
 
-                    if($imageFile1 != null){
-                        $dataFile['imagen1'] = $imageFile1->getRandomName();
-                    }if($imageFile2 != null){
-                        $dataFile['imagen2'] = $imageFile2->getRandomName();
-                    }if($imageFile3 != null){
-                        $dataFile['imagen3'] = $imageFile3->getRandomName();
-                    }if($imageFile4 != null){
-                        $dataFile['imagen4'] = $imageFile4->getRandomName();
-                    }if($imageFile5 != null){
-                        $dataFile['imagen5'] = $imageFile5->getRandomName();
-                    }
+                    if($imageFile1->isValid()){    
+                        $dataFile['imagen1'] = $imageFile1->getRandomName();}
+                    if($imageFile2->isValid()){    
+                        $dataFile['imagen2'] = $imageFile2->getRandomName();}
+                    if($imageFile3->isValid()){    
+                        $dataFile['imagen3'] = $imageFile3->getRandomName();}
+                    if($imageFile4->isValid()){    
+                        $dataFile['imagen4'] = $imageFile4->getRandomName();}
+                    if($imageFile5->isValid()){    
+                        $dataFile['imagen5'] = $imageFile5->getRandomName();}
+
                     if($modelI->insert($dataFile)){
                         //Si se agrega a la BD, se mueven las imagenes
-                        if($imageFile1 != null){
-                            $imageFile1->move($nombre_fichero, $dataFile['imagen1']);
-                        }if($imageFile2 != null){
-                            $imageFile2->move($nombre_fichero, $dataFile['imagen2']);
-                        }if($imageFile3 != null){
-                            $imageFile3->move($nombre_fichero, $dataFile['imagen3']);
-                        }if($imageFile4 != null){
-                            $imageFile4->move($nombre_fichero, $dataFile['imagen4']);
-                        }if($imageFile5 != null){
-                            $imageFile5->move($nombre_fichero, $dataFile['imagen5']);
-                        }
+                        if($imageFile1->isValid()){    
+                            $imageFile1->move($nombre_fichero, $dataFile['imagen1']);}
+                        if($imageFile2->isValid()){    
+                            $imageFile2->move($nombre_fichero, $dataFile['imagen2']);}
+                        if($imageFile3->isValid()){    
+                            $imageFile3->move($nombre_fichero, $dataFile['imagen3']);}
+                        if($imageFile4->isValid()){    
+                            $imageFile4->move($nombre_fichero, $dataFile['imagen4']);}
+                        if($imageFile5->isValid()){    
+                            $imageFile5->move($nombre_fichero, $dataFile['imagen5']);}
+
                         return redirect()->to('/requerimientos');
     
                     }else{
@@ -341,7 +343,6 @@ class proController extends BaseController
         $modelCategoria = new CategoriasModel();
         $modelSubCategoria = new SubCategoriasModel();
         $modelPagos = new PagosModel();
-        $data['pagos'] = $modelPagos->findAll();
         $data['region'] = $modelR->findAll();
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
@@ -373,6 +374,7 @@ class proController extends BaseController
         $data['categoria'] = $modelCategoria->findAll();
         $data['subCategoria'] = $modelSubCategoria->findAll();
         $aux = $this->solicitudesProveedor(1);
+        
         if($aux != null){
             $data['solicitud'] = 1;
             $data['solicitudes'] =  $aux;
@@ -380,6 +382,7 @@ class proController extends BaseController
         }else{
             $data['solicitud'] = 0;
         }
+        //die(json_encode($data['solicitudes']));
         echo view('newViews/UserViews/myClients',$data);
         //echo view('newViews/inicio',$data);
         echo view('limites/Fother');
@@ -390,12 +393,12 @@ class proController extends BaseController
         $modelCategoria = new CategoriasModel();
         $modelSubCategoria = new SubCategoriasModel();
         $modelPagos = new PagosModel();
-        $data['pagos'] = $modelPagos->findAll();
         $data['region'] = $modelR->findAll();
 		$data['comuna'] = $modelCo->orderBy('comuna', 'ASC')->findAll();
         $data['categoria'] = $modelCategoria->findAll();
         $data['subCategoria'] = $modelSubCategoria->findAll();
         $data['requerimientos'] = $this->requerimientosProveedor();
+
         echo view('newViews/UserViews/requirementsUser',$data);
         //echo view('newViews/inicio',$data);
         echo view('limites/Fother');
@@ -551,13 +554,13 @@ class proController extends BaseController
             foreach($solicitudes as $sol){
                 array_push($myArray, $sol['idEmpresa']);
             }
-            $personas = $modelP->where('idPersona', $myArray)->select('otraID')->findAll();
+            $personas = $modelP->whereIn('idPersona', $myArray)->select('otraID')->findAll();
             //die(json_encode($personas)); //aqui se tienen a todas las personas
             $myArray1 = array();
             foreach($personas as $per){
                 array_push($myArray1, $per['otraID']);
             }
-            $usser = $ModelU->where('idUssers', $myArray1)->findAll();
+            $usser = $ModelU->whereIn('idUssers', $myArray1)->findAll();
             return $usser;
        }
        return null;
@@ -598,7 +601,6 @@ class proController extends BaseController
     }
     private function requerimientosEmpresa(){
         $modelreq = new RequerimientoModel();
-        $modelI = new ImagenesrModel();
         $modelM = new MatchModel(); 
         /* Obtengo todos los matchs */
         $matchs = $modelM->where('estado', 2)->where('idEmpresa', session()->get('id'))->findAll();
@@ -606,10 +608,42 @@ class proController extends BaseController
         /* Recorro los match para buscar los requerimientos */
         foreach($matchs as $match){
             $req = $modelreq->where('idM',$match['idM'])->findAll();
-            //$req['imgR'] = $modelI->where('idR',$req['idR'])->first();
             array_push($arrayRequerimientos, $req);
         }
         return $arrayRequerimientos;
+    }
+    public function getImagenesR($idRequerimiento){
+        $modelIr = new ImagenesrModel();
+        if(session()->has('idRequerimientoimagenes')){
+            session()->remove('idRequerimientoimagenes');
+        }
+        if(session()->has('imagenesReq')){
+            session()->remove('imagenesReq');
+        }
+        $imagenes = $modelIr->where('idR',$idRequerimiento)->first();
+        if($imagenes != null){
+            session()->set('idRequerimientoimagenes',$idRequerimiento);
+            if($imagenes['imagen1'] != ""){
+                $data['imagen1'] = $imagenes['imagen1'];
+            }
+            if($imagenes['imagen2'] != ""){
+                $data['imagen2'] = $imagenes['imagen2'];
+            }            
+            if($imagenes['imagen3'] != ""){
+                $data['imagen3'] = $imagenes['imagen3'];
+            }
+            if($imagenes['imagen4'] != ""){
+                $data['imagen4'] = $imagenes['imagen4'];
+            }
+            if($imagenes['imagen5'] != ""){
+                $data['imagen5'] = $imagenes['imagen5'];
+            }
+            session()->set('imagenesReq',$data);
+            //die(json_encode(session()->get('imagenesReq')));
+            return json_encode(1);
+        }else{
+            return json_encode(2);
+        }
     }
     private function requerimientosProveedor(){
         $modelreq = new RequerimientoModel();
@@ -623,7 +657,10 @@ class proController extends BaseController
             //$req = $modelreq->where('idM',$match['idM'])->where('estado !=',0)->findAll();
             $req = $modelreq->where('idM',$match['idM'])->findAll();
             //$req['imgR'] = $modelI->where('idR',$req['idR'])->first();
-            array_push($arrayRequerimientos, $req);
+            if($req != null){
+                array_push($arrayRequerimientos, $req);
+            }
+           
         }
         return $arrayRequerimientos;
     }
@@ -655,6 +692,127 @@ class proController extends BaseController
         }
         return json_encode(3);
     }
+    public function getNumeroEmpresa($idRequerimiento){
+        $modelR = new RequerimientoModel();
+        $modelP = new PersonaModel();
+        $modelU = new UssersModel();
+        $idEmpresa = $modelR->where('idR',$idRequerimiento)->select('idE')->first();
+        $idUsser = $modelP->where('idPersona', $idEmpresa)->select('otraID')->first();
+        $telefono = $modelU->where('idUssers', $idUsser)->select('telefono')->first();
+        //$data['persona'] =  $idEmpresa;
+        //$data['usser'] =  $idUsser;
+        //$data['telefono'] =  $telefono;
+        echo $telefono['telefono'];
+    }
+    public function getNumeroProvedor($idRequerimiento){
+        $modelR = new RequerimientoModel();
+        $modelP = new PersonaModel();
+        $modelU = new UssersModel();
+        $idEmpresa = $modelR->where('idR',$idRequerimiento)->select('idP')->first();
+        $idUsser = $modelP->where('idPersona', $idEmpresa)->select('otraID')->first();
+        $telefono = $modelU->where('idUssers', $idUsser)->select('telefono')->first();
+        //$data['persona'] =  $idEmpresa;
+        //$data['usser'] =  $idUsser;
+        //$data['telefono'] =  $telefono;
+        echo $telefono['telefono'];
+    }
+    public function finalizarRequerimiento(){
+        $model = new RequerimientoModel();
+        date_default_timezone_set('america/santiago');
+        if($this-> request -> getMethod() == 'post' ){
+            $idRequerimiento = $this->request->getVar('idRequerimiento');
+            $datos['estado'] = 3;
+            $datos['fechaFinalizado'] = date("Y-m-d h:i");
+            $model->where('idR',$idRequerimiento);  
+            if($model->set($datos)->update()){            
+                $data['requerimientos'] = $this->requerimientosProveedor();
+                
+                return $data;           
+            }
+            return json_encode(2);
+        }
+        else{
+            return json_encode(3);
+        }
+    }
+    public function finalzarRM(){
+        $modelRF = new FinalRequerimientoModel();
+        $model = new RequerimientoModel();
+        
+        if($this-> request -> getMethod() == 'post' ){
+            $dat['idR'] = $this->request->getVar('idRequerimiento');
+            $dat['Seleccion'] = $this->request->getVar('seleccion');
+            $dat['Descripcion'] = $this->request->getVar('descripcion');
+            $datos2['estado']= 5;
+            if($modelRF->insert($dat) && $model->where('idR',$dat['idR'])->set($datos2)->update()){
+                $data['requerimientos'] = $this->requerimientosProveedor();                
+                return $data;           
+            }
+            return json_encode(2);
+        }
+        else{
+            return json_encode(3);
+        }
+    }
+
+    public function verRporteRequerimientoM($idR){
+        $modelRF = new FinalRequerimientoModel();
+        $reporte = $modelRF->where('idR',$idR)->first();
+        if($reporte != null){
+            return json_encode($reporte);
+        }else{
+            return json_encode(2);
+        }
+    }
+    public function respuestaFecha(){
+        $model = new RequerimientoModel();
+        
+        if($this-> request -> getMethod() == 'post' ){
+            $idRequerimiento = $this->request->getVar('idReq');
+
+            $inicio = $this->request->getVar('fechaI');                        
+            $inicio = str_replace(",", "", $inicio);
+            $inicio = date($inicio);
+            $inicio = date("Y-m-d h:i", strtotime($inicio));
+            $datos['fechaInicio'] = $inicio;
+   
+            $final = $this->request->getVar('fechaF');
+            $final = str_replace(",", "", $final);
+            $final = date($final);
+            $final = date("Y-m-d h:i", strtotime($final));
+            $datos['fechaTentativa']= $final;
+            
+            $datos['estado']= 2;
+            $model->where('idR',$idRequerimiento);  
+            if($model->set($datos)->update()){            
+                $data['requerimientos'] = $this->requerimientosProveedor();
+                return $data;           
+            }
+            return json_encode(2);
+        }
+        else{
+            return json_encode(3);
+        }
+    }
+    public function reagendarFecha(){
+        $model = new RequerimientoModel();
+        if($this-> request -> getMethod() == 'post' ){
+            $idRequerimiento = $this->request->getVar('idReq');
+            $datos['estado']= 1;
+            $model->where('idR',$idRequerimiento);  
+            if($model->set($datos)->update()){            
+                $data['requerimientos'] = $this->requerimientosProveedor();
+                $data['proveedores'] = $this->searchProveedores();
+                return $data;           
+            }
+            return json_encode(2);
+
+        }
+        else{
+            return json_encode(2);
+        }
+    }
+
     private function borrar_directorio($dirname) {
         //si es un directorio lo abro
         if (is_dir($dirname)){
@@ -741,6 +899,7 @@ class proController extends BaseController
                 $idPersona = $persona['idPersona'];// que es el id de la persona que tiene la empresa
                 $modelM->where('idEmpresa', $idPersona)->where('idProveedor', session()->get('id'))->first();
                 $data['estado'] = 2;
+                $modelM->where('idEmpresa', $idPersona)->where('idProveedor', session()->get('id'));
                 if($modelM->set($data)->update()){
                     return json_encode(1);
                 }else{

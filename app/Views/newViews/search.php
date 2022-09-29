@@ -106,19 +106,18 @@
             <div class="container-fluid justify-content-end">
 
                 <div id="incertCards">
-                    <?php if(isset($proveedores)):?>                    
-                        
-                            <?php if(session()->get('grupoLista') == 1):?>
-                                <?php include("searchResultCardGrid.php");?>
-                            <?php elseif(session()->get('grupoLista') == 2):?>
-                                <?php include("searchResultCardList.php");?>
-                            <?php endif;?>
-                        </div>
+                    <?php if(isset($proveedores)):?>                                      
+                        <?php if(session()->get('grupoLista') == 1):?>
+                            <?php include("searchResultCardGrid.php");?>
+                        <?php elseif(session()->get('grupoLista') == 2):?>
+                            <?php include("searchResultCardList.php");?>
+                        <?php endif;?>                    
                     <?php else:?>
                         <div class="container justify-content-end">
                             <?php
                                 include("categorias/categorias.php");
                             ?>
+                        </div>
                     <?php endif;?>
                 </div>
          
